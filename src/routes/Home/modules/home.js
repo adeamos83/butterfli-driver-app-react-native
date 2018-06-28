@@ -107,6 +107,18 @@ export function postDriverLocation(){
     }
 }
 
+// export function getBookings(){
+//     return (dispatch, store) => {
+//         socket.on("driverRequest", (savedbooking) => {
+//             dispatch({
+//                 type: NEW_BOOKING,
+//                 payload: savedbooking
+//             })
+//         })
+       
+//     }
+// }
+
 
 //-------------------------------
 // Action Handlers
@@ -169,13 +181,22 @@ function handlePostDriverLocation(state, action) {
     });
 }
 
+function handleGetNewBooking(state, action) {
+    return update(state, {
+        bookingDetails: {
+            $set: action.payload
+        }
+    });
+}
+
 
 const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     GET_INPUT: handleGetInputData,
     GET_DRIVER_INFORMATION: handleGetDriverInfo,
     GET_SOCKET_ID: handelGetDriverSocket,
-    POST_DRIVER_LOCATION: handlePostDriverLocation
+    POST_DRIVER_LOCATION: handlePostDriverLocation,
+    NEW_BOOKING: handleGetNewBooking
     
 }
 

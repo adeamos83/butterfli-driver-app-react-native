@@ -5,14 +5,15 @@ import { getCurrentLocation,
         getInputData, 
         getDriverInfo,
         getDriverSocketId,
-        postDriverLocation
+        postDriverLocation,
         } from '../modules/home';
 
 const mapStateToProps = (state) => ({
     region: state.home.region,
     inputData: state.home.inputData || {},
     driverInfo: state.home.driverInfo || {},
-    driverLocation: state.home.driverLocation || {}
+    driverLocation: state.home.driverLocation || {},
+    bookingDetails: state.home.bookingDetails || {}
 
 });
 
@@ -21,7 +22,7 @@ const mapActionCreators = {
     getInputData,
     getDriverInfo,
     getDriverSocketId,
-    postDriverLocation
+    postDriverLocation,
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Home)
