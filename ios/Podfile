@@ -38,6 +38,8 @@ target 'ButterFliDriverApp' do
   pod 'GoogleMaps'  # Remove this line if you don't want to support GoogleMaps on iOS
   pod 'Google-Maps-iOS-Utils' # Remove this line if you don't want to support GoogleMaps on iOS
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'react-native-spinkit', :path => '../node_modules/react-native-spinkit'
+
 end
 
 post_install do |installer|

@@ -10,6 +10,7 @@ import HeaderComponent from '../../../Components/HeaderComponent';
 import FooterComponent from '../../../Components/FooterComponent';
 import Fab from './FAB';
 import NewBookingCard from './NewBookingCard'
+import NewBooking from './NewBooking'
 
 
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
@@ -27,8 +28,9 @@ class Home extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(this.props.bookingDetails) {
+        if(this.props.bookingDetails.status == "pending") {
             console.log("You have a new booking");
+            console.log(this.props.bookingDetails);
         }
     }
 
@@ -40,9 +42,11 @@ class Home extends React.Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
         }
-        
+        const { status } = this.props.bookingDetails;
+
         return(
         <Container>
+        { (status !== "pending") &&
                 <View style={{flex:1}}>
                     <HeaderComponent logo={buttefliLogo}/>
                     {this.props.region.latitude &&
@@ -51,10 +55,12 @@ class Home extends React.Component {
                         carMarker={carMarker}
                         />
                     }
-                    <NewBookingCard />
                     <Fab onPressAction={() => this.props.postDriverLocation()}/>
                     <FooterComponent />
-                </View>            
+                </View>
+                ||
+                <NewBooking bookingDetails={this.props.bookingDetails} openMapsRoute={this.props.openMapsRoute}/> 
+            }           
         </Container>
         );
        

@@ -1,6 +1,6 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform, Linking } from 'react-native';
 
 
 import request from '../../../util/request';
@@ -12,7 +12,8 @@ const { GET_CURRENT_LOCATION,
         GET_INPUT, 
         GET_DRIVER_INFORMATION,
         GET_SOCKET_ID,
-        POST_DRIVER_LOCATION
+        POST_DRIVER_LOCATION,
+        IN_ROUTE_TO
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -119,6 +120,44 @@ export function postDriverLocation(){
 //     }
 // }
 
+export function openMapsRoute(payload){
+    return(dispatch, store) => {
+        const pickUpArr = {
+            latitude:  store().home.bookingDetails.pickUp.latitude,
+            longitude: store().home.bookingDetails.pickUp.longitude 
+        };
+
+        const dropOffArr = {
+            latitude:  store().home.bookingDetails.dropOff.latitude,
+            longitude: store().home.bookingDetails.dropOff.longitude
+        };
+
+        buildLngLat = (position) => {
+            return `${position.latitude},${position.longitude}`
+        };
+        
+        const origin = this.buildLngLat(pickUpArr);
+        const destination = this.buildLngLat(dropOffArr);
+
+        buildMapBoxUrl = (origin, destination) => {
+            return `http://maps.apple.com/?saddr=${origin}&daddr=${destination}&dirflg=d`
+        } 
+
+        const url = this.buildMapBoxUrl(origin, destination);
+        
+        console.log('open directions') 
+        if (Platform.OS === "ios") { 
+            Linking.openURL(url)
+            dispatch({
+                type:IN_ROUTE_TO,
+                payload: payload
+            })
+
+        } else { 
+            Linking.openURL('http://maps.google.com/maps?daddr='); 
+        } 
+    }
+}
 
 //-------------------------------
 // Action Handlers
@@ -189,6 +228,17 @@ function handleGetNewBooking(state, action) {
     });
 }
 
+function handleInRouteTo(state, action){
+    return update(state, {
+        bookingDetails: {
+            inRouteTo:{
+                $set: action.payload
+            }
+            
+        }
+    });
+
+}
 
 const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
@@ -196,7 +246,8 @@ const ACTION_HANDLERS = {
     GET_DRIVER_INFORMATION: handleGetDriverInfo,
     GET_SOCKET_ID: handelGetDriverSocket,
     POST_DRIVER_LOCATION: handlePostDriverLocation,
-    NEW_BOOKING: handleGetNewBooking
+    NEW_BOOKING: handleGetNewBooking,
+    IN_ROUTE_TO: handleInRouteTo
     
 }
 
