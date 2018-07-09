@@ -4,19 +4,16 @@ import { Dimensions, Platform, Linking } from 'react-native';
 
 
 import request from '../../../util/request';
-// const polyline = require('@mapbox/polyline');
+const polyline = require('@mapbox/polyline');
 //-------------------------------
 // Constants
 //-------------------------------
 const { GET_CURRENT_LOCATION, 
         DRIVER_STATUS,
-        GET_INPUT, 
-        GET_DRIVER_INFORMATION,
-        GET_SOCKET_ID,
-        POST_DRIVER_LOCATION,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
-        MARKER_LOCATION
+        MARKER_LOCATION,
+        GET_PASSENGER_ROUTES
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -25,6 +22,7 @@ const ASPECT_RATIO = width / height;
 
 const LATITUDE_DELTA = 0.0181;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
+
 var API_URL = "http://localhost:3000";
 // var API_URL = "https://dry-gorge-77566.herokuapp.com";
 
@@ -34,8 +32,7 @@ var API_URL = "http://localhost:3000";
 //-------------------------------
 
 const initialState = {
-    region: {},
-    inputData: {},
+    region: {}
 };
 
 
@@ -85,7 +82,7 @@ export function watchDriverLocation(){
                 }
             },
             (error) => console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1}
         );
     }
 }
@@ -104,72 +101,6 @@ export function getMarkerLocation(location){
     }
 }
 
-// Get User Input
-export function getInputData(payload) {
-    return{
-        type: GET_INPUT,
-        payload
-    }
-}
-
-
-export function getDriverInfo() {
-    return (dispatch, store) => {
-        let id = "5b1af815fb6fc033f8801510";
-        request.get(`${API_URL}/api/driver/` + id)
-        .finish((error, res)=>{
-            dispatch({
-                type: GET_DRIVER_INFORMATION,
-                payload: res.body
-            });
-        });
-    }
-}
-
-export function getDriverSocketId() {
-    return (dispatch, store) => {
-        dispatch({
-            type: "server/hello",
-        })
-    }
-}
-
-export function postDriverLocation(){
-    return(dispatch, store) => {
-        const payload = {
-            data: {
-                driverId: store().home.driverInfo._id,
-                coordinates: {
-                    type: "Point",
-                    coordinates: [store().home.region.longitude, store().home.region.latitude]
-                },
-                socketId: store().home.driverSocketId,
-            }
-        };
-
-        request.post(`${API_URL}/api/driverLocation`)
-        .send(payload)
-        .finish((error, res) => {
-                dispatch({
-                    type: POST_DRIVER_LOCATION,
-                    payload: res.body
-                });
-            
-        });
-    }
-}
-
-// export function getBookings(){
-//     return (dispatch, store) => {
-//         socket.on("driverRequest", (savedbooking) => {
-//             dispatch({
-//                 type: NEW_BOOKING,
-//                 payload: savedbooking
-//             })
-//         })
-       
-//     }
-// }
 
 export function openMapsRoute(payload){
     return(dispatch, store) => {
@@ -208,6 +139,75 @@ export function openMapsRoute(payload){
             Linking.openURL('http://maps.google.com/maps?daddr='); 
         } 
     }
+}
+
+// Get polyline route from Mapbox for route between pick and drop-off location
+
+export function getPassengerRoute(){
+
+    return(dispatch, store) => {
+        
+        const driverArr = {
+            latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
+            longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
+        }   
+
+        const pickUpArr = {
+            latitude:  store().home.bookingDetails.pickUp.latitude,
+            longitude: store().home.bookingDetails.pickUp.longitude 
+        };
+    
+        const dropOffArr = {
+            latitude:  store().home.bookingDetails.dropOff.latitude,
+            longitude: store().home.bookingDetails.dropOff.longitude
+        };
+    
+        buildLngLat = (position) => {
+            return `${position.longitude},${position.latitude}`
+        }
+    
+        buildMapBoxUrl = (mode, origin, destination, accessToken) => {
+            return `https://api.mapbox.com/directions/v5/mapbox/${mode}/${origin};${destination}.json?access_token=${accessToken}&steps=true&overview=full&geometries=polyline`
+        }
+    
+        const mode = 'driving';
+        const origin = `${pickUpArr.longitude},${pickUpArr.latitude}`;
+        const destination = `${dropOffArr.longitude},${dropOffArr.latitude}`;
+        const driver = `${driverArr.longitude},${driverArr.latitude}`;
+        const accessToken = "pk.eyJ1IjoiYWRlYW1vczgzIiwiYSI6ImNqaWdic2ZvbDBiYzczcm54YzNwem1tMWYifQ.OEp7GdVv_W-9fxj6Ix9yzQ";
+        // const url = this.buildMapBoxUrl(mode, origin, destination, accessToken);
+        const url = `https://api.mapbox.com/directions/v5/mapbox/${mode}/${driver};${origin};${destination}.json?access_token=${accessToken}&steps=true&overview=full&geometries=polyline`
+    
+        getCoordinates = (json) => {
+            let route = []
+        
+            if (json.routes.length > 0) {
+              json.routes[0].legs.forEach(legs => {
+                legs.steps.forEach(step => {
+                  polyline.decode(step.geometry).forEach(coord => route.push(coord))
+                })
+              })
+            }
+        
+            return route.map(l => ({latitude: l[0], longitude: l[1]}))
+        }
+
+
+        if(store().home.bookingDetails.pickUp && store().home.bookingDetails.dropOff){
+            fetch(url).then(response => response.json()).then(json => {
+
+                const getLineRoute = getCoordinates(json);
+                dispatch({
+                    type: GET_PASSENGER_ROUTES,
+                    payload: getLineRoute
+                })
+                // this.route = {};
+                // this.route1 = this.getCoordinates(json);
+            }).catch(e => {
+              console.warn(e)
+            })
+        }
+    }    
 }
 
 //-------------------------------
@@ -250,13 +250,13 @@ function handelWatchDriverLocation(state, action) {
     });
 }
 
-function handleUpdateDriverLocation(state, action) {
-    return update(state, {
-        updateWatchDriverLocation: {
-            $set: action.payload
-        }
-    });
-}
+// function handleUpdateDriverLocation(state, action) {
+//     return update(state, {
+//         updateWatchDriverLocation: {
+//             $set: action.payload
+//         }
+//     });
+// }
 
 function handleGetMarkerLocation(state, action) {
     return update(state, {
@@ -266,49 +266,6 @@ function handleGetMarkerLocation(state, action) {
     });
 }
 
-function handleGetInputData(state, action) {
-    const { key, value } = action.payload;
-    return update(state, {
-        inputData: {
-            [key]: {
-                $set: value
-            }
-        }
-    });
-}
-
-function handleGetDriverInfo(state, action) {
-    return update(state, {
-        driverInfo: {
-            $set: action.payload
-        }
-    });
-}
-
-function handelGetDriverSocket(state, action){
-    return update(state, {
-        driverSocketId: {
-            $set: action.payload
-        }
-    });
-}
-
-
-function handlePostDriverLocation(state, action) {
-    return update(state, {
-        driverLocation: {
-            $set: action.payload
-        }
-    });
-}
-
-function handleGetNewBooking(state, action) {
-    return update(state, {
-        bookingDetails: {
-            $set: action.payload
-        }
-    });
-}
 
 function handleInRouteTo(state, action){
     return update(state, {
@@ -322,23 +279,28 @@ function handleInRouteTo(state, action){
 
 }
 
+function handleGetPassengerRoutes(state, action) {
+    return update(state, {
+        routes: {
+            $set:action.payload
+        }
+    })
+}
+
+
 const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
-    GET_INPUT: handleGetInputData,
-    GET_DRIVER_INFORMATION: handleGetDriverInfo,
-    GET_SOCKET_ID: handelGetDriverSocket,
-    POST_DRIVER_LOCATION: handlePostDriverLocation,
-    NEW_BOOKING: handleGetNewBooking,
     IN_ROUTE_TO: handleInRouteTo,
     WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
-    UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
-    MARKER_LOCATION: handleGetMarkerLocation
+    // UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
+    MARKER_LOCATION: handleGetMarkerLocation,
+    GET_PASSENGER_ROUTES: handleGetPassengerRoutes
 }
 
 
 
-export function HomeReducer (state = initialState, action){
+export function PickUpReducer (state = initialState, action){
     const handler = ACTION_HANDLERS[action.type];
 
     return handler ? handler(state, action) : state;

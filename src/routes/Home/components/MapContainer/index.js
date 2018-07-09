@@ -7,18 +7,14 @@ import styles from "./MapContainerStyles.js"
 export const MapContainer = ({
                             region, 
                             getInputData,
-                            carMarker 
+                            carMarker,
+                            getMarkerLocation
                             }) => {
     
 
     const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
     
     
-
-    onRegionChangeComplete = (region) => {
-        console.log(" region", region)
-    }
-
     
     return(
         <View style={styles.container}>
@@ -27,7 +23,6 @@ export const MapContainer = ({
                 provider={MapView.PROVIDER_GOOGLE}
                 style={styles.map}
                 initialRegion={region}
-                onRegionChangeComplete={this.onRegionChangeComplete}
                 showsUserLocation={true}
             >
             { region &&
@@ -36,6 +31,16 @@ export const MapContainer = ({
                     image={carMarker}
                 />
             }
+
+            {region && 
+                <MapView.Marker 
+                    draggable
+                    coordinate={{latitude: region.latitude, longitude: region.longitude}}
+                    pinColor="green"
+                    onDragEnd={(e) => getMarkerLocation(e.nativeEvent.coordinate)}
+                />
+            }
+
             </MapView>
             
         </View>

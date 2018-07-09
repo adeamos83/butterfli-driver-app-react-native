@@ -1,38 +1,33 @@
 import { connect } from 'react-redux';
-import Home from '../components/home';
+import PickUp from '../components/pickUp';
 
 import { getCurrentLocation, 
-        getInputData, 
-        getDriverInfo,
-        getDriverSocketId,
-        postDriverLocation,
         openMapsRoute,
         watchDriverLocation,
         getDriverStatus,
-        getMarkerLocation
-        } from '../modules/home';
+        getMarkerLocation,
+        getPassengerRoute
+        } from '../modules/pickUp';
 
 const mapStateToProps = (state) => ({
     region: state.home.region,
-    inputData: state.home.inputData || {},
     driverInfo: state.home.driverInfo || {},
     driverLocation: state.home.driverLocation || {},
     bookingDetails: state.home.bookingDetails || {},
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
-    driverStatus: state.home.driverStatus 
+    driverStatus: state.home.driverStatus ,
+    updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
+    routes: state.pickUp.routes || {}
 });
 
 const mapActionCreators = {
     getCurrentLocation,
-    getInputData,
-    getDriverInfo,
-    getDriverSocketId,
-    postDriverLocation,
     openMapsRoute,
     watchDriverLocation,
     getDriverStatus,
-    getMarkerLocation
+    getMarkerLocation,
+    getPassengerRoute
 };
 
-export default connect(mapStateToProps, mapActionCreators)(Home)
+export default connect(mapStateToProps, mapActionCreators)(PickUp)

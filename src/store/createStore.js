@@ -7,7 +7,10 @@ import createSocketIoMiddleware from "redux-socket.io";
 
 import io from "socket.io-client/dist/socket.io";
 
-let socket = io("http://localhost:3000", {jsonp:false});
+var API_URL = "http://localhost:3000";
+// var API_URL = "https://dry-gorge-77566.herokuapp.com/";
+
+let socket = io(API_URL, {jsonp:false});
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
 const log =  createLogger({ diff: true, collapsed: true });

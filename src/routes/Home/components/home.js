@@ -8,6 +8,7 @@ import { Actions } from 'react-native-router-flux';
 import MapContainer from './MapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
 import FooterComponent from '../../../Components/FooterComponent';
+import InRouteFooter from '../../../Components/InRouteFooter';
 import Fab from './FAB';
 import NewBookingCard from './NewBookingCard'
 import NewBooking from './NewBooking'
@@ -28,10 +29,26 @@ class Home extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(this.props.bookingDetails.status == "pending") {
+        if(this.props.bookingDetails.status == "pending" && prevProps.bookingDetails.status !=="pending") {
             console.log("You have a new booking");
             console.log(this.props.bookingDetails);
         }
+        if(this.props.driverStatus == "available" && prevProps.driverStatus !=="available"){
+            this.watchId = this.props.watchDriverLocation();
+        }
+
+        if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
+            Actions.pickUpPassenger({type: "reset"});
+        }
+    }
+
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchId);
+    } 
+
+    connectDriver = () => {
+        this.props.getDriverStatus("available");
+        this.props.postDriverLocation();
     }
 
     render() {
@@ -53,13 +70,21 @@ class Home extends React.Component {
                         <MapContainer region={this.props.region} 
                         getInputData={this.props.getInputData}
                         carMarker={carMarker}
+                        getMarkerLocation={this.props.getMarkerLocation}
                         />
                     }
-                    <Fab onPressAction={() => this.props.postDriverLocation()}/>
-                    <FooterComponent />
+                    <Fab 
+                        onPressAction={() => this.connectDriver()}
+                        
+                    />
+                    <InRouteFooter />
                 </View>
                 ||
-                <NewBooking bookingDetails={this.props.bookingDetails} openMapsRoute={this.props.openMapsRoute}/> 
+                <NewBooking 
+                    bookingDetails={this.props.bookingDetails} 
+                    openMapsRoute={this.props.openMapsRoute}
+                    getDriverStatus={this.props.getDriverStatus}
+                    /> 
             }           
         </Container>
         );
