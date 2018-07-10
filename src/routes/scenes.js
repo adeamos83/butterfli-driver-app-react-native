@@ -1,13 +1,12 @@
 import React from 'react';
 import { Actions, Scene } from 'react-native-router-flux';
 import HomeContainer from './Home/container/HomeContainer';
-import PickUpContainer from './PickUp/container/PickUpContainer';
+import RideRequestContainer from './RideRequest/container/RideRequestContainer';
 
 const scenes = Actions.create(
     <Scene key='root' hideNavBar>
         <Scene key="home" component={HomeContainer} title="home" intial />
-        <Scene key="pickUpPassenger" component={PickUpContainer} title="pickUpPassenger"/>
-
+        <Scene key="rideRequest" component={RideRequestContainer} title="rideRequest"/>
     </Scene>
 );
 

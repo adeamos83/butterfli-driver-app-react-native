@@ -16,7 +16,9 @@ const { GET_CURRENT_LOCATION,
         POST_DRIVER_LOCATION,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
-        MARKER_LOCATION
+        MARKER_LOCATION,
+        NEAR_DRIVER_ALERTED,
+        DECLINE_RIDE
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -36,6 +38,8 @@ var API_URL = "http://localhost:3000";
 const initialState = {
     region: {},
     inputData: {},
+    nearDriverAlerted: false
+
 };
 
 
@@ -63,6 +67,28 @@ export function getDriverStatus(payload){
         dispatch({
             type: DRIVER_STATUS,
             payload: payload
+        });
+    }
+}
+
+export function getNearDriverAlerted(payload){
+    return(dispatch) => {
+        dispatch({
+            type: NEAR_DRIVER_ALERTED,
+            payload: payload
+        });
+    }
+}
+
+export function declineRideRequest(){
+    return(dispatch, store) => {
+        let updateBooking = {
+            ...store().home.bookingDetails,
+            status: "declined"
+        }
+        dispatch({
+            type: DECLINE_RIDE,
+            payload:updateBooking
         });
     }
 }
@@ -242,6 +268,22 @@ function handleDriverStatus(state, action){
     });
 }
 
+function handleNearDriverAlerted(state, action){
+    return update(state, {
+        nearDriverAlerted: {
+            $set: action.payload
+        }
+    });
+}
+
+function handleDeclineRide(state, action){
+    return update(state, {
+        bookingDetails: {
+            $set: action.payload
+        }
+    });
+}
+
 function handelWatchDriverLocation(state, action) {
     return update(state, {
         watchDriverLocation: {
@@ -319,7 +361,6 @@ function handleInRouteTo(state, action){
             
         }
     });
-
 }
 
 const ACTION_HANDLERS = {
@@ -333,7 +374,9 @@ const ACTION_HANDLERS = {
     IN_ROUTE_TO: handleInRouteTo,
     WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
-    MARKER_LOCATION: handleGetMarkerLocation
+    MARKER_LOCATION: handleGetMarkerLocation,
+    NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
+    DECLINE_RIDE: handleDeclineRide
 }
 
 

@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux';
 
 
 
-import PickUpMapContainer from './PickUpMapContainer';
+import RideRequestMapContainer from './RideRequestMapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
 import FooterComponent from '../../../Components/FooterComponent';
 import InRouteFooter from '../../../Components/InRouteFooter';
@@ -13,7 +13,7 @@ import InRouteFooter from '../../../Components/InRouteFooter';
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
-class PickUp extends React.Component {
+class RideRequest extends React.Component {
 
     componentDidMount(){
         this.props.getCurrentLocation();
@@ -42,7 +42,7 @@ class PickUp extends React.Component {
             <View style={{flex:1}}>
                 <HeaderComponent logo={buttefliLogo}/>
                 {this.props.region.latitude &&
-                    <PickUpMapContainer region={this.props.region} 
+                    <RideRequestMapContainer region={this.props.region} 
                     carMarker={carMarker}
                     getMarkerLocation={this.props.getMarkerLocation}
                     bookingDetails={this.props.bookingDetails}
@@ -51,7 +51,7 @@ class PickUp extends React.Component {
                     routes={this.props.routes}
                     />
                 }
-                <InRouteFooter />
+                <InRouteFooter openMapsRoute={this.props.openMapsRoute}/>
             </View>    
         </Container>
         );
@@ -59,4 +59,4 @@ class PickUp extends React.Component {
     }
 }
 
-export default PickUp;
+export default RideRequest;

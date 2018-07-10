@@ -40,7 +40,6 @@ export const MapContainer = ({
                     onDragEnd={(e) => getMarkerLocation(e.nativeEvent.coordinate)}
                 />
             }
-
             </MapView>
             
         </View>

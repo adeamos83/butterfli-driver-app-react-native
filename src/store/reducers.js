@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 import { HomeReducer as home } from "../routes/Home/modules/home";
-import { PickUpReducer as pickUp } from "../routes/PickUp/modules/pickUp"; 
+import { RideRequestReducer as rideRequest } from "../routes/RideRequest/modules/rideRequest"; 
 
 
 export const makeRootReducer = () => {
 	return combineReducers({
 		home,
-		pickUp
+		rideRequest
 	});
 }
 

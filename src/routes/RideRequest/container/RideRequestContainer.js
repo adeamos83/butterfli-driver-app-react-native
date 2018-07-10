@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PickUp from '../components/pickUp';
+import RideRequest from '../components/rideRequest';
 
 import { getCurrentLocation, 
         openMapsRoute,
@@ -7,7 +7,7 @@ import { getCurrentLocation,
         getDriverStatus,
         getMarkerLocation,
         getPassengerRoute
-        } from '../modules/pickUp';
+        } from '../modules/rideRequest';
 
 const mapStateToProps = (state) => ({
     region: state.home.region,
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => ({
     driverSocketId: state.home.driverSocketId,
     driverStatus: state.home.driverStatus ,
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
-    routes: state.pickUp.routes || {}
+    routes: state.rideRequest.routes || {}
 });
 
 const mapActionCreators = {
@@ -30,4 +30,4 @@ const mapActionCreators = {
     getPassengerRoute
 };
 
-export default connect(mapStateToProps, mapActionCreators)(PickUp)
+export default connect(mapStateToProps, mapActionCreators)(RideRequest)

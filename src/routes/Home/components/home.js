@@ -33,6 +33,7 @@ class Home extends React.Component {
             console.log("You have a new booking");
             console.log(this.props.bookingDetails);
         }
+
         if(this.props.driverStatus == "available" && prevProps.driverStatus !=="available"){
             this.watchId = this.props.watchDriverLocation();
         }
@@ -50,16 +51,16 @@ class Home extends React.Component {
         this.props.getDriverStatus("available");
         this.props.postDriverLocation();
     }
+    
+    cancelBooking = () => {
+        this.props.getNearDriverAlerted(true);
+        this.props.declineRideRequest();
+        console.log("Cancel Button Pressed");
+    }
 
     render() {
-        
-        const region = {
-            latitude: 34.060988,
-            longitude:-118.302358,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-        }
         const { status } = this.props.bookingDetails;
+        const { nearDriver } = this.props.nearDriverAlerted;
 
         return(
         <Container>
@@ -84,7 +85,8 @@ class Home extends React.Component {
                     bookingDetails={this.props.bookingDetails} 
                     openMapsRoute={this.props.openMapsRoute}
                     getDriverStatus={this.props.getDriverStatus}
-                    /> 
+                    cancelBooking={this.cancelBooking}
+                /> 
             }           
         </Container>
         );

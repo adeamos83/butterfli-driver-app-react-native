@@ -114,25 +114,32 @@ export function openMapsRoute(payload){
             longitude: store().home.bookingDetails.dropOff.longitude
         };
 
-        buildLngLat = (position) => {
+        function buildLngLat(position){
+            console.log(position);
+            console.log(position.latitude);
             return `${position.latitude},${position.longitude}`
-        };
+        }
         
-        const origin = this.buildLngLat(pickUpArr);
-        const destination = this.buildLngLat(dropOffArr);
+        const origin = buildLngLat(pickUpArr);
+        const destination = buildLngLat(dropOffArr);
 
-        buildMapBoxUrl = (origin, destination) => {
+        function buildMapBoxUrl(origin, destination) {
             return `http://maps.apple.com/?saddr=${origin}&daddr=${destination}&dirflg=d`
         } 
 
-        const url = this.buildMapBoxUrl(origin, destination);
+        const url = buildMapBoxUrl(origin, destination);
         
         console.log('open directions') 
         if (Platform.OS === "ios") { 
+            let updateBooking = {
+                ...store().home.bookingDetails,
+                inRouteTo: payload
+            }
+
             Linking.openURL(url)
             dispatch({
                 type:IN_ROUTE_TO,
-                payload: payload
+                payload: updateBooking
             })
 
         } else { 
@@ -270,10 +277,7 @@ function handleGetMarkerLocation(state, action) {
 function handleInRouteTo(state, action){
     return update(state, {
         bookingDetails: {
-            inRouteTo:{
-                $set: action.payload
-            }
-            
+            $set: action.payload
         }
     });
 
@@ -300,7 +304,7 @@ const ACTION_HANDLERS = {
 
 
 
-export function PickUpReducer (state = initialState, action){
+export function RideRequestReducer (state = initialState, action){
     const handler = ACTION_HANDLERS[action.type];
 
     return handler ? handler(state, action) : state;

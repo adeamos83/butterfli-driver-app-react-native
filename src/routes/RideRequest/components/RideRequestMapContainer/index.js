@@ -4,7 +4,7 @@ import MapView from "react-native-maps";
 
 import styles from "./MapContainerStyles.js"
 
-export const PickUpMapContainer = ({
+export const RideRequestMapContainer = ({
                             region, 
                             carMarker,
                             getMarkerLocation,
@@ -81,4 +81,4 @@ export const PickUpMapContainer = ({
     )
 }
 
-export default PickUpMapContainer;
+export default RideRequestMapContainer;
