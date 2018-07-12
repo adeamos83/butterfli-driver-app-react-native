@@ -8,6 +8,7 @@ import { Actions } from 'react-native-router-flux';
 import MapContainer from './MapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
 import FooterComponent from '../../../Components/FooterComponent';
+import UserFooterComponent from '../../../Components/UserFooterComponent';
 import InRouteFooter from '../../../Components/InRouteFooter';
 import Fab from './FAB';
 import NewBookingCard from './NewBookingCard'
@@ -39,7 +40,7 @@ class Home extends React.Component {
         }
 
         if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
-            Actions.pickUpPassenger({type: "reset"});
+            Actions.rideRequest({type: "reset"});
         }
     }
 
@@ -78,7 +79,7 @@ class Home extends React.Component {
                         onPressAction={() => this.connectDriver()}
                         
                     />
-                    <InRouteFooter />
+                    <UserFooterComponent />
                 </View>
                 ||
                 <NewBooking 

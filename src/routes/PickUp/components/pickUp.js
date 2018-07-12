@@ -5,20 +5,16 @@ import { Actions } from 'react-native-router-flux';
 
 
 
-import RideRequestMapContainer from './RideRequestMapContainer';
+import PickUpMapContainer from './PickUpMapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
-import FooterComponent from '../../../Components/FooterComponent';
-import InRouteFooter from '../../../Components/InRouteFooter';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';
-
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
-class RideRequest extends React.Component {
+class PickUp extends React.Component {
 
     componentDidMount(){
-        this.props.getCurrentLocation();
-        this.props.getPassengerRoute();
+        // this.props.getCurrentLocation();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -29,14 +25,10 @@ class RideRequest extends React.Component {
         // navigator.geolocation.clearWatch(this.watchId);
     } 
 
-    connectDriver = () => {
-        this.props.getDriverStatus("available");
-        this.props.postDriverLocation();
-    }
-
+    
     navToPickUp = () => {
         Actions.pickUp({type: "reset"});
-        // this.props.openMapsRoute('pick up');
+        this.props.openMapsRoute('pick up');
         console.log("start navigation");
     }
 
@@ -53,7 +45,7 @@ class RideRequest extends React.Component {
                     bookingDetails={this.props.bookingDetails}
                 />
                 {this.props.region.latitude &&
-                    <RideRequestMapContainer region={this.props.region} 
+                    <PickUpMapContainer region={this.props.region} 
                     carMarker={carMarker}
                     getMarkerLocation={this.props.getMarkerLocation}
                     bookingDetails={this.props.bookingDetails}
@@ -69,4 +61,4 @@ class RideRequest extends React.Component {
     }
 }
 
-export default RideRequest;
+export default PickUp;

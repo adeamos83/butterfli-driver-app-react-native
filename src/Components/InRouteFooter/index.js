@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './InRouteFooterStyles';
 
 
-export const InRouteFooter = ({openMapsRoute}) => {
+export const InRouteFooter = ({ navToPickUp }) => {
 
     // Footer bar items
     const tabs = [{
@@ -29,7 +29,7 @@ export const InRouteFooter = ({openMapsRoute}) => {
             <FooterTab style={styles.footerContainer} iosBarStyle="light-content">
                 return (
                     <View style={styles.buttonContainer}>
-                        <Button success style={styles.navButton} onPress={() => openMapsRoute("pick up")}>
+                        <Button success style={styles.navButton} onPress={navToPickUp}>
                             <Text style={styles.btnText}>Start Navigation</Text>
                         </Button>
                     </View>

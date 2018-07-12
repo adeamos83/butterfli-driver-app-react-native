@@ -13,7 +13,7 @@ const { GET_CURRENT_LOCATION,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
-        GET_PASSENGER_ROUTES
+        NEAR_DRIVER_ALERTED,
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -22,7 +22,6 @@ const ASPECT_RATIO = width / height;
 
 const LATITUDE_DELTA = 0.0181;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
-
 var API_URL = "http://localhost:3000";
 // var API_URL = "https://dry-gorge-77566.herokuapp.com";
 
@@ -32,7 +31,10 @@ var API_URL = "http://localhost:3000";
 //-------------------------------
 
 const initialState = {
-    region: {}
+    region: {},
+    inputData: {},
+    nearDriverAlerted: false
+
 };
 
 
@@ -64,6 +66,16 @@ export function getDriverStatus(payload){
     }
 }
 
+export function getNearDriverAlerted(payload){
+    return(dispatch) => {
+        dispatch({
+            type: NEAR_DRIVER_ALERTED,
+            payload: payload
+        });
+    }
+}
+
+
 export function watchDriverLocation(){
     return(dispatch, store) => {
         navigator.geolocation.watchPosition(
@@ -82,7 +94,7 @@ export function watchDriverLocation(){
                 }
             },
             (error) => console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1}
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
         );
     }
 }
@@ -114,107 +126,31 @@ export function openMapsRoute(payload){
             longitude: store().home.bookingDetails.dropOff.longitude
         };
 
-         buildLngLat = (position) => {
-            console.log(position);
-            console.log(position.latitude);
+        buildLngLat = (position) => {
             return `${position.latitude},${position.longitude}`
-        }
+        };
         
-        const origin = buildLngLat(pickUpArr);
-        const destination = buildLngLat(dropOffArr);
+        const origin = this.buildLngLat(pickUpArr);
+        const destination = this.buildLngLat(dropOffArr);
 
         buildMapBoxUrl = (origin, destination) => {
             return `http://maps.apple.com/?saddr=${origin}&daddr=${destination}&dirflg=d`
         } 
 
-        const url = buildMapBoxUrl(origin, destination);
+        const url = this.buildMapBoxUrl(origin, destination);
         
         console.log('open directions') 
         if (Platform.OS === "ios") { 
-            let updateBooking = {
-                ...store().home.bookingDetails,
-                inRouteTo: payload
-            }
-
             Linking.openURL(url)
             dispatch({
                 type:IN_ROUTE_TO,
-                payload: updateBooking
+                payload: payload
             })
 
         } else { 
             Linking.openURL('http://maps.google.com/maps?daddr='); 
         } 
     }
-}
-
-// Get polyline route from Mapbox for route between pick and drop-off location
-
-export function getPassengerRoute(){
-
-    return(dispatch, store) => {
-        
-        const driverArr = {
-            latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
-            longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
-        }   
-
-        const pickUpArr = {
-            latitude:  store().home.bookingDetails.pickUp.latitude,
-            longitude: store().home.bookingDetails.pickUp.longitude 
-        };
-    
-        const dropOffArr = {
-            latitude:  store().home.bookingDetails.dropOff.latitude,
-            longitude: store().home.bookingDetails.dropOff.longitude
-        };
-    
-        buildLngLat = (position) => {
-            return `${position.longitude},${position.latitude}`
-        }
-    
-        buildMapBoxUrl = (mode, driver, origin, destination, accessToken) => {
-            return `https://api.mapbox.com/directions/v5/mapbox/${mode}/${driver};${origin};${destination}.json?access_token=${accessToken}&steps=true&overview=full&geometries=polyline`
-        }
-    
-        const mode = 'driving';
-        const origin = buildLngLat(pickUpArr);
-        const destination = buildLngLat(dropOffArr);
-        const driver = buildLngLat(driverArr);
-        const accessToken = "pk.eyJ1IjoiYWRlYW1vczgzIiwiYSI6ImNqaWdic2ZvbDBiYzczcm54YzNwem1tMWYifQ.OEp7GdVv_W-9fxj6Ix9yzQ";
-        const url = buildMapBoxUrl(mode, driver, origin, destination, accessToken);
-        // const url = `https://api.mapbox.com/directions/v5/mapbox/${mode}/${driver};${origin};${destination}.json?access_token=${accessToken}&steps=true&overview=full&geometries=polyline`
-    
-        getCoordinates = (json) => {
-            let route = []
-        
-            if (json.routes.length > 0) {
-              json.routes[0].legs.forEach(legs => {
-                legs.steps.forEach(step => {
-                  polyline.decode(step.geometry).forEach(coord => route.push(coord))
-                })
-              })
-            }
-        
-            return route.map(l => ({latitude: l[0], longitude: l[1]}))
-        }
-        console.log(url);
-
-        if(store().home.bookingDetails.pickUp && store().home.bookingDetails.dropOff){
-            fetch(url).then(response => response.json()).then(json => {
-
-                const getLineRoute = getCoordinates(json);
-                dispatch({
-                    type: GET_PASSENGER_ROUTES,
-                    payload: getLineRoute
-                })
-                // this.route = {};
-                // this.route1 = this.getCoordinates(json);
-            }).catch(e => {
-              console.warn(e)
-            })
-        }
-    }    
 }
 
 //-------------------------------
@@ -249,6 +185,16 @@ function handleDriverStatus(state, action){
     });
 }
 
+function handleNearDriverAlerted(state, action){
+    return update(state, {
+        nearDriverAlerted: {
+            $set: action.payload
+        }
+    });
+}
+
+
+
 function handelWatchDriverLocation(state, action) {
     return update(state, {
         watchDriverLocation: {
@@ -257,13 +203,13 @@ function handelWatchDriverLocation(state, action) {
     });
 }
 
-// function handleUpdateDriverLocation(state, action) {
-//     return update(state, {
-//         updateWatchDriverLocation: {
-//             $set: action.payload
-//         }
-//     });
-// }
+function handleUpdateDriverLocation(state, action) {
+    return update(state, {
+        updateWatchDriverLocation: {
+            $set: action.payload
+        }
+    });
+}
 
 function handleGetMarkerLocation(state, action) {
     return update(state, {
@@ -283,28 +229,19 @@ function handleInRouteTo(state, action){
 
 }
 
-function handleGetPassengerRoutes(state, action) {
-    return update(state, {
-        routes: {
-            $set:action.payload
-        }
-    })
-}
-
-
 const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
     IN_ROUTE_TO: handleInRouteTo,
     WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
-    // UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
+    UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
-    GET_PASSENGER_ROUTES: handleGetPassengerRoutes
+    NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
 }
 
 
 
-export function RideRequestReducer (state = initialState, action){
+export function PickUpReducer (state = initialState, action){
     const handler = ACTION_HANDLERS[action.type];
 
     return handler ? handler(state, action) : state;
