@@ -14,6 +14,7 @@ const { GET_CURRENT_LOCATION,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
         NEAR_DRIVER_ALERTED,
+        GET_DISTANCE_FROM
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -152,6 +153,33 @@ export function openMapsRoute(payload){
         } 
     }
 }
+// Get Distance from Driver to pickUp or dropOff Location
+
+export function getDistanceFrom() {
+    return(dispatch, store) => {
+        if(store().home.updateWatchDriverLocation){
+            console.log("Getting arrival time");
+            request.get("https://maps.googleapis.com/maps/api/distancematrix/json")
+            .query({
+                units: 'imperial',
+                origins: store().pickUp.updateWatchDriverLocation.coordinates.coordinates[1] + 
+                "," + store().pickUp.updateWatchDriverLocation.coordinates.coordinates[0],
+                destinations: store().home.bookingDetails.pickUp.latitude + 
+                "," + store().home.bookingDetails.pickUp.longitude,
+                mode: "driving",
+                key: "AIzaSyDYndj5Gfh1rp5VUFHHu6gnN4vy2GQ0hvo"
+            })
+            .finish((error, res) => {
+                dispatch({
+                    type: GET_DISTANCE_FROM,
+                    payload: res.body
+                })
+            })
+        }
+    }
+}
+
+
 
 //-------------------------------
 // Action Handlers
@@ -229,6 +257,14 @@ function handleInRouteTo(state, action){
 
 }
 
+function handleGetDistanceFrom(state, action){
+    return update(state, {
+        distanceFrom: {
+            $set: action.payload
+        }
+    });
+}
+
 const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
@@ -237,6 +273,7 @@ const ACTION_HANDLERS = {
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
     NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
+    GET_DISTANCE_FROM: handleGetDistanceFrom
 }
 
 

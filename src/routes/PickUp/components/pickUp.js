@@ -8,6 +8,7 @@ import { Actions } from 'react-native-router-flux';
 import PickUpMapContainer from './PickUpMapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';
+import UserFooterComponent from '../../../Components/UserFooterComponent';
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
@@ -15,6 +16,7 @@ class PickUp extends React.Component {
 
     componentDidMount(){
         // this.props.getCurrentLocation();
+        this.props.getDistanceFrom();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -52,9 +54,16 @@ class PickUp extends React.Component {
                     updateWatchDriverLocation={this.props.updateWatchDriverLocation}
                     getPassengerRoute={this.props.getPassengerRoute}
                     routes={this.props.routes}
+                    getDistanceFrom={this.props.getDistanceFrom}
                     />
                 }
-            </View>    
+            </View>
+            { this.props.distanceFrom.rows &&
+                <UserFooterComponent 
+                    bookingDetails={this.props.bookingDetails}
+                    distanceFrom={this.props.distanceFrom}
+                />
+            }    
         </Container>
         );
        

@@ -79,7 +79,6 @@ class Home extends React.Component {
                         onPressAction={() => this.connectDriver()}
                         
                     />
-                    <UserFooterComponent />
                 </View>
                 ||
                 <NewBooking 

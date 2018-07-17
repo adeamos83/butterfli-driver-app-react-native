@@ -39,10 +39,6 @@ const styles = ({
         fontSize: 15
     },
     navIconContainer: {
-        borderRightWidth: 1,
-        borderRightColor:"black",
-        borderLeftWidth: 1,
-        borderLeftColor:"black",
         paddingRight: 10
     }
 

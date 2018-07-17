@@ -19,12 +19,12 @@ const styles = ({
         justifyContent: "center",
         flex: 1
     },
-    navTextContainer: {
+    timeContainer: {
         flex: 1,
         height: 50,
         paddingLeft:15,
         paddingRight:15,
-        justifyContent: "center"
+        justifyContent: "center",
     },
     iconButton: {
         flex:1,
@@ -32,28 +32,27 @@ const styles = ({
         justifyContent: "flex-end",
         alignItems: "center"
     },
-    navText: {
-        fontSize: 14,
-        color:"black",
+    timeText: {
+        fontSize: 16,
+        color:"red",
+        textAlign: "right"
+    },
+    nameText: {
+        fontSize: 16,
+        color:"blue",
     },
     routeText: {
-        fontSize: 14,
+        fontSize: 15,
         color:"green",
+        fontWeight: "bold"
     },
     btnText: {
         fontSize: 15
     },
     navIconContainer: {
         flex: 1,
-        borderRightWidth: 1,
-        borderRightColor:"black",
-        borderLeftWidth: 1,
-        borderLeftColor:"black",
-        borderTopWidth: 1,
-        borderTopColor:"black",
-        borderBottomWidth: 1,
-        borderBottomColor:"black",
-        height: "100%"
+        height: "100%",
+        justifyContent: "center"
     }
 
 })

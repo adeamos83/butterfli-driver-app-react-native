@@ -10,7 +10,8 @@ export const PickUpMapContainer = ({
                             getMarkerLocation,
                             bookingDetails,
                             updateWatchDriverLocation,
-                            routes
+                            routes,
+                            getDistanceFrom
                             }) => {
     
 
@@ -22,6 +23,13 @@ export const PickUpMapContainer = ({
         if(this.map !==null){
             this.map.fitToElements(true);
         }
+    }
+
+    carMoving = (event) =>{
+        getMarkerLocation(event);
+        setTimeout(function(){
+            getDistanceFrom();
+        }, 10000)
     }
 
     return(
@@ -63,7 +71,7 @@ export const PickUpMapContainer = ({
                     draggable
                     coordinate={{latitude: region.latitude, longitude: region.longitude}}
                     pinColor="green"
-                    onDragEnd={(e) => getMarkerLocation(e.nativeEvent.coordinate)}
+                    onDragEnd={(e) => carMoving(e.nativeEvent.coordinate)}
                 />
             }
 

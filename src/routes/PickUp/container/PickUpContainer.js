@@ -7,6 +7,7 @@ import { getCurrentLocation,
         getDriverStatus,
         getMarkerLocation,
         getNearDriverAlerted,
+        getDistanceFrom
         } from '../modules/pickUp';
 
 const mapStateToProps = (state) => ({
@@ -20,7 +21,8 @@ const mapStateToProps = (state) => ({
     driverStatus: state.home.driverStatus,
     nearDriverAlerted: state.home.nearDriverAlerted, 
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
-    routes: state.rideRequest.routes || {}
+    routes: state.rideRequest.routes || {},
+    distanceFrom: state.pickUp.distanceFrom || {}
 });
 
 const mapActionCreators = {
@@ -30,6 +32,7 @@ const mapActionCreators = {
     getDriverStatus,
     getMarkerLocation,
     getNearDriverAlerted,
+    getDistanceFrom
 };
 
 export default connect(mapStateToProps, mapActionCreators)(PickUp)
