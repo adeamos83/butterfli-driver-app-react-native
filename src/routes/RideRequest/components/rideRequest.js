@@ -10,6 +10,7 @@ import HeaderComponent from '../../../Components/HeaderComponent';
 import FooterComponent from '../../../Components/FooterComponent';
 import InRouteFooter from '../../../Components/InRouteFooter';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';
+import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
 
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");

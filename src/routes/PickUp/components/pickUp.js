@@ -9,6 +9,7 @@ import PickUpMapContainer from './PickUpMapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';
 import UserFooterComponent from '../../../Components/UserFooterComponent';
+import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
@@ -58,6 +59,12 @@ class PickUp extends React.Component {
                     />
                 }
             </View>
+            { this.props.distanceFrom.rows && 
+                <ArrivingFooter 
+                    bookingDetails={this.props.bookingDetails} 
+                    distanceFrom={this.props.distanceFrom}
+                />
+            }
             { this.props.distanceFrom.rows &&
                 <UserFooterComponent 
                     bookingDetails={this.props.bookingDetails}
