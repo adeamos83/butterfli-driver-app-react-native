@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './NavHeaderComponentStyles';
 
 
-export const NavHeaderComponent = ({ navToPickUp, bookingDetails }) => {
-    const { pickUp } = bookingDetails || {};
+export const NavHeaderComponent = ({ navToPickUp, bookingDetails, driverStatus }) => {
+    const { pickUp, dropOff } = bookingDetails || {};
 
     return (
         
@@ -19,7 +19,7 @@ export const NavHeaderComponent = ({ navToPickUp, bookingDetails }) => {
                         </Button>
                     </View>
                     <View style={styles.navTextContainer}>
-                        <Text style={styles.navText}>{ pickUp.address }</Text>
+                        <Text style={styles.navText}>{ (driverStatus == "pickUp") ? pickUp.address : dropOff.address }</Text>
                     </View>
                 </View>
             </View>

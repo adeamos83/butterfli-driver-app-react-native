@@ -10,6 +10,8 @@ import HeaderComponent from '../../../Components/HeaderComponent';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';
 import UserFooterComponent from '../../../Components/UserFooterComponent';
 import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
+import PickUpFooterComponent from '../../../Components/PickUpFooterComponent';
+
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
@@ -35,6 +37,10 @@ class PickUp extends React.Component {
         console.log("start navigation");
     }
 
+    pickUpPassenger = () => {
+        Actions.dropOff({type: "reset"});
+    }
+
     render() {
         
         const { status } = this.props.bookingDetails;
@@ -46,6 +52,7 @@ class PickUp extends React.Component {
                 <NavHeaderComponent 
                     navToPickUp={() => this.navToPickUp()}
                     bookingDetails={this.props.bookingDetails}
+                    driverStatus={this.props.driverStatus}
                 />
                 {this.props.region.latitude &&
                     <PickUpMapContainer region={this.props.region} 
@@ -60,6 +67,13 @@ class PickUp extends React.Component {
                 }
             </View>
             { this.props.distanceFrom.rows && 
+                <PickUpFooterComponent 
+                    distanceFrom={this.props.distanceFrom}
+                    getDriverStatus={this.props.getDriverStatus}
+                    pickUpPassenger={this.pickUpPassenger}
+                />
+            }
+            { this.props.distanceFrom.rows && 
                 <ArrivingFooter 
                     bookingDetails={this.props.bookingDetails} 
                     distanceFrom={this.props.distanceFrom}
@@ -69,6 +83,7 @@ class PickUp extends React.Component {
                 <UserFooterComponent 
                     bookingDetails={this.props.bookingDetails}
                     distanceFrom={this.props.distanceFrom}
+                    driverStatus={this.props.driverStatus}
                 />
             }    
         </Container>

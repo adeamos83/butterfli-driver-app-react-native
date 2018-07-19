@@ -6,13 +6,13 @@ import styles from './ArrvingFooterComponentStyles.js';
 
 
 export const ArrivingFooter = ({ navToPickUp, bookingDetails, distanceFrom }) => {
-    const { pickUp } = bookingDetails || {};
-    const { duration } = distanceFrom.rows[0].elements[0] || "";
-
+      const { pickUp } = bookingDetails || {};
+      const { duration } = distanceFrom.rows[0].elements[0] || "";
+      const alertArrival = true; 
     return ( 
             <View>
                {
-                  (duration.value < 300) &&
+                  (duration.value > 150 && duration.value < 300) &&
             
                   <View style={styles.headerContainer} iosBarStyle="light-content">
                      <View style={styles.innerContainer}>

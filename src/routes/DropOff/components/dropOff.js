@@ -5,21 +5,21 @@ import { Actions } from 'react-native-router-flux';
 
 
 
-import RideRequestMapContainer from './RideRequestMapContainer';
+import DropOffMapContainer from './DropOffMapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
-import FooterComponent from '../../../Components/FooterComponent';
-import InRouteFooter from '../../../Components/InRouteFooter';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';
+import UserFooterComponent from '../../../Components/UserFooterComponent';
 import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
+import PickUpFooterComponent from '../../../Components/PickUpFooterComponent';
 
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
-class RideRequest extends React.Component {
+class DropOff extends React.Component {
 
     componentDidMount(){
-        this.props.getCurrentLocation();
-        this.props.getPassengerRoute();
+        // this.props.getCurrentLocation();
+        this.props.getDistanceFrom();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -30,14 +30,10 @@ class RideRequest extends React.Component {
         // navigator.geolocation.clearWatch(this.watchId);
     } 
 
-    connectDriver = () => {
-        this.props.getDriverStatus("available");
-        this.props.postDriverLocation();
-    }
-
+    
     navToPickUp = () => {
         Actions.pickUp({type: "reset"});
-        // this.props.openMapsRoute('pick up');
+        this.props.openMapsRoute('pick up');
         console.log("start navigation");
     }
 
@@ -55,19 +51,41 @@ class RideRequest extends React.Component {
                     driverStatus={this.props.driverStatus}
                 />
                 {this.props.region.latitude &&
-                    <RideRequestMapContainer region={this.props.region} 
+                    <DropOffMapContainer region={this.props.region} 
                     carMarker={carMarker}
                     getMarkerLocation={this.props.getMarkerLocation}
                     bookingDetails={this.props.bookingDetails}
                     updateWatchDriverLocation={this.props.updateWatchDriverLocation}
+                    getPassengerRoute={this.props.getPassengerRoute}
                     routes={this.props.routes}
+                    getDistanceFrom={this.props.getDistanceFrom}
                     />
                 }
-            </View>    
+            </View>
+            { this.props.distanceFrom.rows && 
+                <PickUpFooterComponent 
+                    distanceFrom={this.props.distanceFrom}
+                    getDriverStatus={this.props.getDriverStatus}
+                />
+            }
+            { this.props.distanceFrom.rows && 
+                <ArrivingFooter 
+                    bookingDetails={this.props.bookingDetails} 
+                    distanceFrom={this.props.distanceFrom}
+                    driverStatus={this.props.driverStatus}
+                />
+            }
+            { this.props.distanceFrom.rows &&
+                <UserFooterComponent 
+                    bookingDetails={this.props.bookingDetails}
+                    distanceFrom={this.props.distanceFrom}
+                    driverStatus={this.props.driverStatus}
+                />
+            }    
         </Container>
         );
        
     }
 }
 
-export default RideRequest;
+export default DropOff;

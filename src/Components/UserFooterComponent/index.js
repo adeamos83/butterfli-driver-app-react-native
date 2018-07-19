@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './UserFooterComponentStyles';
 
 
-export const UserFooterComponent = ({ navToPickUp, bookingDetails, distanceFrom }) => {
+export const UserFooterComponent = ({ navToPickUp, bookingDetails, distanceFrom, driverStatus }) => {
     const { firstName, lastName } = bookingDetails || "";
     const { duration } = distanceFrom.rows[0].elements[0] || "";
 
@@ -15,7 +15,7 @@ export const UserFooterComponent = ({ navToPickUp, bookingDetails, distanceFrom 
                 <View style={styles.innerContainer}>
                     <Icon size={25} name="human-greeting" style={{color: "black", paddingRight: 10}}/> 
                     <View style={styles.navIconContainer}>
-                        <Text style={styles.routeText}>Pick Up</Text>
+                        <Text style={styles.routeText}>{(driverStatus == "pickUp") ? "Pick Up" : "Drop Off"}</Text>
                         <Text style={styles.nameText}>{ firstName }</Text>
                     </View>
                     <View style={styles.timeContainer}>

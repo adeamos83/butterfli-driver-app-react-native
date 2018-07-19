@@ -13,6 +13,7 @@ import InRouteFooter from '../../../Components/InRouteFooter';
 import Fab from './FAB';
 import NewBookingCard from './NewBookingCard'
 import NewBooking from './NewBooking'
+import PickUpFooterComponent from '../../../Components/PickUpFooterComponent';
 
 
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
