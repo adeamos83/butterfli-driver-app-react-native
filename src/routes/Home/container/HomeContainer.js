@@ -11,7 +11,8 @@ import { getCurrentLocation,
         getDriverStatus,
         getMarkerLocation,
         getNearDriverAlerted,
-        declineRideRequest
+        updateRideRequestStatus,
+        updateBookingDetails
         } from '../modules/home';
 
 const mapStateToProps = (state) => ({
@@ -22,7 +23,7 @@ const mapStateToProps = (state) => ({
     bookingDetails: state.home.bookingDetails || {},
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
-    driverStatus: state.home.driverStatus,
+    driverStatus: state.home.driverStatus || "",
     nearDriverAlerted: state.home.nearDriverAlerted, 
 });
 
@@ -37,7 +38,8 @@ const mapActionCreators = {
     getDriverStatus,
     getMarkerLocation,
     getNearDriverAlerted,
-    declineRideRequest
+    updateRideRequestStatus,
+    updateBookingDetails
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Home)

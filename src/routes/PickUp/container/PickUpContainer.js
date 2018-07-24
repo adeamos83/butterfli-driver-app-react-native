@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import PickUp from '../components/pickUp';
 
-import { getCurrentLocation, 
+import { getCurrentLocation,
+        updateBookingDetails, 
         openMapsRoute,
         watchDriverLocation,
         getDriverStatus,
@@ -32,7 +33,8 @@ const mapActionCreators = {
     getDriverStatus,
     getMarkerLocation,
     getNearDriverAlerted,
-    getDistanceFrom
+    getDistanceFrom,
+    updateBookingDetails
 };
 
 export default connect(mapStateToProps, mapActionCreators)(PickUp)

@@ -52,11 +52,14 @@ class Home extends React.Component {
     connectDriver = () => {
         this.props.getDriverStatus("available");
         this.props.postDriverLocation();
+        // setTimeout(function(){
+        //     this.props.updateBookingDetails("driverStatus", "available");
+        // }, 5000)
     }
     
     cancelBooking = () => {
         this.props.getNearDriverAlerted(true);
-        this.props.declineRideRequest();
+        this.props.updateRideRequestStatus();
         console.log("Cancel Button Pressed");
     }
 
@@ -82,11 +85,13 @@ class Home extends React.Component {
                     />
                 </View>
                 ||
+                ( status == "pending" && this.props.driverStatus == "available") &&
                 <NewBooking 
                     bookingDetails={this.props.bookingDetails} 
                     openMapsRoute={this.props.openMapsRoute}
                     getDriverStatus={this.props.getDriverStatus}
                     cancelBooking={this.cancelBooking}
+                    updateBookingDetails={this.props.updateBookingDetails}
                 /> 
             }           
         </Container>

@@ -2,16 +2,16 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Footer, FooterTab, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from './PickUpFooterComponentStyles';
+import styles from './DropOffFooterComponentStyles';
 
 
-export const PickUpFooterComponent = ({ distanceFrom, getDriverStatus, pickUpPassenger, updateBookingDetails }) => {
+export const DropOffFooterComponent = ({ distanceFrom, getDriverStatus, navToHomePage, updateBookingDetails }) => {
 
     const { duration } = distanceFrom.rows[0].elements[0] || "";
-    pickUpConfrim = () => {
-        getDriverStatus('DropOff');
-        pickUpPassenger();
-        updateBookingDetails("rideRequestStatus", "arrived");
+    dropOffConfrim = () => {
+        getDriverStatus('RideComplete');
+        navToHomePage();
+        updateBookingDetails("rideRequestStatus", "completed")
     }
     return (
         <View>
@@ -19,8 +19,8 @@ export const PickUpFooterComponent = ({ distanceFrom, getDriverStatus, pickUpPas
                 <View style={styles.footerContainer}>
                     return (
                         <View style={styles.buttonContainer}>
-                            <Button success style={styles.navButton} onPress={()=>this.pickUpConfrim()}>
-                                <Text style={styles.btnText}>Pick Up Ade</Text>
+                            <Button danger style={styles.navButton} onPress={()=>this.dropOffConfrim()}>
+                                <Text style={styles.btnText}>End Ride</Text>
                             </Button>
                         </View>
                     )
@@ -30,4 +30,4 @@ export const PickUpFooterComponent = ({ distanceFrom, getDriverStatus, pickUpPas
     );
 }
 
-export default PickUpFooterComponent;
+export default DropOffFooterComponent;

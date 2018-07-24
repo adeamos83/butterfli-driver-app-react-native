@@ -18,7 +18,8 @@ const { GET_CURRENT_LOCATION,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
         NEAR_DRIVER_ALERTED,
-        DECLINE_RIDE
+        UPDATE_RIDE_REQUEST_STATUS,
+        UPDATE_BOOKING_DETAILS
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -38,7 +39,8 @@ var API_URL = "http://localhost:3000";
 const initialState = {
     region: {},
     inputData: {},
-    nearDriverAlerted: false
+    nearDriverAlerted: false,
+    driverStatus: "notAvailable"
 
 };
 
@@ -48,6 +50,7 @@ const initialState = {
 // Action
 //-------------------------------
 export function getCurrentLocation() {
+    // Get the current location of the driver
     return(dispatch) => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -63,6 +66,7 @@ export function getCurrentLocation() {
 }
 
 export function getDriverStatus(payload){
+    // Get the status of driver - available, notAvailable, pickUp, dropOff, rideCompleted
     return(dispatch) => {
         dispatch({
             type: DRIVER_STATUS,
@@ -80,20 +84,25 @@ export function getNearDriverAlerted(payload){
     }
 }
 
-export function declineRideRequest(){
+export function updateRideRequestStatus(payload){
     return(dispatch, store) => {
         let updateBooking = {
+            status: payload,
             ...store().home.bookingDetails,
-            status: "declined"
+            
         }
         dispatch({
-            type: DECLINE_RIDE,
+            type: UPDATE_RIDE_REQUEST_STATUS,
             payload:updateBooking
         });
     }
 }
 
 export function watchDriverLocation(){
+    /*
+    This Function uses the geolocation API to watch consistenly what the 
+    drivers location when ever they move more 10meters
+    */
     return(dispatch, store) => {
         navigator.geolocation.watchPosition(
             (position) => {
@@ -101,7 +110,7 @@ export function watchDriverLocation(){
                     type: WATCH_DRIVER_LOCATION,
                     payload: position
                 });
-
+                // This funciton send the location to the server to be saved on the database using socket io
                 if(true){
                     console.log("Sending drivers location to passenger")
                         dispatch({
@@ -117,6 +126,7 @@ export function watchDriverLocation(){
 }
 
 export function getMarkerLocation(location){
+    // Used to get the location for the current marker movement
     return(dispatch, store) => {
         dispatch({
             type: MARKER_LOCATION,
@@ -140,6 +150,7 @@ export function getInputData(payload) {
 
 
 export function getDriverInfo() {
+    // Get Driver Details 
     return (dispatch, store) => {
         let id = "5b1af815fb6fc033f8801510";
         request.get(`${API_URL}/api/driver/` + id)
@@ -153,6 +164,7 @@ export function getDriverInfo() {
 }
 
 export function getDriverSocketId() {
+    //Get Driver Socket ID
     return (dispatch, store) => {
         dispatch({
             type: "server/hello",
@@ -161,6 +173,7 @@ export function getDriverSocketId() {
 }
 
 export function postDriverLocation(){
+    // Send driver initial location to the database to be saved
     return(dispatch, store) => {
         const payload = {
             data: {
@@ -170,6 +183,7 @@ export function postDriverLocation(){
                     coordinates: [store().home.region.longitude, store().home.region.latitude]
                 },
                 socketId: store().home.driverSocketId,
+                driverStatus: store().home.driverInfo.driverStatus
             }
         };
 
@@ -178,6 +192,30 @@ export function postDriverLocation(){
         .finish((error, res) => {
                 dispatch({
                     type: POST_DRIVER_LOCATION,
+                    payload: res.body
+                });
+            
+        });
+    }
+}
+
+
+export function updateBookingDetails(key, instance){
+    // Update Booking Details
+    return(dispatch, store) => {
+        const payload = {
+            data: {
+                ...store().home.bookingDetails,
+                [key]: instance,
+            }
+        };
+        const bookingID = store().home.bookingDetails._id
+        console.log(payload);
+        request.put(`${API_URL}/api/bookings/${bookingID}`)
+        .send(payload)
+        .finish((error, res) => {
+                dispatch({
+                    type: UPDATE_BOOKING_DETAILS,
                     payload: res.body
                 });
             
@@ -268,6 +306,14 @@ function handleDriverStatus(state, action){
     });
 }
 
+function handleUpdateBookingDetails(state, action){
+    return update(state, {
+        bookingDetails: {
+            $set: action.payload
+        }
+    }); 
+}
+
 function handleNearDriverAlerted(state, action){
     return update(state, {
         nearDriverAlerted: {
@@ -276,7 +322,7 @@ function handleNearDriverAlerted(state, action){
     });
 }
 
-function handleDeclineRide(state, action){
+function handleUpdateRideRequestStatus(state, action){
     return update(state, {
         bookingDetails: {
             $set: action.payload
@@ -345,11 +391,11 @@ function handlePostDriverLocation(state, action) {
 }
 
 function handleGetNewBooking(state, action) {
-    return update(state, {
-        bookingDetails: {
-            $set: action.payload
-        }
-    });
+        return update(state, {
+            bookingDetails: {
+                $set: action.payload
+            }
+        });
 }
 
 function handleInRouteTo(state, action){
@@ -376,7 +422,8 @@ const ACTION_HANDLERS = {
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
     NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
-    DECLINE_RIDE: handleDeclineRide
+    UPDATE_RIDE_REQUEST_STATUS: handleUpdateRideRequestStatus,
+    UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails
 }
 
 

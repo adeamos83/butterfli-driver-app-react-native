@@ -21,9 +21,21 @@ class PickUp extends React.Component {
         // this.props.getCurrentLocation();
         this.props.getDistanceFrom();
     }
+    
 
-    componentDidUpdate(prevProps, prevState) {
-            
+    componentDidUpdate(prevProps, prevState)  {
+
+        // Changes rideRequestStatus to "arriving"
+        if(prevProps.distanceFrom.rows){
+        const { duration } = this.props.distanceFrom.rows[0].elements[0] || "";
+        const prevDuration = prevProps.distanceFrom.rows[0].elements[0] || "";
+            if(prevDuration.duration.value > 300 && duration.value < 300){
+                console.log("This is arrival state log");
+                console.log(duration);
+                console.log("You are arrivng to riders location");
+                this.props.updateBookingDetails("rideRequestStatus", "arriving");
+            }
+        }  
     }
 
     componentWillUnmount() {
@@ -71,6 +83,7 @@ class PickUp extends React.Component {
                     distanceFrom={this.props.distanceFrom}
                     getDriverStatus={this.props.getDriverStatus}
                     pickUpPassenger={this.pickUpPassenger}
+                    updateBookingDetails={this.props.updateBookingDetails}
                 />
             }
             { this.props.distanceFrom.rows && 
@@ -84,6 +97,7 @@ class PickUp extends React.Component {
                     bookingDetails={this.props.bookingDetails}
                     distanceFrom={this.props.distanceFrom}
                     driverStatus={this.props.driverStatus}
+                   
                 />
             }    
         </Container>

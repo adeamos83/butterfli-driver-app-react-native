@@ -3,15 +3,15 @@ import { View, Text } from 'react-native';
 import { Container } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
-
-
+//Component Imports
 import DropOffMapContainer from './DropOffMapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';
 import UserFooterComponent from '../../../Components/UserFooterComponent';
 import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
-import PickUpFooterComponent from '../../../Components/PickUpFooterComponent';
+import DropOffFooterComponent from '../../../Components/DropOffFooterComponent';
 
+//Image Imports
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
@@ -19,6 +19,8 @@ class DropOff extends React.Component {
 
     componentDidMount(){
         // this.props.getCurrentLocation();
+
+        // Get distance from driver to dropOff location
         this.props.getDistanceFrom();
     }
 
@@ -32,9 +34,16 @@ class DropOff extends React.Component {
 
     
     navToPickUp = () => {
+        //Takes user to the PickUp route and open the Google Maps or Waze App
         Actions.pickUp({type: "reset"});
         this.props.openMapsRoute('pick up');
         console.log("start navigation");
+    }
+
+    navToHomePage = () => {
+        //Takes user to the HomePage route
+        Actions.home({type: "reset"});
+        console.log("Goto Homepage and end ride");
     }
 
     render() {
@@ -63,9 +72,11 @@ class DropOff extends React.Component {
                 }
             </View>
             { this.props.distanceFrom.rows && 
-                <PickUpFooterComponent 
+                <DropOffFooterComponent 
                     distanceFrom={this.props.distanceFrom}
                     getDriverStatus={this.props.getDriverStatus}
+                    navToHomePage={this.navToHomePage}
+                    updateBookingDetails={this.props.updateBookingDetails}
                 />
             }
             { this.props.distanceFrom.rows && 

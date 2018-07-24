@@ -9,6 +9,7 @@ const polyline = require('@mapbox/polyline');
 // Constants
 //-------------------------------
 const { GET_CURRENT_LOCATION, 
+        UPDATE_BOOKING_DETAILS,
         DRIVER_STATUS,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
@@ -63,6 +64,29 @@ export function getDriverStatus(payload){
         dispatch({
             type: DRIVER_STATUS,
             payload: payload
+        });
+    }
+}
+
+export function updateBookingDetails(key, instance){
+    // Update Booking Details
+    return(dispatch, store) => {
+        const payload = {
+            data: {
+                ...store().home.bookingDetails,
+                [key]: instance,
+            }
+        };
+        const bookingID = store().home.bookingDetails._id
+        console.log(payload);
+        request.put(`${API_URL}/api/bookings/${bookingID}`)
+        .send(payload)
+        .finish((error, res) => {
+                dispatch({
+                    type: UPDATE_BOOKING_DETAILS,
+                    payload: res.body
+                });
+            
         });
     }
 }
@@ -213,6 +237,14 @@ function handleDriverStatus(state, action){
     });
 }
 
+function handleUpdateBookingDetails(state, action){
+    return update(state, {
+        bookingDetails: {
+            $set: action.payload
+        }
+    }); 
+}
+
 function handleNearDriverAlerted(state, action){
     return update(state, {
         nearDriverAlerted: {
@@ -273,7 +305,8 @@ const ACTION_HANDLERS = {
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
     NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
-    GET_DISTANCE_FROM: handleGetDistanceFrom
+    GET_DISTANCE_FROM: handleGetDistanceFrom,
+    UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails
 }
 
 

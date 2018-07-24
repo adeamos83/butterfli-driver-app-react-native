@@ -6,7 +6,7 @@ import styles from './ArrvingFooterComponentStyles.js';
 
 
 export const ArrivingFooter = ({ navToPickUp, bookingDetails, distanceFrom }) => {
-      const { pickUp } = bookingDetails || {};
+      const { rideRequestStatus } = bookingDetails || {};
       const { duration } = distanceFrom.rows[0].elements[0] || "";
       const alertArrival = true; 
     return ( 
@@ -22,7 +22,9 @@ export const ArrivingFooter = ({ navToPickUp, bookingDetails, distanceFrom }) =>
                               </Button>
                         </View>
                         <View style={styles.arrivalTextContainer}>
-                              <Text style={styles.arrivalText}>Arriving to Passenger pickup location in 3 minutes</Text>
+                              <Text style={styles.arrivalText}>
+                                    {(rideRequestStatus == "arriving") ? "Arriving to Passenger pickup location in" +  duration.text :  "Arriving to Passenger drop off location in" +  duration.text }
+                              </Text>
                         </View>
                      </View>
                   </View>

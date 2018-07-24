@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import DropOff from '../components/dropOff';
 
 import { getCurrentLocation, 
+        updateBookingDetails,
         openMapsRoute,
         watchDriverLocation,
         getDriverStatus,
@@ -27,6 +28,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionCreators = {
     getCurrentLocation,
+    updateBookingDetails,
     openMapsRoute,
     watchDriverLocation,
     getDriverStatus,

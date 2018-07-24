@@ -8,7 +8,8 @@ const polyline = require('@mapbox/polyline');
 //-------------------------------
 // Constants
 //-------------------------------
-const { GET_CURRENT_LOCATION, 
+const { GET_CURRENT_LOCATION,
+        UPDATE_BOOKING_DETAILS, 
         DRIVER_STATUS,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
@@ -34,8 +35,8 @@ var API_URL = "http://localhost:3000";
 const initialState = {
     region: {},
     inputData: {},
-    nearDriverAlerted: false
-
+    nearDriverAlerted: false,
+    // distanceFrom: {}
 };
 
 
@@ -57,6 +58,30 @@ export function getCurrentLocation() {
         );
     }
 }
+
+export function updateBookingDetails(key, instance){
+    // Update Booking Details
+    return(dispatch, store) => {
+        const payload = {
+            data: {
+                ...store().home.bookingDetails,
+                [key]: instance,
+            }
+        };
+        const bookingID = store().home.bookingDetails._id
+        console.log(payload);
+        request.put(`${API_URL}/api/bookings/${bookingID}`)
+        .send(payload)
+        .finish((error, res) => {
+                dispatch({
+                    type: UPDATE_BOOKING_DETAILS,
+                    payload: res.body
+                });
+            
+        });
+    }
+}
+
 
 export function getDriverStatus(payload){
     return(dispatch) => {
@@ -205,6 +230,14 @@ function handleGetCurrentLocation(state, action) {
     });
 }
 
+function handleUpdateBookingDetails(state, action){
+    return update(state, {
+        bookingDetails: {
+            $set: action.payload
+        }
+    }); 
+}
+
 function handleDriverStatus(state, action){
     return update(state, {
         driverStatus: {
@@ -273,7 +306,8 @@ const ACTION_HANDLERS = {
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
     NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
-    GET_DISTANCE_FROM: handleGetDistanceFrom
+    GET_DISTANCE_FROM: handleGetDistanceFrom,
+    UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails
 }
 
 

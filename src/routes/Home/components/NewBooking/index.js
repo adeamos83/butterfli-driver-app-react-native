@@ -7,8 +7,18 @@ var Spinner = require('react-native-spinkit');
 
 import styles from "./NewBookingStyles";
 
-export const NewBooking = ({bookingDetails, openMapsRoute, getDriverStatus, cancelBooking}) => {
+export const NewBooking = ({bookingDetails, openMapsRoute, getDriverStatus, cancelBooking, updateBookingDetails }) => {
     const { dropOff, pickUp} = bookingDetails || {};
+
+    updateTripDetails = () => {
+        updateBookingDetails("driverStatus", "available");
+        getDriverStatus('pickUp');
+        // updateBookingDetails("rideRequestStatus", "enRoute");
+
+        setTimeout(function(){
+            updateBookingDetails("rideRequestStatus", "enRoute");
+        }, 7000)
+    }
 
      openMaps = () => {
             const pickUpArr = {
@@ -62,7 +72,7 @@ export const NewBooking = ({bookingDetails, openMapsRoute, getDriverStatus, canc
                     <Text style={styles.termsText}>You have a new ride request</Text>
                 </View>
                 <View style={styles.buttonView}>
-                    <Button  style={styles.acceptBtn} onPress={() => getDriverStatus('pickUp')}>
+                    <Button  style={styles.acceptBtn} onPress={() => updateTripDetails()}>
                         <Text style={styles.accpetBtnText}>Accept</Text>
                     </Button>
                     <Button  style={styles.cancelBtn} onPress={() => cancelBooking()}>
