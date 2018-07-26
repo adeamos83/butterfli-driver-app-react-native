@@ -15,7 +15,6 @@ import NewBookingCard from './NewBookingCard'
 import NewBooking from './NewBooking'
 import PickUpFooterComponent from '../../../Components/PickUpFooterComponent';
 
-
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
@@ -24,10 +23,8 @@ class Home extends React.Component {
 
     
     componentDidMount(){
-        var rx = this;
         this.props.getCurrentLocation();
         this.props.getDriverInfo();
-        this.props.getDriverSocketId();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -43,6 +40,10 @@ class Home extends React.Component {
         if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
             Actions.rideRequest({type: "reset"});
         }
+
+        if(this.props.driverSocketId  && !prevProps.driverSocketId) {
+            this.props.postDriverLocation();
+        }
     }
 
     componentWillUnmount() {
@@ -51,10 +52,7 @@ class Home extends React.Component {
 
     connectDriver = () => {
         this.props.getDriverStatus("available");
-        this.props.postDriverLocation();
-        // setTimeout(function(){
-        //     this.props.updateBookingDetails("driverStatus", "available");
-        // }, 5000)
+        this.props.getDriverSocketId();
     }
     
     cancelBooking = () => {
@@ -64,14 +62,13 @@ class Home extends React.Component {
     }
 
     render() {
-        const { status } = this.props.bookingDetails;
-        const { nearDriver } = this.props.nearDriverAlerted;
+        const { rideRequestStatus } = this.props.bookingDetails;
 
         return(
         <Container>
-        { (status !== "pending") &&
+        { (rideRequestStatus !== "request") &&
                 <View style={{flex:1}}>
-                    <HeaderComponent logo={buttefliLogo}/>
+                    {/* <HeaderComponent logo={buttefliLogo}/> */}
                     {this.props.region.latitude &&
                         <MapContainer region={this.props.region} 
                         getInputData={this.props.getInputData}
@@ -85,7 +82,7 @@ class Home extends React.Component {
                     />
                 </View>
                 ||
-                ( status == "pending" && this.props.driverStatus == "available") &&
+                ( rideRequestStatus == "request") &&
                 <NewBooking 
                     bookingDetails={this.props.bookingDetails} 
                     openMapsRoute={this.props.openMapsRoute}

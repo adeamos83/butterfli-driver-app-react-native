@@ -53,7 +53,7 @@ class DropOff extends React.Component {
         return(
         <Container>
             <View style={{flex:1}}>
-                <HeaderComponent logo={buttefliLogo}/>
+                {/* <HeaderComponent logo={buttefliLogo}/> */}
                 <NavHeaderComponent 
                     navToPickUp={() => this.navToPickUp()}
                     bookingDetails={this.props.bookingDetails}

@@ -16,6 +16,7 @@
     "react-native-router-flux": "^4.0.0-beta.31",
     "react-native-spinkit": "^1.1.1",
     "react-native-vector-icons": "^4.6.0",
+    "react-navigation": "^2.9.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-socket.io": "^1.4.0",
