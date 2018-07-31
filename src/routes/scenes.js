@@ -1,13 +1,15 @@
 import React from 'react';
 import { Actions, Scene, Drawer } from 'react-native-router-flux';
+import LoginContainer from './Login/container/LoginContainer';
 import HomeContainer from './Home/container/HomeContainer';
 import RideRequestContainer from './RideRequest/container/RideRequestContainer';
 import PickUpContainer from './PickUp/container/PickUpContainer';
 import DropOffContainer from './DropOff/container/DropOffContainer';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AlertContainer from './Alert/container/AlertContainer'
 
 //Drawer Imports
-import Menu from '../Components/Menu';
+import Menu from '../routes/Menu/container/MenuContainer';
 import Drawer1 from '../Components/Drawer1';
 import Drawer2 from '../Components/Drawer2';
 import HeaderComponent from '../Components/HeaderComponent';
@@ -21,7 +23,7 @@ const MenuIcon = () => {
 
 const scenes = Actions.create(
     <Scene key='root' hideNavBar>
-        
+        <Scene key="login" component={LoginContainer} initial title="login"/>
         <Drawer 
             key="drawer"
             contentComponent={Menu}
@@ -36,6 +38,8 @@ const scenes = Actions.create(
             <Scene key="drawer1" component={Drawer1} title="Page 1"/>
             <Scene key="drawer2" component={Drawer2} title="Page 2"/>
         </Drawer>
+        <Scene key="alert" component={AlertContainer} title="alert"/>
+
 
 
 

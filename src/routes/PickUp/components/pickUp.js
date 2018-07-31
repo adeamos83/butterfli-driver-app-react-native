@@ -24,7 +24,6 @@ class PickUp extends React.Component {
     
 
     componentDidUpdate(prevProps, prevState)  {
-
         // Changes rideRequestStatus to "arriving"
         if(prevProps.distanceFrom.rows){
         const { duration } = this.props.distanceFrom.rows[0].elements[0] || "";
@@ -35,7 +34,7 @@ class PickUp extends React.Component {
                 console.log("You are arrivng to riders location");
                 this.props.updateBookingDetails("rideRequestStatus", "arriving");
             }
-        }  
+        } 
     }
 
     componentWillUnmount() {
@@ -50,7 +49,7 @@ class PickUp extends React.Component {
     }
 
     pickUpPassenger = () => {
-        Actions.dropOff({type: "reset"});
+        Actions.dropOff({type: "replace"});
     }
 
     render() {

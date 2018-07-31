@@ -1,0 +1,7 @@
+export default {
+   AUTH_USER: "AUTH_USER",
+   UNAUTH_USER: "UNAUTH_USER",
+   ADD_ALERT: "ADD_ALERT",
+   REMOVE_ALERT: "REMOVE_ALERT"
+
+};

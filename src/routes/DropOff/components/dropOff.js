@@ -42,7 +42,7 @@ class DropOff extends React.Component {
 
     navToHomePage = () => {
         //Takes user to the HomePage route
-        Actions.home({type: "reset"});
+        Actions.home({type: "replace"});
         console.log("Goto Homepage and end ride");
     }
 

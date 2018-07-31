@@ -36,7 +36,7 @@ class RideRequest extends React.Component {
     }
 
     navToPickUp = () => {
-        Actions.pickUp({type: "reset"});
+        Actions.pickUp({type: "replace"});
         // this.props.openMapsRoute('pick up');
         console.log("start navigation");
     }
@@ -56,11 +56,11 @@ class RideRequest extends React.Component {
                 />
                 {this.props.region.latitude &&
                     <RideRequestMapContainer region={this.props.region} 
-                    carMarker={carMarker}
-                    getMarkerLocation={this.props.getMarkerLocation}
-                    bookingDetails={this.props.bookingDetails}
-                    updateWatchDriverLocation={this.props.updateWatchDriverLocation}
-                    routes={this.props.routes}
+                        carMarker={carMarker}
+                        getMarkerLocation={this.props.getMarkerLocation}
+                        bookingDetails={this.props.bookingDetails}
+                        updateWatchDriverLocation={this.props.updateWatchDriverLocation}
+                        routes={this.props.routes}
                     />
                 }
             </View>    

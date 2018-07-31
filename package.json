@@ -19,10 +19,13 @@
     "react-navigation": "^2.9.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
+    "redux-form": "^7.4.2",
+    "redux-persist": "^5.10.0",
     "redux-socket.io": "^1.4.0",
     "redux-thunk": "^2.3.0",
     "socket.io": "^2.1.1",
-    "superagent": "^3.8.3"
+    "superagent": "^3.8.3",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "babel-jest": "23.2.0",

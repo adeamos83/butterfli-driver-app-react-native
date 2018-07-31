@@ -209,8 +209,9 @@ export function updateBookingDetails(key, instance){
                 [key]: instance,
             }
         };
-        const bookingID = store().home.bookingDetails._id
-        console.log(payload);
+        const bookingID = store().home.bookingDetails._id;
+        console.log("this is from update booking route")
+        console.log(payload)
         request.put(`${API_URL}/api/bookings/${bookingID}`)
         .send(payload)
         .finish((error, res) => {

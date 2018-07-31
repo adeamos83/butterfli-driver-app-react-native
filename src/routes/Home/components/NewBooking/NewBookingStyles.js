@@ -14,7 +14,7 @@ const styles = {
         fontSize: 8
     },
     spinner: {
-        marginBottom: 50
+        marginBottom: 100
     },
     btn: {
         marginTop: 20
@@ -33,7 +33,7 @@ const styles = {
     content:{
         position: "absolute",
         flex:1,
-        top: 50,
+        top: 30,
         left: 0,
         right: 0,
         bottom: 0,
@@ -45,7 +45,7 @@ const styles = {
         borderRadius:7,
         height:40,
         backgroundColor:"#fff",
-        marginTop:260,
+        marginTop:220,
         justifyContent: "center",
         alignItems: "center"
 

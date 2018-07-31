@@ -38,7 +38,7 @@ class Home extends React.Component {
         }
 
         if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
-            Actions.rideRequest({type: "reset"});
+            Actions.rideRequest({type: "replace"});
         }
 
         if(this.props.driverSocketId  && !prevProps.driverSocketId) {
