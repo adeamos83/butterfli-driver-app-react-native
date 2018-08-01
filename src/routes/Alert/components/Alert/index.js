@@ -4,17 +4,17 @@ import { Container, Content, List, ListItem } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import styles from './AlertStyles';
 
-export const AlertContainer =({ removeAlert, alerts }) => {
+export const AlertContainer =({ removeAlert, alert }) => {
 
    onRemoveAlert = () => {
       removeAlert(alert.id);
    }
 
    return(
-      <TouchableWithoutFeedback onPress={this.onRemoveAlert}>
+      <TouchableWithoutFeedback onPress={() => onRemoveAlert()}>
          <View style={styles.container}>
             <Text style={styles.text}>
-               {alerts.text}
+               {alert.text}
             </Text>
          </View>
       </TouchableWithoutFeedback>

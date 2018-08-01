@@ -16,27 +16,17 @@ class Alert extends React.Component {
    }
 
    componentDidUpdate(prevProps, prevState) {
-      console.log(this.props.alerts);
    }
 
    renderAlert = () => {
-      // return this.props.alerts.map((alert) => {
-      //    return(
-      //       <AlertContainer alert={alert} key={alert.id}/>
-      //    );
-      // })
-      console.log(this.props);
+      return this.props.alerts.map((alert) => {
+         return(
+            <AlertContainer alert={alert} removeAlert={this.props.removeAlert} key={alert.id}/>
+         );
+      })
    } 
 
    render() {
-      // var renderAlert = () => {
-      //    // return this.props.alerts.map((alert) => {
-      //    //    return(
-      //    //       <AlertContainer alert={alert} key={alert.id}/>
-      //    //    );
-      //    // })
-      //    console.log(this.props);
-      // } 
       return(
          <View style={{flex:1, position: "absolute", bottom: 0, left: 0, right: 0}}>
             {this.renderAlert()}

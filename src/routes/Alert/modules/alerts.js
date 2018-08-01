@@ -7,8 +7,8 @@ import uuid from 'uuid';
 //-------------------------------
 // Constants
 //-------------------------------
-const { AUTH_USER,
-        UNAUTH_USER
+const { ADD_ALERT,
+        REMOVE_ALERT
         } = constants;
 
 var API_URL = "http://localhost:3000";
@@ -51,8 +51,8 @@ export function removeAlert(id){
 // Action Handlers
 //-------------------------------
 
-function handleAddAlert(state, action){
-    alert = [
+function handleAddAlert(state=alerts, action){
+    let alert = [
         {
             text: action.text,
             id: uuid.v4()
@@ -66,14 +66,28 @@ function handleAddAlert(state, action){
     });
  }
 
-function handleRemoveAlert(state, action){
-   return state.alerts.filter((alert) => {
-    if(alert.id === action.id){
-        return false
+function handleRemoveAlert(state=alerts, action){
+    if(state.alerts){
+        let alert = state.alerts.filter((alert) => {
+            if(alert.id === action.id){
+                return false
+            } else {
+                return true;
+            }
+        });
+        return update(state, {
+            alerts: {
+                $set: alert
+            }
+        });
     } else {
-        return true;
+
+        return update(state, {
+            alerts: {
+                $set: []
+            }
+        });
     }
-   });
 }
 
 

@@ -100,15 +100,29 @@ function handleAddAlert(state, action){
     });
  }
 
- function handleRemoveAlert(state, action){
-    return state.alerts.filter((alert) => {
-     if(alert.id === action.id){
-         return false
-     } else {
-         return true;
-     }
-    });
- }
+ function handleRemoveAlert(state=alerts, action){
+    if(state.alerts){
+        let alert = state.alerts.filter((alert) => {
+            if(alert.id === action.id){
+                return false
+            } else {
+                return true;
+            }
+        });
+        return update(state, {
+            alerts: {
+                $set: alert
+            }
+        });
+    } else {
+
+        return update(state, {
+            alerts: {
+                $set: []
+            }
+        });
+    }
+}
  
 const ACTION_HANDLERS = {
     AUTH_USER: handleUserAuth,
