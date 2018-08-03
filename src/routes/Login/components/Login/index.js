@@ -7,18 +7,24 @@ import styles from './LoginStyles';
 import TextField from '../TextField/TextField';
 
 
-export const LoginContainer =({addAlert, authUser, user_id, handleSubmit, fields: {email, password}}) => {
+export const LoginContainer =({addAlert, authUser, user_id, needsToCreateProfile, loginUser, signupUser, handleSubmit, fields: {email, password}}) => {
   // const {handleSubmit, fields: {email, password}} = this.props;
 
    onSignIn = (values) => {
     // console.log('submitting form', values)
     // console.log(values)
     // console.log(values.email, values.password);
-    addAlert('hello');
-    addAlert('Testing 123');
-    authUser('fakeid');
+    // addAlert('hello');
+    // addAlert('Testing 123');
+    // authUser('fakeid');
+    loginUser(values.email, values.password)
     // var {email, password} = this.props.fields;
       
+   }
+
+   onSignUp = (values) => {
+    needsToCreateProfile(true);  
+    signupUser(values.email, values.password);  
    }
 
    return (
@@ -47,7 +53,7 @@ export const LoginContainer =({addAlert, authUser, user_id, handleSubmit, fields
             <Button info style={styles.signinBtn} onPress={handleSubmit(this.onSignIn)}>
                <Text style={styles.btnText}>Sign In</Text>
             </Button>
-            <Button  style={styles.signup}>
+            <Button  style={styles.signup} onPress={handleSubmit(this.onSignUp)}>
                <Text style={styles.btnText}>Sign Up</Text>
             </Button>
          </View>

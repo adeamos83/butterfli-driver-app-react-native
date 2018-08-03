@@ -51,8 +51,12 @@ class Home extends React.Component {
     } 
 
     connectDriver = () => {
-        this.props.getDriverStatus("available");
+        const rk = this;
         this.props.getDriverSocketId();
+        setTimeout(function(){
+            rk.props.getDriverStatus("available");
+        }, 7000)
+        
     }
     
     cancelBooking = () => {
@@ -66,7 +70,7 @@ class Home extends React.Component {
 
         return(
         <Container>
-        { (rideRequestStatus !== "request") &&
+            { (rideRequestStatus !== "request") &&
                 <View style={{flex:1}}>
                     {/* <HeaderComponent logo={buttefliLogo}/> */}
                     {this.props.region.latitude &&
@@ -89,6 +93,7 @@ class Home extends React.Component {
                     getDriverStatus={this.props.getDriverStatus}
                     cancelBooking={this.cancelBooking}
                     updateBookingDetails={this.props.updateBookingDetails}
+                    rejectBookingRequest={this.props.rejectBookingRequest}
                 /> 
             }           
         </Container>

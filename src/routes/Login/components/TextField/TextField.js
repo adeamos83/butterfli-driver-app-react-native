@@ -4,7 +4,6 @@ import styles from './TextFieldStyles';
 
 
 export const TextField = ({ input: { value, onChange}, ...field } ) => {
-    console.log(field)
       return (
          <View>
             <TextInput

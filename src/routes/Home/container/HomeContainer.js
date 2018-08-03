@@ -12,7 +12,8 @@ import { getCurrentLocation,
         getMarkerLocation,
         getNearDriverAlerted,
         updateRideRequestStatus,
-        updateBookingDetails
+        updateBookingDetails,
+        rejectBookingRequest
         } from '../modules/home';
 
 const mapStateToProps = (state) => ({
@@ -39,7 +40,8 @@ const mapActionCreators = {
     getMarkerLocation,
     getNearDriverAlerted,
     updateRideRequestStatus,
-    updateBookingDetails
+    updateBookingDetails,
+    rejectBookingRequest
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Home)

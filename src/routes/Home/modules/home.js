@@ -19,7 +19,8 @@ const { GET_CURRENT_LOCATION,
         MARKER_LOCATION,
         NEAR_DRIVER_ALERTED,
         UPDATE_RIDE_REQUEST_STATUS,
-        UPDATE_BOOKING_DETAILS
+        UPDATE_BOOKING_DETAILS,
+        REJECT_BOOKING_REQUEST
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -65,13 +66,34 @@ export function getCurrentLocation() {
     }
 }
 
-export function getDriverStatus(payload){
+export function getDriverStatus(driverStatus){
     // Get the status of driver - available, notAvailable, pickUp, dropOff, rideCompleted
-    return(dispatch) => {
-        dispatch({
-            type: DRIVER_STATUS,
-            payload: payload
+    return(dispatch, store) => {
+        const id = store().home.driverLocation._id;
+        const payload = {
+                // DriverId is always equal to User_id
+                driverId: store().login.user_id,
+                coordinates: {
+                    type: "Point",
+                    coordinates: [store().home.region.longitude, store().home.region.latitude]
+                },
+                socketId: store().home.driverSocketId,
+                driverStatus: driverStatus
+        };
+        console.log(payload);
+        request.put(`${API_URL}/api/driverLocation/` + id)
+        .send(payload)
+        .finish((error, res) => {
+                dispatch({
+                    type: POST_DRIVER_LOCATION,
+                    payload: res.body
+                });
+            
         });
+        // dispatch({
+        //     type: DRIVER_STATUS,
+        //     payload: payload
+        // });
     }
 }
 
@@ -94,6 +116,14 @@ export function updateRideRequestStatus(payload){
         dispatch({
             type: UPDATE_RIDE_REQUEST_STATUS,
             payload:updateBooking
+        });
+    }
+}
+
+export function rejectBookingRequest(payload){
+    return(dispatch) => {
+        dispatch({
+            type: REJECT_BOOKING_REQUEST
         });
     }
 }
@@ -152,7 +182,9 @@ export function getInputData(payload) {
 export function getDriverInfo() {
     // Get Driver Details 
     return (dispatch, store) => {
-        let id = "5b1af815fb6fc033f8801510";
+        let user_id = store().login.user_id;
+        console.log(user_id);
+        let id = "5b5d05220fdb907bdb8a5c2d";
         request.get(`${API_URL}/api/driver/` + id)
         .finish((error, res)=>{
             dispatch({
@@ -177,16 +209,17 @@ export function postDriverLocation(){
     return(dispatch, store) => {
         const payload = {
             data: {
-                driverId: store().home.driverInfo._id,
+                // DriverId is always equal to User_id
+                driverId: store().login.user_id,
                 coordinates: {
                     type: "Point",
                     coordinates: [store().home.region.longitude, store().home.region.latitude]
                 },
                 socketId: store().home.driverSocketId,
-                driverStatus: store().home.driverInfo.driverStatus
+                driverStatus: store().home.driverStatus
             }
         };
-
+        console.log(payload);
         request.post(`${API_URL}/api/driverLocation`)
         .send(payload)
         .finish((error, res) => {
@@ -223,6 +256,7 @@ export function updateBookingDetails(key, instance){
         });
     }
 }
+
 
 // export function getBookings(){
 //     return (dispatch, store) => {
@@ -308,6 +342,22 @@ function handleDriverStatus(state, action){
 }
 
 function handleUpdateBookingDetails(state, action){
+    return update(state, {
+        bookingDetails: {
+            $set: action.payload
+        }
+    }); 
+}
+
+function handleRejectedBookingRequest(state, action){
+    return update(state, {
+        bookingDetails: {
+            $set: undefined
+        }
+    }); 
+}
+
+function handleDBBookingDetailsUpdated(state, action){
     return update(state, {
         bookingDetails: {
             $set: action.payload
@@ -424,7 +474,9 @@ const ACTION_HANDLERS = {
     MARKER_LOCATION: handleGetMarkerLocation,
     NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
     UPDATE_RIDE_REQUEST_STATUS: handleUpdateRideRequestStatus,
-    UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails
+    UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
+    UPDATED_DB_BOOKING_DETAILS: handleDBBookingDetailsUpdated,
+    REJECT_BOOKING_REQUEST: handleRejectedBookingRequest
 }
 
 

@@ -2,22 +2,27 @@ import React from "react";
 import { Text, Platform, Linking } from 'react-native';
 import { View, Button } from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Actions } from 'react-native-router-flux';
 
 var Spinner = require('react-native-spinkit');
 
 import styles from "./NewBookingStyles";
 
-export const NewBooking = ({bookingDetails, openMapsRoute, getDriverStatus, cancelBooking, updateBookingDetails }) => {
+export const NewBooking = ({bookingDetails, openMapsRoute, rejectBookingRequest, getDriverStatus, cancelBooking, updateBookingDetails }) => {
     const { dropOff, pickUp} = bookingDetails || {};
 
     updateTripDetails = () => {
+        updateBookingDetails("rideRequestStatus", "accepted");
         updateBookingDetails("driverStatus", "available");
         getDriverStatus('pickUp');
-        // updateBookingDetails("rideRequestStatus", "enRoute");
-
         setTimeout(function(){
             updateBookingDetails("rideRequestStatus", "enRoute");
         }, 7000)
+    }
+    rejectBooking = () => {
+        updateBookingDetails("rideRequestStatus", "rejected");
+        rejectBookingRequest();
+        Actions.home({type: "replace"});
     }
 
      openMaps = () => {
@@ -75,7 +80,7 @@ export const NewBooking = ({bookingDetails, openMapsRoute, getDriverStatus, canc
                     <Button  style={styles.acceptBtn} onPress={() => updateTripDetails()}>
                         <Text style={styles.accpetBtnText}>Accept</Text>
                     </Button>
-                    <Button  style={styles.cancelBtn} onPress={() => cancelBooking()}>
+                    <Button  style={styles.cancelBtn} onPress={() => rejectBooking()}>
                         <Text style={styles.cancelBtnText}>Decline</Text>
                     </Button>
                 </View>
