@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, Image, KeyboardAvoidingView } from 'react-native';
 import { Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import styles from './LoginStyles';
 import TextField from '../TextField/TextField';
-
+import PassTextField from '../TextField/PassTextField'
 
 export const LoginContainer =({addAlert, authUser, user_id, needsToCreateProfile, loginUser, signupUser, handleSubmit, fields: {email, password}}) => {
   // const {handleSubmit, fields: {email, password}} = this.props;
@@ -28,9 +28,10 @@ export const LoginContainer =({addAlert, authUser, user_id, needsToCreateProfile
    }
 
    return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
          <View style={styles.titleContainer}>
-            <Text style={styles.title}> ButterFLi </Text>
+            <Image style={styles.logo} source={require('../../../../Assets/img/butterfli_name_logo.png')}/>
+            <Text style={styles.subTitle}>Freedom Leading To Independence</Text>
          </View>
          <View style={styles.field}>
             <Field
@@ -38,6 +39,9 @@ export const LoginContainer =({addAlert, authUser, user_id, needsToCreateProfile
                name="email"
                component={TextField}
                placeholder="Email"
+               placeholderTextColor="rgba(255,255,255,0.7)"
+               returnKeyType="next"
+               keyboardType="email-address"
                validate={this.renderError}
             />
          </View>
@@ -45,8 +49,11 @@ export const LoginContainer =({addAlert, authUser, user_id, needsToCreateProfile
             <Field
                {...password}
                name="password"
-               component={TextField}
+               component={PassTextField}
                placeholder="Password"
+               placeholderTextColor="rgba(255,255,255,0.7)"
+               returnKeyType="go"
+               secureTextEntry
             />
          </View>
          <View style={styles.buttonView}>
@@ -57,7 +64,7 @@ export const LoginContainer =({addAlert, authUser, user_id, needsToCreateProfile
                <Text style={styles.btnText}>Sign Up</Text>
             </Button>
          </View>
-      </View>
+      </KeyboardAvoidingView>
    )
 }
 

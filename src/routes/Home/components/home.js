@@ -51,12 +51,24 @@ class Home extends React.Component {
     } 
 
     connectDriver = () => {
-        const rk = this;
+        console.log("Connect driver fuction has been executed");
         this.props.getDriverSocketId();
-        setTimeout(function(){
-            rk.props.getDriverStatus("available");
-        }, 7000)
+        const rk = this;
         
+        // This enables the drivers to receives ride request from the socket.io server
+        if(this.props.driverStatus == "notAvailable"){
+            setTimeout(function(){
+                rk.props.getDriverStatus("available");
+            }, 5000)
+        }
+
+        // This disonnects drivers from socket.io server and driver will not longer received ride requests
+        if(this.props.driverStatus == "available"){
+            this.props.getDriverStatus("notAvailable");
+            setTimeout(function(){
+                rk.props.disconnectSocketIO();
+            }, 5000)
+        }
     }
     
     cancelBooking = () => {
@@ -82,7 +94,7 @@ class Home extends React.Component {
                     }
                     <Fab 
                         onPressAction={() => this.connectDriver()}
-                        
+                        driverStatus={this.props.driverStatus}  
                     />
                 </View>
                 ||

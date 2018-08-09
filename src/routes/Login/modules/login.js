@@ -18,8 +18,8 @@ const { AUTH_USER,
         NEEDS_PROFILE
         } = constants;
 
-var API_URL = "http://localhost:3000";
-// var API_URL = "https://dry-gorge-77566.herokuapp.com";
+// var API_URL = "http://localhost:3000";
+var API_URL = "https://lit-coast-94226.herokuapp.com";
 
 
 //-------------------------------
@@ -45,7 +45,6 @@ export function loginUser(email, password){
                 user_id: user_id,
                 email: email
             }
-            dispatch(addAlert(token));
             dispatch({
                 type: AUTH_USER,
                 payload: userDetails

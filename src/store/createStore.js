@@ -7,8 +7,8 @@ import createSocketIoMiddleware from "redux-socket.io";
 
 import io from "socket.io-client/dist/socket.io";
 
-var API_URL = "http://localhost:3000";
-// var API_URL = "https://dry-gorge-77566.herokuapp.com/";
+// var API_URL = "http://localhost:3000";
+var API_URL = "https://lit-coast-94226.herokuapp.com/";
 
 let socket = io(API_URL, {jsonp:false});
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");

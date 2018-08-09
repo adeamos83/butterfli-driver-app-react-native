@@ -24,8 +24,9 @@ const ASPECT_RATIO = width / height;
 
 const LATITUDE_DELTA = 0.0181;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
-var API_URL = "http://localhost:3000";
-// var API_URL = "https://dry-gorge-77566.herokuapp.com";
+
+// var API_URL = "http://localhost:3000";
+var API_URL = "https://lit-coast-94226.herokuapp.com";
 
 
 //-------------------------------

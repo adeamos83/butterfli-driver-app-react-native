@@ -83,6 +83,7 @@ class PickUp extends React.Component {
                     getDriverStatus={this.props.getDriverStatus}
                     pickUpPassenger={this.pickUpPassenger}
                     updateBookingDetails={this.props.updateBookingDetails}
+                    bookingDetails={this.props.bookingDetails}
                 />
             }
             { this.props.distanceFrom.rows && 
@@ -96,7 +97,6 @@ class PickUp extends React.Component {
                     bookingDetails={this.props.bookingDetails}
                     distanceFrom={this.props.distanceFrom}
                     driverStatus={this.props.driverStatus}
-                   
                 />
             }    
         </Container>

@@ -7,6 +7,8 @@ import { reducer as formReducer } from 'redux-form';
 import { LoginReducer as login } from '../routes/Login/modules/login';
 import { MenuReducer as menu } from '../routes/Menu/modules/menu';
 import { AlertsReducer as alerts } from '../routes/Alert/modules/alerts';
+import { ProfileReducer as profile } from '../routes/Profile/modules/profile';
+
 
 
 export const makeRootReducer = () => {
@@ -18,8 +20,8 @@ export const makeRootReducer = () => {
 		form: formReducer,
 		login,
 		menu,
-		alerts
-
+		alerts,
+		profile
 	});
 }
 

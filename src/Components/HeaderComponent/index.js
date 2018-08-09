@@ -10,7 +10,7 @@ const buttefliLogo = require("../../Assets/img/butterfli_name_logo.png");
 
 export const HeaderComponent = ({logo}) => {
     return (
-        <Header style={{backgroundColor: "#E9DEFF"}} iosBarStyle="light-content">
+        <Header style={{backgroundColor: "#DCC6E0"}} iosBarStyle="light-content">
             <Left>
                 <Button transparent onPress={() => Actions.drawerOpen()}>
                     <Icon name="user-circle-o" style={styles.icon} />>
@@ -20,9 +20,6 @@ export const HeaderComponent = ({logo}) => {
                 <Image resizeMode="contain" style={styles.logo} source={buttefliLogo} />
             </Body>
             <Right>
-                <Button transparent>
-                    <Icon name="gift" style={styles.icon} />>
-                </Button>
             </Right>
         </Header>
     );

@@ -5,8 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './PickUpFooterComponentStyles';
 
 
-export const PickUpFooterComponent = ({ distanceFrom, getDriverStatus, pickUpPassenger, updateBookingDetails }) => {
-
+export const PickUpFooterComponent = ({ bookingDetails, distanceFrom, getDriverStatus, pickUpPassenger, updateBookingDetails }) => {
+    const { firstName } = bookingDetails || "";
+    console.log(firstName);
     const { duration } = distanceFrom.rows[0].elements[0] || "";
     pickUpConfrim = () => {
         getDriverStatus('DropOff');
@@ -20,7 +21,7 @@ export const PickUpFooterComponent = ({ distanceFrom, getDriverStatus, pickUpPas
                     return (
                         <View style={styles.buttonContainer}>
                             <Button success style={styles.navButton} onPress={()=>this.pickUpConfrim()}>
-                                <Text style={styles.btnText}>Pick Up Ade</Text>
+                                <Text style={styles.btnText}>{"Pick Up " + firstName}</Text>
                             </Button>
                         </View>
                     )

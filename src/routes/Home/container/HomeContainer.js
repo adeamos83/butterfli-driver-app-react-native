@@ -13,7 +13,8 @@ import { getCurrentLocation,
         getNearDriverAlerted,
         updateRideRequestStatus,
         updateBookingDetails,
-        rejectBookingRequest
+        rejectBookingRequest,
+        disconnectSocketIO
         } from '../modules/home';
 
 const mapStateToProps = (state) => ({
@@ -24,7 +25,7 @@ const mapStateToProps = (state) => ({
     bookingDetails: state.home.bookingDetails || {},
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
-    driverStatus: state.home.driverStatus || "",
+    driverStatus: state.home.driverStatus,
     nearDriverAlerted: state.home.nearDriverAlerted, 
 });
 
@@ -41,7 +42,8 @@ const mapActionCreators = {
     getNearDriverAlerted,
     updateRideRequestStatus,
     updateBookingDetails,
-    rejectBookingRequest
+    rejectBookingRequest,
+    disconnectSocketIO
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Home)

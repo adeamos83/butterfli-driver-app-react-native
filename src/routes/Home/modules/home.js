@@ -29,8 +29,8 @@ const ASPECT_RATIO = width / height;
 
 const LATITUDE_DELTA = 0.0181;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
-var API_URL = "http://localhost:3000";
-// var API_URL = "https://dry-gorge-77566.herokuapp.com";
+// var API_URL = "http://localhost:3000";
+var API_URL = "https://lit-coast-94226.herokuapp.com";
 
 
 //-------------------------------
@@ -81,6 +81,14 @@ export function getDriverStatus(driverStatus){
                 driverStatus: driverStatus
         };
         console.log(payload);
+
+        //Updates local redux state with Driver Status
+        dispatch({
+            type: DRIVER_STATUS,
+            payload: driverStatus
+        });
+
+        //Updates database with Driver Status
         request.put(`${API_URL}/api/driverLocation/` + id)
         .send(payload)
         .finish((error, res) => {
@@ -88,6 +96,7 @@ export function getDriverStatus(driverStatus){
                     type: POST_DRIVER_LOCATION,
                     payload: res.body
                 });
+                
             
         });
         // dispatch({
@@ -200,6 +209,16 @@ export function getDriverSocketId() {
     return (dispatch, store) => {
         dispatch({
             type: "server/hello",
+        })
+    }
+}
+
+export function disconnectSocketIO() {
+    //Get Driver Socket ID
+    return (dispatch, store) => {
+        dispatch({
+            type: "server/clientDisconnect",
+            payload: store().home.driverSocketId
         })
     }
 }
