@@ -15,6 +15,8 @@ import NewBookingCard from './NewBookingCard'
 import NewBooking from './NewBooking'
 import PickUpFooterComponent from '../../../Components/PickUpFooterComponent';
 
+import { Spinner } from '../../../Components/Common';
+
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
@@ -41,7 +43,7 @@ class Home extends React.Component {
             Actions.rideRequest({type: "replace"});
         }
 
-        if(this.props.driverSocketId  && !prevProps.driverSocketId) {
+        if(this.props.driverSocketId  !== prevProps.driverSocketId) {
             this.props.postDriverLocation();
         }
     }
@@ -51,12 +53,15 @@ class Home extends React.Component {
     } 
 
     connectDriver = () => {
-        console.log("Connect driver fuction has been executed");
-        this.props.getDriverSocketId();
+        this.props.isDriverConnecting(true);
+        // if(!this.props.driverSocketId){
+        //     this.props.getDriverSocketId();
+        // }
         const rk = this;
         
         // This enables the drivers to receives ride request from the socket.io server
         if(this.props.driverStatus == "notAvailable"){
+            this.props.getDriverSocketId(true);
             setTimeout(function(){
                 rk.props.getDriverStatus("available");
             }, 5000)
@@ -95,6 +100,7 @@ class Home extends React.Component {
                     <Fab 
                         onPressAction={() => this.connectDriver()}
                         driverStatus={this.props.driverStatus}  
+                        driverConnecting={this.props.driverConnecting}
                     />
                 </View>
                 ||

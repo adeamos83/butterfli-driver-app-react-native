@@ -11,7 +11,8 @@ import { ProfileReducer as profile } from '../routes/Profile/modules/profile';
 
 
 
-export const makeRootReducer = () => {
+export const makeRootReducer = (asyncReducers) =>
+(state, action) => {
 	return combineReducers({
 		home,
 		rideRequest,
@@ -21,8 +22,9 @@ export const makeRootReducer = () => {
 		login,
 		menu,
 		alerts,
-		profile
-	});
+		profile,
+		...asyncReducers
+	})(action.type === 'UNAUTH_USER' ? undefined : state, action);
 }
 
 export default makeRootReducer;

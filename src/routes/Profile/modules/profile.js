@@ -1,16 +1,13 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
-
+import { API_URL } from '../../../api';
 
 //-------------------------------
 // Constants
 //-------------------------------
 const { 
         } = constants;
-
-// var API_URL = "http://localhost:3000";
-var API_URL = "https://lit-coast-94226.herokuapp.com";
 
 
 //-------------------------------

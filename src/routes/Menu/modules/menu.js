@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
-
+import { API_URL } from '../../../api';
 
 //-------------------------------
 // Constants
@@ -9,10 +9,6 @@ import { Platform, Linking } from 'react-native';
 const { AUTH_USER,
         UNAUTH_USER
         } = constants;
-
-// var API_URL = "http://localhost:3000";
-var API_URL = "https://lit-coast-94226.herokuapp.com";
-
 
 //-------------------------------
 // Intial State

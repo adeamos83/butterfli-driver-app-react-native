@@ -20,7 +20,7 @@ export const NewBooking = ({bookingDetails, openMapsRoute, rejectBookingRequest,
         }, 7000)
     }
     rejectBooking = () => {
-        updateBookingDetails("rideRequestStatus", "rejected");
+        // updateBookingDetails("rideRequestStatus", "rejected");
         rejectBookingRequest();
         Actions.home({type: "replace"});
     }

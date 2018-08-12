@@ -1,6 +1,7 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
+import { API_URL } from '../../../api';
 
 import uuid from 'uuid';
 
@@ -11,7 +12,7 @@ const { ADD_ALERT,
         REMOVE_ALERT
         } = constants;
 
-var API_URL = "http://localhost:3000";
+// var API_URL = "http://localhost:3000";
 // var API_URL = "https://dry-gorge-77566.herokuapp.com";
 
 

@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
-
+import { API_URL } from '../../../api';
 
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
@@ -19,13 +19,8 @@ const { GET_CURRENT_LOCATION,
 const { width, height } = Dimensions.get("window");
 
 const ASPECT_RATIO = width / height;
-
 const LATITUDE_DELTA = 0.0181;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
-
-// var API_URL = "http://localhost:3000";
-var API_URL = "https://lit-coast-94226.herokuapp.com";
-
 
 //-------------------------------
 // Intial State

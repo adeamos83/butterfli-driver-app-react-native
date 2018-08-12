@@ -4,8 +4,9 @@ import { Platform, Linking } from 'react-native';
 import uuid from 'uuid';
 import axios from 'axios';
 
-import {SIGNIN_URL, SIGNUP_URL, CREATE_PROFILE} from '../../../api';
+import {SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE} from '../../../api';
 import {addAlert} from '../../Alert/modules/alerts';
+import { disconnectSocketIO } from '../../Home/modules/home';
 
 //-------------------------------
 // Constants
@@ -17,10 +18,6 @@ const { AUTH_USER,
         CREATE_USER_PROFILE,
         NEEDS_PROFILE
         } = constants;
-
-// var API_URL = "http://localhost:3000";
-var API_URL = "https://lit-coast-94226.herokuapp.com";
-
 
 //-------------------------------
 // Intial State
@@ -86,6 +83,7 @@ export function authUser(user_id){
 
 export function unAuthUser(){
     return(dispatch) => {
+        disconnectSocketIO();
         dispatch({
             type: UNAUTH_USER,
         });

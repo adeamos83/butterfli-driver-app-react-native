@@ -15,6 +15,7 @@ import Drawer2 from '../Components/Drawer2';
 import HeaderComponent from '../Components/HeaderComponent';
 import CreateProfile from './Login/components/CreateProfile/';
 import ProfileContainer from './Profile/container/ProfileContainer';
+import LoaderComponent from '../Components/loader';
 
 
 const MenuIcon = () => {
@@ -25,6 +26,7 @@ const MenuIcon = () => {
 
 const scenes = Actions.create(
     <Scene key='root' hideNavBar>
+       
         <Scene key="login" component={LoginContainer}  initial title="login"/>
         <Drawer 
             key="drawer"

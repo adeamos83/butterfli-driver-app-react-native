@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import Home from '../components/home';
 
-import { getCurrentLocation, 
+import { isDriverConnecting,
+        getCurrentLocation, 
         getInputData, 
         getDriverInfo,
         getDriverSocketId,
@@ -18,6 +19,7 @@ import { getCurrentLocation,
         } from '../modules/home';
 
 const mapStateToProps = (state) => ({
+    driverConnecting: state.home.driverConnecting,
     region: state.home.region,
     inputData: state.home.inputData || {},
     driverInfo: state.home.driverInfo || {},
@@ -30,6 +32,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionCreators = {
+    isDriverConnecting,
     getCurrentLocation,
     getInputData,
     getDriverInfo,

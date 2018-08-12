@@ -2,13 +2,20 @@ import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
 
-
+import { API_URL } from '../../../api';
 import request from '../../../util/request';
+
+import io from "socket.io-client/dist/socket.io";
+// const socket = io.connect(API_URL, {jsonp:false, forceNew: true});
+
+// let socket = io(API_URL, {jsonp:false, 'force new connection':true});
+
 // const polyline = require('@mapbox/polyline');
 //-------------------------------
 // Constants
 //-------------------------------
-const { GET_CURRENT_LOCATION, 
+const { DRIVER_CONNECTING,
+        GET_CURRENT_LOCATION, 
         DRIVER_STATUS,
         GET_INPUT, 
         GET_DRIVER_INFORMATION,
@@ -26,23 +33,21 @@ const { GET_CURRENT_LOCATION,
 const { width, height } = Dimensions.get("window");
 
 const ASPECT_RATIO = width / height;
-
 const LATITUDE_DELTA = 0.0181;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
-// var API_URL = "http://localhost:3000";
-var API_URL = "https://lit-coast-94226.herokuapp.com";
-
 
 //-------------------------------
 // Intial State
 //-------------------------------
 
 const initialState = {
+    driverConnecting: false,
     region: {},
     inputData: {},
     nearDriverAlerted: false,
-    driverStatus: "notAvailable"
-
+    driverStatus: "notAvailable",
+    fetched: false,
+    fetching: false
 };
 
 
@@ -50,6 +55,16 @@ const initialState = {
 //-------------------------------
 // Action
 //-------------------------------
+
+export function isDriverConnecting(payload){
+    return (dispatch) => {
+        dispatch({
+            type: DRIVER_CONNECTING,
+            payload: payload
+        })
+    }
+}
+
 export function getCurrentLocation() {
     // Get the current location of the driver
     return(dispatch) => {
@@ -87,6 +102,7 @@ export function getDriverStatus(driverStatus){
             type: DRIVER_STATUS,
             payload: driverStatus
         });
+        // dispatch(isDriverConnecting(false));
 
         //Updates database with Driver Status
         request.put(`${API_URL}/api/driverLocation/` + id)
@@ -96,8 +112,8 @@ export function getDriverStatus(driverStatus){
                     type: POST_DRIVER_LOCATION,
                     payload: res.body
                 });
+                dispatch(isDriverConnecting(false));
                 
-            
         });
         // dispatch({
         //     type: DRIVER_STATUS,
@@ -130,10 +146,35 @@ export function updateRideRequestStatus(payload){
 }
 
 export function rejectBookingRequest(payload){
-    return(dispatch) => {
-        dispatch({
-            type: REJECT_BOOKING_REQUEST
+    return(dispatch, store) => {
+        const nearByDrivers = store().home.bookingDetails.nearByDrivers;
+        const id = store().home.bookingDetails._id
+        console.log("Before Filter");
+        console.log(nearByDrivers);
+        let nextDrivers = nearByDrivers.filter((nearBy) => {
+            return nearBy.socketId !== store().home.driverSocketId
         });
+
+        const payload = {
+            data: {
+                ...store().home.bookingDetails,
+                rideRequestStatus: "rejected",
+                nearByDrivers: nextDrivers,
+            }
+        };
+
+        request.put(`${API_URL}/api/rejectedbookings/${id}`)
+        .send(payload)
+        .finish((error, res) => {
+            dispatch({
+                type: REJECT_BOOKING_REQUEST
+            });
+        });
+        console.log("After Filter");
+        console.log(nextDrivers);
+        // dispatch({
+        //     type: REJECT_BOOKING_REQUEST
+        // });
     }
 }
 
@@ -207,19 +248,44 @@ export function getDriverInfo() {
 export function getDriverSocketId() {
     //Get Driver Socket ID
     return (dispatch, store) => {
-        dispatch({
-            type: "server/hello",
-        })
+        if(!store().home.driverSocketId){
+            console.log("1st connection");
+            dispatch({
+                type: "server/hello",
+            })
+        } else {
+            console.log("Trying to reconnect!");
+            // socket.socket.reconnect();
+            let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
+            socket.connect();
+            socket.on('connect', () => console.log("Reconnected"))
+            dispatch({
+                type: "server/reconnect",
+            })
+            dispatch(postDriverLocation());
+        }
     }
 }
 
 export function disconnectSocketIO() {
     //Get Driver Socket ID
     return (dispatch, store) => {
+        let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
+        socket.disconnect();
+        console.log("Client is Disconnecting")
+        socket.on('disconnect', function() {
+            console.log("Store reconnecting to socket io")
+           socket.connect();
+        });
         dispatch({
             type: "server/clientDisconnect",
             payload: store().home.driverSocketId
-        })
+        });
+        // dispatch({
+        //     type: GET_SOCKET_ID,
+        //     payload: undefined
+        // });
+        dispatch(isDriverConnecting(false));
     }
 }
 
@@ -242,11 +308,10 @@ export function postDriverLocation(){
         request.post(`${API_URL}/api/driverLocation`)
         .send(payload)
         .finish((error, res) => {
-                dispatch({
-                    type: POST_DRIVER_LOCATION,
-                    payload: res.body
-                });
-            
+            dispatch({
+                type: POST_DRIVER_LOCATION,
+                payload: res.body
+            });
         });
     }
 }
@@ -264,6 +329,7 @@ export function updateBookingDetails(key, instance){
         const bookingID = store().home.bookingDetails._id;
         console.log("this is from update booking route")
         console.log(payload)
+        
         request.put(`${API_URL}/api/bookings/${bookingID}`)
         .send(payload)
         .finish((error, res) => {
@@ -331,6 +397,14 @@ export function openMapsRoute(payload){
 //-------------------------------
 // Action Handlers
 //-------------------------------
+
+function handleDriverConnecting(state, action ) {
+    return update(state, {
+        driverConnecting: {
+            $set: action.payload
+        }
+    })
+}
 
 function handleGetCurrentLocation(state, action) {
     return update(state, {
@@ -480,6 +554,7 @@ function handleInRouteTo(state, action){
 }
 
 const ACTION_HANDLERS = {
+    DRIVER_CONNECTING: handleDriverConnecting,
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
     GET_INPUT: handleGetInputData,

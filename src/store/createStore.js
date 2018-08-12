@@ -6,11 +6,9 @@ import { createLogger } from "redux-logger";
 import createSocketIoMiddleware from "redux-socket.io";
 
 import io from "socket.io-client/dist/socket.io";
+import { API_URL } from '../api' 
 
-// var API_URL = "http://localhost:3000";
-var API_URL = "https://lit-coast-94226.herokuapp.com/";
-
-let socket = io(API_URL, {jsonp:false});
+let socket = io(API_URL, {jsonp:false, 'force new connection':true, reconnection: true});
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
 const log =  createLogger({ diff: true, collapsed: true });
@@ -26,7 +24,11 @@ export default (initialState = {}) => {
     // Store Enhancers
     // ======================================================
     const enhancers = [];
-
+    // socket.on('connect', () => console.log("connected"));
+    // socket.on('disconnect', function() {
+    //     console.log("Store reconnecting to socket io")
+    //    socket.connect();
+    // });
     // ======================================================
     // Store Instantiation
     // ======================================================
