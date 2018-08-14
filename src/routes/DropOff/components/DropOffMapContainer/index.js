@@ -10,13 +10,13 @@ export const DropOffMapContainer = ({
                             getMarkerLocation,
                             bookingDetails,
                             updateWatchDriverLocation,
-                            routes,
-                            getDistanceFrom
+                            getDistanceFrom,
+                            dropOffRoutes
                             }) => {
     
 
     const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
-    const { pickUp, dropOff} = bookingDetails || {};
+    const { dropOff} = bookingDetails || {};
     const driver = {latitude: updateWatchDriverLocation.coordinates.coordinates[1], longitude: updateWatchDriverLocation.coordinates.coordinates[0]}
     const dropOffRegion = {
         latitude: updateWatchDriverLocation.coordinates.coordinates[1], 
@@ -76,9 +76,9 @@ export const DropOffMapContainer = ({
                 />
             }
 
-            { routes &&
+            { dropOffRoutes &&
                 <MapView.Polyline
-                    coordinates={[...routes]}
+                    coordinates={[...dropOffRoutes]}
                     strokeColor="#1f73d0"
                     strokeWidth={4}
                 />

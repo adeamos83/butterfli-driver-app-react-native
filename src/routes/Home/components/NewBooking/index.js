@@ -8,13 +8,13 @@ var Spinner = require('react-native-spinkit');
 
 import styles from "./NewBookingStyles";
 
-export const NewBooking = ({bookingDetails, openMapsRoute, rejectBookingRequest, getDriverStatus, cancelBooking, updateBookingDetails }) => {
+export const NewBooking = ({bookingDetails, acceptRideRequest, openMapsRoute, rejectBookingRequest, getDriverStatus, cancelBooking, updateBookingDetails }) => {
     const { dropOff, pickUp} = bookingDetails || {};
 
     updateTripDetails = () => {
-        updateBookingDetails("rideRequestStatus", "accepted");
-        updateBookingDetails("driverStatus", "available");
+        // updateBookingDetails("driverStatus", "available");
         getDriverStatus('pickUp');
+        acceptRideRequest();
         setTimeout(function(){
             updateBookingDetails("rideRequestStatus", "enRoute");
         }, 7000)

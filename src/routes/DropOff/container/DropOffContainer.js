@@ -1,14 +1,16 @@
 import { connect } from 'react-redux';
 import DropOff from '../components/dropOff';
 
-import { getCurrentLocation, 
+import { getDriverStatus,
         updateBookingDetails,
-        openMapsRoute,
-        watchDriverLocation,
-        getDriverStatus,
         getMarkerLocation,
-        getNearDriverAlerted,
-        getDistanceFrom
+        openMapsRoute } from '../../Home/modules/home';
+
+import { getCurrentLocation,
+        watchDriverLocation,
+        // getNearDriverAlerted,
+        getDistanceFrom,
+        getDropOffRoute
         } from '../modules/dropOff';
 
 const mapStateToProps = (state) => ({
@@ -20,10 +22,10 @@ const mapStateToProps = (state) => ({
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
     driverStatus: state.home.driverStatus,
-    nearDriverAlerted: state.home.nearDriverAlerted, 
+    // nearDriverAlerted: state.home.nearDriverAlerted, 
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
-    routes: state.rideRequest.routes || {},
-    distanceFrom: state.dropOff.distanceFrom || {}
+    distanceFrom: state.dropOff.distanceFrom || {},
+    dropOffRoutes: state.dropOff.dropOffRoutes || {}
 });
 
 const mapActionCreators = {
@@ -33,8 +35,9 @@ const mapActionCreators = {
     watchDriverLocation,
     getDriverStatus,
     getMarkerLocation,
-    getNearDriverAlerted,
-    getDistanceFrom
+    // getNearDriverAlerted,
+    getDistanceFrom,
+    getDropOffRoute
 };
 
 export default connect(mapStateToProps, mapActionCreators)(DropOff)

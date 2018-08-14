@@ -9,7 +9,7 @@ export const DropOffFooterComponent = ({ distanceFrom, getDriverStatus, navToHom
 
     const { duration } = distanceFrom.rows[0].elements[0] || "";
     dropOffConfrim = () => {
-        getDriverStatus('RideComplete');
+        getDriverStatus('available');
         navToHomePage();
         updateBookingDetails("rideRequestStatus", "completed")
     }

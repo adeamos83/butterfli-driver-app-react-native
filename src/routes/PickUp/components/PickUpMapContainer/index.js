@@ -11,7 +11,8 @@ export const PickUpMapContainer = ({
                             bookingDetails,
                             updateWatchDriverLocation,
                             routes,
-                            getDistanceFrom
+                            getDistanceFrom,
+                            pickUpRoutes
                             }) => {
     
 
@@ -59,13 +60,6 @@ export const PickUpMapContainer = ({
                 />
             }
 
-            { dropOff && 
-                <MapView.Marker 
-                    coordinate={{latitude: parseFloat(dropOff.latitude), longitude: parseFloat(dropOff.longitude)}}
-                    pinColor="blue"
-                />
-            }
-
             {region && 
                 <MapView.Marker 
                     draggable
@@ -75,9 +69,9 @@ export const PickUpMapContainer = ({
                 />
             }
 
-            { routes &&
+            { pickUpRoutes &&
                 <MapView.Polyline
-                    coordinates={[...routes]}
+                    coordinates={[...pickUpRoutes]}
                     strokeColor="#1f73d0"
                     strokeWidth={4}
                 />

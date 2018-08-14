@@ -14,8 +14,6 @@ export const MapContainer = ({
 
     const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
     
-    
-    
     return(
         <View style={styles.container}>
             <MapView

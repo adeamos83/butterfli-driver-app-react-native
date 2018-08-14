@@ -1,14 +1,19 @@
 import { connect } from 'react-redux';
 import PickUp from '../components/pickUp';
+import { getDriverStatus } from '../../Home/modules/home';
 
-import { getCurrentLocation,
-        updateBookingDetails, 
+import { updateBookingDetails, 
+        getMarkerLocation, 
         openMapsRoute,
+        getCurrentLocation} from '../../Home/modules/home';
+
+import { 
+        // updateBookingDetails, 
         watchDriverLocation,
-        getDriverStatus,
-        getMarkerLocation,
-        getNearDriverAlerted,
-        getDistanceFrom
+        // getMarkerLocation,
+        // getNearDriverAlerted,
+        getDistanceFrom,
+        getPickUpRoute
         } from '../modules/pickUp';
 
 const mapStateToProps = (state) => ({
@@ -20,10 +25,11 @@ const mapStateToProps = (state) => ({
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
     driverStatus: state.home.driverStatus,
-    nearDriverAlerted: state.home.nearDriverAlerted, 
+    // nearDriverAlerted: state.home.nearDriverAlerted, 
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
     routes: state.rideRequest.routes || {},
-    distanceFrom: state.pickUp.distanceFrom || {}
+    distanceFrom: state.pickUp.distanceFrom || {},
+    pickUpRoutes: state.pickUp.pickUpRoutes || {}
 });
 
 const mapActionCreators = {
@@ -32,9 +38,10 @@ const mapActionCreators = {
     watchDriverLocation,
     getDriverStatus,
     getMarkerLocation,
-    getNearDriverAlerted,
+    // getNearDriverAlerted,
     getDistanceFrom,
-    updateBookingDetails
+    updateBookingDetails,
+    getPickUpRoute
 };
 
 export default connect(mapStateToProps, mapActionCreators)(PickUp)

@@ -12,16 +12,14 @@ import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
 import DropOffFooterComponent from '../../../Components/DropOffFooterComponent';
 
 //Image Imports
-const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
 class DropOff extends React.Component {
 
     componentDidMount(){
-        // this.props.getCurrentLocation();
-
         // Get distance from driver to dropOff location
         this.props.getDistanceFrom();
+        this.props.getDropOffRoute();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -34,10 +32,8 @@ class DropOff extends React.Component {
 
     
     navToPickUp = () => {
-        //Takes user to the PickUp route and open the Google Maps or Waze App
-        Actions.pickUp({type: "reset"});
-        this.props.openMapsRoute('pick up');
-        console.log("start navigation");
+        //Takes user to the Drop Off route and open the Google Maps or Waze App
+        this.props.openMapsRoute('dropOff');
     }
 
     navToHomePage = () => {
@@ -47,9 +43,6 @@ class DropOff extends React.Component {
     }
 
     render() {
-        
-        const { status } = this.props.bookingDetails;
-
         return(
         <Container>
             <View style={{flex:1}}>
@@ -68,6 +61,7 @@ class DropOff extends React.Component {
                     getPassengerRoute={this.props.getPassengerRoute}
                     routes={this.props.routes}
                     getDistanceFrom={this.props.getDistanceFrom}
+                    dropOffRoutes={this.props.dropOffRoutes}
                     />
                 }
             </View>
@@ -95,7 +89,6 @@ class DropOff extends React.Component {
             }    
         </Container>
         );
-       
     }
 }
 

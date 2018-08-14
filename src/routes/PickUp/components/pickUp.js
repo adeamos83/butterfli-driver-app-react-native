@@ -20,6 +20,7 @@ class PickUp extends React.Component {
     componentDidMount(){
         // this.props.getCurrentLocation();
         this.props.getDistanceFrom();
+        this.props.getPickUpRoute();
     }
     
 
@@ -43,9 +44,7 @@ class PickUp extends React.Component {
 
     
     navToPickUp = () => {
-        Actions.pickUp({type: "reset"});
         this.props.openMapsRoute('pick up');
-        console.log("start navigation");
     }
 
     pickUpPassenger = () => {
@@ -74,6 +73,7 @@ class PickUp extends React.Component {
                     getPassengerRoute={this.props.getPassengerRoute}
                     routes={this.props.routes}
                     getDistanceFrom={this.props.getDistanceFrom}
+                    pickUpRoutes={this.props.pickUpRoutes}
                     />
                 }
             </View>

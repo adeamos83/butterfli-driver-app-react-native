@@ -17,21 +17,21 @@ import io from "socket.io-client/dist/socket.io";
 const { DRIVER_CONNECTING,
         GET_CURRENT_LOCATION, 
         DRIVER_STATUS,
-        GET_INPUT, 
+        // GET_INPUT, 
         GET_DRIVER_INFORMATION,
         GET_SOCKET_ID,
         POST_DRIVER_LOCATION,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
-        NEAR_DRIVER_ALERTED,
-        UPDATE_RIDE_REQUEST_STATUS,
+        // NEAR_DRIVER_ALERTED,
+        // UPDATE_RIDE_REQUEST_STATUS,
         UPDATE_BOOKING_DETAILS,
-        REJECT_BOOKING_REQUEST
+        REJECT_BOOKING_REQUEST,
+        SELECTED_DRIVERS
         } = constants;
 
 const { width, height } = Dimensions.get("window");
-
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0181;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
@@ -56,6 +56,7 @@ const initialState = {
 // Action
 //-------------------------------
 
+// Used for the spinng loading buttong for connecting the driver to the socket io server
 export function isDriverConnecting(payload){
     return (dispatch) => {
         dispatch({
@@ -65,8 +66,8 @@ export function isDriverConnecting(payload){
     }
 }
 
+// Get the current location of the driver
 export function getCurrentLocation() {
-    // Get the current location of the driver
     return(dispatch) => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -81,8 +82,8 @@ export function getCurrentLocation() {
     }
 }
 
+// Get the status of driver - available, notAvailable, pickUp, dropOff, rideCompleted
 export function getDriverStatus(driverStatus){
-    // Get the status of driver - available, notAvailable, pickUp, dropOff, rideCompleted
     return(dispatch, store) => {
         const id = store().home.driverLocation._id;
         const payload = {
@@ -102,7 +103,6 @@ export function getDriverStatus(driverStatus){
             type: DRIVER_STATUS,
             payload: driverStatus
         });
-        // dispatch(isDriverConnecting(false));
 
         //Updates database with Driver Status
         request.put(`${API_URL}/api/driverLocation/` + id)
@@ -112,39 +112,35 @@ export function getDriverStatus(driverStatus){
                     type: POST_DRIVER_LOCATION,
                     payload: res.body
                 });
-                dispatch(isDriverConnecting(false));
-                
-        });
-        // dispatch({
-        //     type: DRIVER_STATUS,
-        //     payload: payload
-        // });
-    }
-}
-
-export function getNearDriverAlerted(payload){
-    return(dispatch) => {
-        dispatch({
-            type: NEAR_DRIVER_ALERTED,
-            payload: payload
+                dispatch(isDriverConnecting(false));   
         });
     }
 }
 
-export function updateRideRequestStatus(payload){
-    return(dispatch, store) => {
-        let updateBooking = {
-            status: payload,
-            ...store().home.bookingDetails,
-            
-        }
-        dispatch({
-            type: UPDATE_RIDE_REQUEST_STATUS,
-            payload:updateBooking
-        });
-    }
-}
+// export function getNearDriverAlerted(payload){
+//     return(dispatch) => {
+//         dispatch({
+//             type: NEAR_DRIVER_ALERTED,
+//             payload: payload
+//         });
+//     }
+// }
 
+
+// export function updateRideRequestStatus(payload){
+//     return(dispatch, store) => {
+//         let updateBooking = {
+//             status: payload,
+//             ...store().home.bookingDetails,
+//         }
+//         dispatch({
+//             type: UPDATE_RIDE_REQUEST_STATUS,
+//             payload:updateBooking
+//         });
+//     }
+// }
+
+// Updates booking details that the driver rejected ride, Updates nearByDrivers array removing this driver from array
 export function rejectBookingRequest(payload){
     return(dispatch, store) => {
         const nearByDrivers = store().home.bookingDetails.nearByDrivers;
@@ -172,17 +168,14 @@ export function rejectBookingRequest(payload){
         });
         console.log("After Filter");
         console.log(nextDrivers);
-        // dispatch({
-        //     type: REJECT_BOOKING_REQUEST
-        // });
     }
 }
 
-export function watchDriverLocation(){
-    /*
+/*
     This Function uses the geolocation API to watch consistenly what the 
     drivers location when ever they move more 10meters
-    */
+*/
+export function watchDriverLocation(){
     return(dispatch, store) => {
         navigator.geolocation.watchPosition(
             (position) => {
@@ -205,6 +198,7 @@ export function watchDriverLocation(){
     }
 }
 
+// For Testing purposes - Allow us to move marker location to mimic car movement
 export function getMarkerLocation(location){
     // Used to get the location for the current marker movement
     return(dispatch, store) => {
@@ -220,22 +214,22 @@ export function getMarkerLocation(location){
     }
 }
 
-// Get User Input
-export function getInputData(payload) {
-    return{
-        type: GET_INPUT,
-        payload
-    }
-}
+// // Get User Input
+// export function getInputData(payload) {
+//     return{
+//         type: GET_INPUT,
+//         payload
+//     }
+// }
 
-
+//================================================ Need to Test ASAP
+// Get Driver Details from server
 export function getDriverInfo() {
-    // Get Driver Details 
     return (dispatch, store) => {
         let user_id = store().login.user_id;
         console.log(user_id);
         let id = "5b5d05220fdb907bdb8a5c2d";
-        request.get(`${API_URL}/api/driver/` + id)
+        request.get(`${API_URL}/api/driver/` + user_id)
         .finish((error, res)=>{
             dispatch({
                 type: GET_DRIVER_INFORMATION,
@@ -244,18 +238,16 @@ export function getDriverInfo() {
         });
     }
 }
-
+//Get Driver Socket ID from server
 export function getDriverSocketId() {
-    //Get Driver Socket ID
     return (dispatch, store) => {
         if(!store().home.driverSocketId){
-            console.log("1st connection");
+            console.log("intial connection");
             dispatch({
                 type: "server/hello",
             })
         } else {
             console.log("Trying to reconnect!");
-            // socket.socket.reconnect();
             let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
             socket.connect();
             socket.on('connect', () => console.log("Reconnected"))
@@ -267,30 +259,26 @@ export function getDriverSocketId() {
     }
 }
 
+// Force disconnection from Socket Io server
 export function disconnectSocketIO() {
-    //Get Driver Socket ID
     return (dispatch, store) => {
         let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
         socket.disconnect();
-        console.log("Client is Disconnecting")
+        console.log("Driver is Disconnecting from Socket Io server")
         socket.on('disconnect', function() {
-            console.log("Store reconnecting to socket io")
+            console.log("Driver is reconnecting to Socket Io server")
            socket.connect();
         });
         dispatch({
             type: "server/clientDisconnect",
             payload: store().home.driverSocketId
         });
-        // dispatch({
-        //     type: GET_SOCKET_ID,
-        //     payload: undefined
-        // });
         dispatch(isDriverConnecting(false));
     }
 }
 
+// Post Driver Location and status to server
 export function postDriverLocation(){
-    // Send driver initial location to the database to be saved
     return(dispatch, store) => {
         const payload = {
             data: {
@@ -316,9 +304,8 @@ export function postDriverLocation(){
     }
 }
 
-
+// Update Booking Details 
 export function updateBookingDetails(key, instance){
-    // Update Booking Details
     return(dispatch, store) => {
         const payload = {
             data: {
@@ -327,9 +314,6 @@ export function updateBookingDetails(key, instance){
             }
         };
         const bookingID = store().home.bookingDetails._id;
-        console.log("this is from update booking route")
-        console.log(payload)
-        
         request.put(`${API_URL}/api/bookings/${bookingID}`)
         .send(payload)
         .finish((error, res) => {
@@ -337,26 +321,18 @@ export function updateBookingDetails(key, instance){
                     type: UPDATE_BOOKING_DETAILS,
                     payload: res.body
                 });
-            
         });
     }
 }
 
-
-// export function getBookings(){
-//     return (dispatch, store) => {
-//         socket.on("driverRequest", (savedbooking) => {
-//             dispatch({
-//                 type: NEW_BOOKING,
-//                 payload: savedbooking
-//             })
-//         })
-       
-//     }
-// }
-
+// Opens up Apple Map, Google Maps or Waze when the driver clicks on navigate
 export function openMapsRoute(payload){
     return(dispatch, store) => {
+        const driverArr = {
+            latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
+            longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
+        }  
+
         const pickUpArr = {
             latitude:  store().home.bookingDetails.pickUp.latitude,
             longitude: store().home.bookingDetails.pickUp.longitude 
@@ -371,14 +347,19 @@ export function openMapsRoute(payload){
             return `${position.latitude},${position.longitude}`
         };
         
-        const origin = this.buildLngLat(pickUpArr);
-        const destination = this.buildLngLat(dropOffArr);
-
+        if(payload == 'pickUp'){
+            var origin = buildLngLat(driverArr);
+            var destination = buildLngLat(pickUpArr);
+        } else {
+            var origin = buildLngLat(driverArr); 
+            var destination = buildLngLat(dropOffArr);
+        }
+       
         buildMapBoxUrl = (origin, destination) => {
             return `http://maps.apple.com/?saddr=${origin}&daddr=${destination}&dirflg=d`
         } 
 
-        const url = this.buildMapBoxUrl(origin, destination);
+        const url = buildMapBoxUrl(origin, destination);
         
         console.log('open directions') 
         if (Platform.OS === "ios") { 
@@ -393,6 +374,41 @@ export function openMapsRoute(payload){
         } 
     }
 }
+
+// Updated booking detail the Selected Drivers information and updates RideRequestStatus to accpeted
+export function acceptRideRequest(){
+    return(dispatch, store) => {
+        // const acceptedDriver = {
+        //     // DriverId is always equal to User_id
+        //     driverId: store().login.user_id,
+        //     coordinates: {
+        //         type: "Point",
+        //         coordinates: [store().home.region.longitude, store().home.region.latitude]
+        //     },
+        //     socketId: store().home.driverSocketId,
+        //     driverStatus: store().home.driverStatus
+        // };
+        const payload = {
+            data: {
+                ...store().home.bookingDetails,
+                rideRequestStatus: "accepted",
+                selectedDriver: store().home.updateWatchDriverLocation,
+            }
+        };
+        const bookingID = store().home.bookingDetails._id
+        console.log(payload);
+        request.put(`${API_URL}/api/bookings/${bookingID}`)
+        .send(payload)
+        .finish((error, res) => {
+                dispatch({
+                    type: SELECTED_DRIVERS,
+                    payload: res.body
+                });
+            
+        });
+    }
+}
+
 
 //-------------------------------
 // Action Handlers
@@ -458,21 +474,29 @@ function handleDBBookingDetailsUpdated(state, action){
     }); 
 }
 
-function handleNearDriverAlerted(state, action){
+function handelAcceptRideRequest(state, action) {
     return update(state, {
-        nearDriverAlerted: {
+        selectedDriver: {
             $set: action.payload
         }
     });
 }
 
-function handleUpdateRideRequestStatus(state, action){
-    return update(state, {
-        bookingDetails: {
-            $set: action.payload
-        }
-    });
-}
+// function handleNearDriverAlerted(state, action){
+//     return update(state, {
+//         nearDriverAlerted: {
+//             $set: action.payload
+//         }
+//     });
+// }
+
+// function handleUpdateRideRequestStatus(state, action){
+//     return update(state, {
+//         bookingDetails: {
+//             $set: action.payload
+//         }
+//     });
+// }
 
 function handelWatchDriverLocation(state, action) {
     return update(state, {
@@ -498,16 +522,16 @@ function handleGetMarkerLocation(state, action) {
     });
 }
 
-function handleGetInputData(state, action) {
-    const { key, value } = action.payload;
-    return update(state, {
-        inputData: {
-            [key]: {
-                $set: value
-            }
-        }
-    });
-}
+// function handleGetInputData(state, action) {
+//     const { key, value } = action.payload;
+//     return update(state, {
+//         inputData: {
+//             [key]: {
+//                 $set: value
+//             }
+//         }
+//     });
+// }
 
 function handleGetDriverInfo(state, action) {
     return update(state, {
@@ -557,7 +581,7 @@ const ACTION_HANDLERS = {
     DRIVER_CONNECTING: handleDriverConnecting,
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
-    GET_INPUT: handleGetInputData,
+    // GET_INPUT: handleGetInputData,
     GET_DRIVER_INFORMATION: handleGetDriverInfo,
     GET_SOCKET_ID: handelGetDriverSocket,
     POST_DRIVER_LOCATION: handlePostDriverLocation,
@@ -566,11 +590,12 @@ const ACTION_HANDLERS = {
     WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
-    NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
-    UPDATE_RIDE_REQUEST_STATUS: handleUpdateRideRequestStatus,
+    // NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
+    // UPDATE_RIDE_REQUEST_STATUS: handleUpdateRideRequestStatus,
     UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
     UPDATED_DB_BOOKING_DETAILS: handleDBBookingDetailsUpdated,
-    REJECT_BOOKING_REQUEST: handleRejectedBookingRequest
+    REJECT_BOOKING_REQUEST: handleRejectedBookingRequest,
+    SELECTED_DRIVERS: handelAcceptRideRequest
 }
 
 

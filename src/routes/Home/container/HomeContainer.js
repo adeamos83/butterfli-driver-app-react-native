@@ -3,7 +3,7 @@ import Home from '../components/home';
 
 import { isDriverConnecting,
         getCurrentLocation, 
-        getInputData, 
+        // getInputData, 
         getDriverInfo,
         getDriverSocketId,
         postDriverLocation,
@@ -11,30 +11,32 @@ import { isDriverConnecting,
         watchDriverLocation,
         getDriverStatus,
         getMarkerLocation,
-        getNearDriverAlerted,
+        // getNearDriverAlerted,
         updateRideRequestStatus,
         updateBookingDetails,
         rejectBookingRequest,
-        disconnectSocketIO
+        disconnectSocketIO,
+        acceptRideRequest
         } from '../modules/home';
 
 const mapStateToProps = (state) => ({
     driverConnecting: state.home.driverConnecting,
     region: state.home.region,
-    inputData: state.home.inputData || {},
+    // inputData: state.home.inputData || {},
     driverInfo: state.home.driverInfo || {},
     driverLocation: state.home.driverLocation || {},
     bookingDetails: state.home.bookingDetails || {},
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
     driverStatus: state.home.driverStatus,
-    nearDriverAlerted: state.home.nearDriverAlerted, 
+    // nearDriverAlerted: state.home.nearDriverAlerted, 
+    selectedDriver: state.home.selectedDriver || {}
 });
 
 const mapActionCreators = {
     isDriverConnecting,
     getCurrentLocation,
-    getInputData,
+    // getInputData,
     getDriverInfo,
     getDriverSocketId,
     postDriverLocation,
@@ -42,11 +44,12 @@ const mapActionCreators = {
     watchDriverLocation,
     getDriverStatus,
     getMarkerLocation,
-    getNearDriverAlerted,
+    // getNearDriverAlerted,
     updateRideRequestStatus,
     updateBookingDetails,
     rejectBookingRequest,
-    disconnectSocketIO
+    disconnectSocketIO,
+    acceptRideRequest
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Home)

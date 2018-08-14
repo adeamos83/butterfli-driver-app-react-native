@@ -76,11 +76,11 @@ class Home extends React.Component {
         }
     }
     
-    cancelBooking = () => {
-        this.props.getNearDriverAlerted(true);
-        this.props.updateRideRequestStatus();
-        console.log("Cancel Button Pressed");
-    }
+    // cancelBooking = () => {
+    //     this.props.getNearDriverAlerted(true);
+    //     this.props.updateRideRequestStatus();
+    //     console.log("Cancel Button Pressed");
+    // }
 
     render() {
         const { rideRequestStatus } = this.props.bookingDetails;
@@ -112,6 +112,7 @@ class Home extends React.Component {
                     cancelBooking={this.cancelBooking}
                     updateBookingDetails={this.props.updateBookingDetails}
                     rejectBookingRequest={this.props.rejectBookingRequest}
+                    acceptRideRequest={this.props.acceptRideRequest}
                 /> 
             }           
         </Container>

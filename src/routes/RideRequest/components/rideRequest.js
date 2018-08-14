@@ -6,11 +6,9 @@ import { Actions } from 'react-native-router-flux';
 
 
 import RideRequestMapContainer from './RideRequestMapContainer';
-import HeaderComponent from '../../../Components/HeaderComponent';
-import FooterComponent from '../../../Components/FooterComponent';
-import InRouteFooter from '../../../Components/InRouteFooter';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';
-import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
+import StartRideButton from '../../../Components/StartRideButton';
+
 
 const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
@@ -37,8 +35,11 @@ class RideRequest extends React.Component {
 
     navToPickUp = () => {
         Actions.pickUp({type: "replace"});
-        // this.props.openMapsRoute('pick up');
-        console.log("start navigation");
+        this.props.openMapsRoute('pickUp');
+    }
+
+    startTrip = () => {
+        Actions.pickUp({type: "replace"});
     }
 
     render() {
@@ -63,7 +64,10 @@ class RideRequest extends React.Component {
                         routes={this.props.routes}
                     />
                 }
-            </View>    
+            </View>
+            <StartRideButton
+                startTrip={() => this.startTrip()}
+            />    
         </Container>
         );
        

@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import RideRequest from '../components/rideRequest';
 
+import { openMapsRoute } from '../../Home/modules/home';
+
 import { getCurrentLocation, 
-        openMapsRoute,
         watchDriverLocation,
         getDriverStatus,
         getMarkerLocation,
-        getPassengerRoute
+        getPassengerRoute,
         } from '../modules/rideRequest';
 
 const mapStateToProps = (state) => ({
@@ -18,16 +19,16 @@ const mapStateToProps = (state) => ({
     driverSocketId: state.home.driverSocketId,
     driverStatus: state.home.driverStatus ,
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
-    routes: state.rideRequest.routes || {}
+    routes: state.rideRequest.routes || {},
 });
 
 const mapActionCreators = {
     getCurrentLocation,
-    openMapsRoute,
     watchDriverLocation,
     getDriverStatus,
     getMarkerLocation,
-    getPassengerRoute
+    getPassengerRoute,
+    openMapsRoute
 };
 
 export default connect(mapStateToProps, mapActionCreators)(RideRequest)

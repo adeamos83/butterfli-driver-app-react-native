@@ -8,7 +8,7 @@ import styles from "./FabStyles.js";
 
 export const Fab = ({ onPressAction, driverStatus, driverConnecting }) => {
     return (
-        <Button style={{...styles.fabContainer, backgroundColor: (driverStatus !== "notAvailable")? "#4ca64c" : "#FF5E3A"}} onPress={onPressAction}>
+        <Button style={{...styles.fabContainer, backgroundColor: (driverStatus !== "notAvailable")? "#26A65B" : "#EF4836"}} onPress={onPressAction}>
             { driverConnecting &&
                 <Spinner size="small"/>
                 || 

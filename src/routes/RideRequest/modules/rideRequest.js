@@ -10,10 +10,10 @@ const polyline = require('@mapbox/polyline');
 //-------------------------------
 const { GET_CURRENT_LOCATION, 
         DRIVER_STATUS,
-        IN_ROUTE_TO,
+        // IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
-        GET_PASSENGER_ROUTES
+        GET_PASSENGER_ROUTES,
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -97,51 +97,51 @@ export function getMarkerLocation(location){
 }
 
 
-export function openMapsRoute(payload){
-    return(dispatch, store) => {
-        const pickUpArr = {
-            latitude:  store().home.bookingDetails.pickUp.latitude,
-            longitude: store().home.bookingDetails.pickUp.longitude 
-        };
+// export function openMapsRoute(payload){
+//     return(dispatch, store) => {
+//         const pickUpArr = {
+//             latitude:  store().home.bookingDetails.pickUp.latitude,
+//             longitude: store().home.bookingDetails.pickUp.longitude 
+//         };
 
-        const dropOffArr = {
-            latitude:  store().home.bookingDetails.dropOff.latitude,
-            longitude: store().home.bookingDetails.dropOff.longitude
-        };
+//         const dropOffArr = {
+//             latitude:  store().home.bookingDetails.dropOff.latitude,
+//             longitude: store().home.bookingDetails.dropOff.longitude
+//         };
 
-         buildLngLat = (position) => {
-            console.log(position);
-            console.log(position.latitude);
-            return `${position.latitude},${position.longitude}`
-        }
+//          buildLngLat = (position) => {
+//             console.log(position);
+//             console.log(position.latitude);
+//             return `${position.latitude},${position.longitude}`
+//         }
         
-        const origin = buildLngLat(pickUpArr);
-        const destination = buildLngLat(dropOffArr);
+//         const origin = buildLngLat(pickUpArr);
+//         const destination = buildLngLat(dropOffArr);
 
-        buildMapBoxUrl = (origin, destination) => {
-            return `http://maps.apple.com/?saddr=${origin}&daddr=${destination}&dirflg=d`
-        } 
+//         buildMapBoxUrl = (origin, destination) => {
+//             return `http://maps.apple.com/?saddr=${origin}&daddr=${destination}&dirflg=d`
+//         } 
 
-        const url = buildMapBoxUrl(origin, destination);
+//         const url = buildMapBoxUrl(origin, destination);
         
-        console.log('open directions') 
-        if (Platform.OS === "ios") { 
-            let updateBooking = {
-                ...store().home.bookingDetails,
-                inRouteTo: payload
-            }
+//         console.log('open directions') 
+//         if (Platform.OS === "ios") { 
+//             let updateBooking = {
+//                 ...store().home.bookingDetails,
+//                 inRouteTo: payload
+//             }
 
-            Linking.openURL(url)
-            dispatch({
-                type:IN_ROUTE_TO,
-                payload: updateBooking
-            })
+//             Linking.openURL(url)
+//             dispatch({
+//                 type:IN_ROUTE_TO,
+//                 payload: updateBooking
+//             })
 
-        } else { 
-            Linking.openURL('http://maps.google.com/maps?daddr='); 
-        } 
-    }
-}
+//         } else { 
+//             Linking.openURL('http://maps.google.com/maps?daddr='); 
+//         } 
+//     }
+// }
 
 // Get polyline route from Mapbox for route between pick and drop-off location
 
@@ -269,14 +269,13 @@ function handleGetMarkerLocation(state, action) {
 }
 
 
-function handleInRouteTo(state, action){
-    return update(state, {
-        bookingDetails: {
-            $set: action.payload
-        }
-    });
-
-}
+// function handleInRouteTo(state, action){
+//     return update(state, {
+//         bookingDetails: {
+//             $set: action.payload
+//         }
+//     });
+// }
 
 function handleGetPassengerRoutes(state, action) {
     return update(state, {
@@ -290,7 +289,7 @@ function handleGetPassengerRoutes(state, action) {
 const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
-    IN_ROUTE_TO: handleInRouteTo,
+    // IN_ROUTE_TO: handleInRouteTo,
     WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
     // UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,

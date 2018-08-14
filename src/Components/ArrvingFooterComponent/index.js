@@ -23,7 +23,7 @@ export const ArrivingFooter = ({ navToPickUp, bookingDetails, distanceFrom }) =>
                         </View>
                         <View style={styles.arrivalTextContainer}>
                               <Text style={styles.arrivalText}>
-                                    {(rideRequestStatus == "arriving") ? "Arriving to Passenger pickup location in" +  duration.text :  "Arriving to Passenger drop off location in" +  duration.text }
+                                    {(rideRequestStatus == "arriving") ? "Arriving to passenger's pickup location in " +  duration.text :  "Arriving to passenger's drop off location in " +  duration.text }
                               </Text>
                         </View>
                      </View>
