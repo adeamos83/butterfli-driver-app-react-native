@@ -16,7 +16,8 @@ const { AUTH_USER,
         ADD_ALERT,
         REMOVE_ALERT,
         CREATE_USER_PROFILE,
-        NEEDS_PROFILE
+        NEEDS_PROFILE,
+        GET_INPUT
         } = constants;
 
 //-------------------------------
@@ -25,7 +26,8 @@ const { AUTH_USER,
 
 const initialState = {
     alerts:[],
-    needsProfile: false
+    needsProfile: false,
+    inputData: {},
 };
 
 
@@ -33,6 +35,14 @@ const initialState = {
 //-------------------------------
 // Action
 //-------------------------------
+
+// Get User Input
+export function getInputData(payload) {
+    return{
+        type: GET_INPUT,
+        payload
+    }
+}
 
 export function loginUser(email, password){
    return(dispatch) => {
@@ -152,6 +162,17 @@ export function createProfile(payload){
 // Action Handlers
 //-------------------------------
 
+function handleGetInputData(state, action) {
+    const { key, value } = action.payload;
+    return update(state, {
+        inputData: {
+            [key]: {
+                $set: value
+            }
+        }
+    });
+}
+
 function handleUserAuth(state, action){
    return update(state, {
         user_id: {
@@ -230,6 +251,7 @@ function handleAddAlert(state, action){
 }
  
 const ACTION_HANDLERS = {
+    GET_INPUT: handleGetInputData,
     AUTH_USER: handleUserAuth,
     UNAUTH_USER: handleUnAuthUser,
     // ADD_ALERT: handleAddAlert,

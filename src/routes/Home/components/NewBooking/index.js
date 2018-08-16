@@ -73,9 +73,6 @@ export const NewBooking = ({bookingDetails, acceptRideRequest, openMapsRoute, re
                 <View style={styles.dropoff}>
                     <Text>{ dropOff.name }</Text>
                 </View>
-                <View>
-                    <Text style={styles.termsText}>You have a new ride request</Text>
-                </View>
                 <View style={styles.buttonView}>
                     <Button  style={styles.acceptBtn} onPress={() => updateTripDetails()}>
                         <Text style={styles.accpetBtnText}>Accept</Text>

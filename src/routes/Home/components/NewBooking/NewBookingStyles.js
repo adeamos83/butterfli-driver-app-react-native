@@ -100,6 +100,7 @@ const styles = {
         flexDirection: 'row', 
         justifyContent: 'space-around',
         width:width * 0.9,
+        marginTop: 15
     },
     termsText:{
         color:"#fff",

@@ -6,8 +6,18 @@ import { Actions } from 'react-native-router-flux';
 import styles from './LoginStyles';
 import TextField from '../TextField/TextField';
 import PassTextField from '../TextField/PassTextField'
+import { TextInputField } from '../../../../Components/Common/'
 
-export const LoginContainer =({addAlert, authUser, user_id, needsToCreateProfile, loginUser, signupUser, handleSubmit, fields: {email, password}}) => {
+export const LoginContainer =({addAlert, 
+										authUser, 
+										user_id, 
+										needsToCreateProfile, 
+										loginUser, 
+										signupUser, 
+										handleSubmit, 
+                              getInputData,
+                              inputData,
+										fields: {email, password}}) => {
   // const {handleSubmit, fields: {email, password}} = this.props;
 
    onSignIn = (values) => {
@@ -56,6 +66,11 @@ export const LoginContainer =({addAlert, authUser, user_id, needsToCreateProfile
                secureTextEntry
             />
          </View>
+         {/* Native Input Field 
+            <View style={styles.field}>
+             <TextInputField getInputData={getInputData} inputData={inputData}/>
+            </View> 
+         */}
          <View style={styles.buttonView}>
             <Button info style={styles.signinBtn} onPress={handleSubmit(this.onSignIn)}>
                <Text style={styles.btnText}>Sign In</Text>

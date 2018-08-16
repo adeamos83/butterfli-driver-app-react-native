@@ -8,14 +8,15 @@ import { authUser,
          loginUser,
          signupUser,
          needsToCreateProfile,
-         createProfile
-         
+         createProfile,
+         getInputData
         } from '../modules/login';
 
 const mapStateToProps = (state) => ({
     user_id: state.login.user_id || "",
     alerts: state.alerts,
-    needsProfile: state.login.needsProfile
+    needsProfile: state.login.needsProfile,
+    inputData: state.login.inputData || {},
 });
 
 const mapActionCreators = {
@@ -26,7 +27,8 @@ const mapActionCreators = {
    loginUser,
    signupUser,
    needsToCreateProfile,
-   createProfile
+   createProfile,
+   getInputData
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Login)

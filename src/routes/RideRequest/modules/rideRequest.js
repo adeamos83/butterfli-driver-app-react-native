@@ -11,7 +11,7 @@ const polyline = require('@mapbox/polyline');
 const { GET_CURRENT_LOCATION, 
         DRIVER_STATUS,
         // IN_ROUTE_TO,
-        WATCH_DRIVER_LOCATION,
+        // WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
         GET_PASSENGER_ROUTES,
         } = constants;
@@ -59,28 +59,28 @@ export function getDriverStatus(payload){
     }
 }
 
-export function watchDriverLocation(){
-    return(dispatch, store) => {
-        navigator.geolocation.watchPosition(
-            (position) => {
-                dispatch({
-                    type: WATCH_DRIVER_LOCATION,
-                    payload: position
-                });
+// export function watchDriverLocation(){
+//     return(dispatch, store) => {
+//         navigator.geolocation.watchPosition(
+//             (position) => {
+//                 dispatch({
+//                     type: WATCH_DRIVER_LOCATION,
+//                     payload: position
+//                 });
 
-                if(true){
-                    console.log("Sending drivers location to passenger")
-                        dispatch({
-                            type: "server/driverlocation",
-                            payload: position
-                        });
-                }
-            },
-            (error) => console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1}
-        );
-    }
-}
+//                 if(true){
+//                     console.log("Sending drivers location to passenger")
+//                         dispatch({
+//                             type: "server/driverlocation",
+//                             payload: position
+//                         });
+//                 }
+//             },
+//             (error) => console.log(error.message),
+//             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1}
+//         );
+//     }
+// }
 
 export function getMarkerLocation(location){
     return(dispatch, store) => {
@@ -244,13 +244,13 @@ function handleDriverStatus(state, action){
     });
 }
 
-function handelWatchDriverLocation(state, action) {
-    return update(state, {
-        watchDriverLocation: {
-            $set: action.payload
-        }
-    });
-}
+// function handelWatchDriverLocation(state, action) {
+//     return update(state, {
+//         watchDriverLocation: {
+//             $set: action.payload
+//         }
+//     });
+// }
 
 // function handleUpdateDriverLocation(state, action) {
 //     return update(state, {
@@ -290,7 +290,7 @@ const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
     // IN_ROUTE_TO: handleInRouteTo,
-    WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
+    // WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
     // UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
     GET_PASSENGER_ROUTES: handleGetPassengerRoutes

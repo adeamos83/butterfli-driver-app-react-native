@@ -26,8 +26,9 @@ const MenuIcon = () => {
 
 const scenes = Actions.create(
     <Scene key='root' hideNavBar>
-       
-        <Scene key="login" component={LoginContainer}  initial title="login"/>
+        
+        <Scene key="login" component={LoginContainer}   initial title="login"/>
+        <Scene key="createProfile" component={CreateProfile}  title="Create Profile"/>
         <Drawer 
             key="drawer"
             contentComponent={Menu}
@@ -42,7 +43,6 @@ const scenes = Actions.create(
             <Scene key="drawer1" component={Drawer1} title="Page 1"/>
             <Scene key="drawer2" component={Drawer2} title="Page 2"/>
             <Scene key="profile" component={ProfileContainer}  title="Profile"/>
-            <Scene key="createProfile" component={CreateProfile} title="Create Profile"/>
         </Drawer>
         <Scene key="alert" component={AlertContainer} title="alert"/>
 

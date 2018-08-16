@@ -23,13 +23,14 @@ const styles = ({
         height: 50,
         paddingLeft:15,
         paddingRight:15,
-        justifyContent: "center"
+        justifyContent: "flex-end"
     },
     iconButton: {
         flex:1,
         flexDirection: "column",
         justifyContent: "flex-end",
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom: 5
     },
     navText: {
         fontSize: 14,
@@ -39,7 +40,9 @@ const styles = ({
         fontSize: 15
     },
     navIconContainer: {
-        paddingRight: 10
+        paddingRight: 10,
+        borderRightWidth: 1,
+        borderRightColor: '#F5F5F5'
     }
 
 })

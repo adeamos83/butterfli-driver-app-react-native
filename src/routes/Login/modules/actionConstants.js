@@ -1,4 +1,5 @@
 export default {
+   GET_INPUT: "GET_INPUT",
    AUTH_USER: "AUTH_USER",
    UNAUTH_USER: "UNAUTH_USER",
    // ADD_ALERT: "ADD_ALERT",

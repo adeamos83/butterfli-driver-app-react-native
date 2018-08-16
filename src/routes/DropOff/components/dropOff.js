@@ -20,6 +20,8 @@ class DropOff extends React.Component {
         // Get distance from driver to dropOff location
         this.props.getDistanceFrom();
         this.props.getDropOffRoute();
+        this.watchId = this.props.watchDriverLocation();
+
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -27,7 +29,7 @@ class DropOff extends React.Component {
     }
 
     componentWillUnmount() {
-        // navigator.geolocation.clearWatch(this.watchId);
+        navigator.geolocation.clearWatch(this.watchId);
     } 
 
     

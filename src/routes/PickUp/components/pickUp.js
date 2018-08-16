@@ -21,6 +21,7 @@ class PickUp extends React.Component {
         // this.props.getCurrentLocation();
         this.props.getDistanceFrom();
         this.props.getPickUpRoute();
+        this.watchId = this.props.watchDriverLocation();
     }
     
 
@@ -39,7 +40,7 @@ class PickUp extends React.Component {
     }
 
     componentWillUnmount() {
-        // navigator.geolocation.clearWatch(this.watchId);
+        navigator.geolocation.clearWatch(this.watchId);
     } 
 
     

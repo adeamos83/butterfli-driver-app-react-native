@@ -32,6 +32,7 @@ class Menu extends React.Component {
                user_id={this.props.user_id}
                authUser={this.props.authUser}
                unAuthUser={this.props.unAuthUser}
+               driverInfo={this.props.driverInfo}
             />
          </View>
       </Container>

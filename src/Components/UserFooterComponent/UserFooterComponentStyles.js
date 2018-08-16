@@ -13,11 +13,12 @@ const styles = ({
         fontSize: 8
     },
     innerContainer: {
-        width: width * 0.95,
+        width: width * 0.85,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        flex: 1
+        flex: 1,
+        paddingLeft:15,
     },
     timeContainer: {
         flex: 1,
@@ -34,16 +35,16 @@ const styles = ({
     },
     timeText: {
         fontSize: 16,
-        color:"red",
+        color:"#2196F3",
         textAlign: "right"
     },
     nameText: {
         fontSize: 16,
-        color:"blue",
+        color:"black",
     },
     routeText: {
         fontSize: 15,
-        color:"green",
+        color:"#4CAF50",
         fontWeight: "bold"
     },
     btnText: {

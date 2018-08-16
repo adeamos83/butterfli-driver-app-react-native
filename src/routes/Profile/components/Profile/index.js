@@ -19,7 +19,7 @@ export const ProfileContainer =({ driverInfo }) => {
 					<Icon name="user-circle-o" style={styles.icon} />
 				}
 				
-				<Text style={{color: 'blue', fontSize: 12, marginTop: 15}}>Change Profile Photo</Text>
+				<Text style={{color: '#19B5FE', fontSize: 12, marginTop: 15}}>Change Profile Photo</Text>
 			</View>
 			<View style={{flex: 2}}>
 				<Form>
@@ -38,6 +38,10 @@ export const ProfileContainer =({ driverInfo }) => {
 					<Item inlineLabel last>
 						<Label>Phone</Label>
 						<Input defaultValue={phone}/>
+					</Item>
+					<Item inlineLabel last>
+						<Label>Company</Label>
+						<Input defaultValue="SMS Transportation"/>
 					</Item>
 			 	</Form>
 				<View style={{flex: 1}}>

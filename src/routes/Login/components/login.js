@@ -42,6 +42,8 @@ class Login extends React.Component {
                   loginUser={this.props.loginUser}
                   signupUser={this.props.signupUser}
                   needsToCreateProfile={this.props.needsToCreateProfile}
+                  getInputData={this.props.getInputData}
+                  inputData={this.props.inputData}
                />
          </View>
             ||

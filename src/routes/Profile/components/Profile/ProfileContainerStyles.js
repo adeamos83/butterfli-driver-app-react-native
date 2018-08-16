@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
     },
     avatarHeader:{
         flex: 1, 
-        backgroundColor: '#EEEEEE', 
         justifyContent: 'center', 
-        alignItems: 'center',
+        alignItems: 'flex-start',
         paddingVertical: 15,
+        marginLeft: 10 
     },
     icon:{
         color: "#fff",

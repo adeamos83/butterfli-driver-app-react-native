@@ -18,6 +18,7 @@ class RideRequest extends React.Component {
     componentDidMount(){
         this.props.getCurrentLocation();
         this.props.getPassengerRoute();
+        this.watchId = this.props.watchDriverLocation();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -25,7 +26,7 @@ class RideRequest extends React.Component {
     }
 
     componentWillUnmount() {
-        // navigator.geolocation.clearWatch(this.watchId);
+        navigator.geolocation.clearWatch(this.watchId);
     } 
 
     connectDriver = () => {

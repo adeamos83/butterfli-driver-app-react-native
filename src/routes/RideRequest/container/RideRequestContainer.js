@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import RideRequest from '../components/rideRequest';
 
-import { openMapsRoute } from '../../Home/modules/home';
+import { openMapsRoute, watchDriverLocation } from '../../Home/modules/home';
 
 import { getCurrentLocation, 
-        watchDriverLocation,
         getDriverStatus,
         getMarkerLocation,
         getPassengerRoute,

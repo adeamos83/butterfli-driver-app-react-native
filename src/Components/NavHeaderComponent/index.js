@@ -14,7 +14,7 @@ export const NavHeaderComponent = ({ navToPickUp, bookingDetails, driverStatus }
                 <View style={styles.innerContainer}>
                     <View style={styles.navIconContainer}>
                         <Button transparent dark style={styles.iconButton} onPress={navToPickUp}>
-                            <Icon size={25} name="location-arrow" style={{color: "black"}}/> 
+                            <Icon size={25} name="map-o" style={{color: "#9E9E9E"}}/> 
                             <Text style={styles.navText}>NAVIGATE</Text>
                         </Button>
                     </View>
