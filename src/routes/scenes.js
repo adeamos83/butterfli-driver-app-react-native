@@ -10,12 +10,12 @@ import AlertContainer from './Alert/container/AlertContainer'
 
 //Drawer Imports
 import Menu from '../routes/Menu/container/MenuContainer';
-import Drawer1 from '../Components/Drawer1';
-import Drawer2 from '../Components/Drawer2';
 import HeaderComponent from '../Components/HeaderComponent';
 import CreateProfile from './Login/components/CreateProfile/';
 import ProfileContainer from './Profile/container/ProfileContainer';
-import LoaderComponent from '../Components/loader';
+
+import RideSummary from './DropOff/components/RideSummary';
+
 
 
 const MenuIcon = () => {
@@ -25,9 +25,8 @@ const MenuIcon = () => {
 }
 
 const scenes = Actions.create(
-    <Scene key='root' hideNavBar>
-        
-        <Scene key="login" component={LoginContainer}   initial title="login"/>
+    <Scene key='root' hideNavBar
+        <Scene key="login" component={LoginContainer} initial title="login"/>
         <Scene key="createProfile" component={CreateProfile}  title="Create Profile"/>
         <Drawer 
             key="drawer"
@@ -40,9 +39,8 @@ const scenes = Actions.create(
             <Scene key="rideRequest" component={RideRequestContainer} title="rideRequest"/>
             <Scene key="pickUp" component={PickUpContainer} title="pickUp"/>
             <Scene key="dropOff" component={DropOffContainer} title="dropOff"/>
-            <Scene key="drawer1" component={Drawer1} title="Page 1"/>
-            <Scene key="drawer2" component={Drawer2} title="Page 2"/>
             <Scene key="profile" component={ProfileContainer}  title="Profile"/>
+            <Scene key="rideSummary" component={RideSummary}    title="Ride Summary"/>
         </Drawer>
         <Scene key="alert" component={AlertContainer} title="alert"/>
 
