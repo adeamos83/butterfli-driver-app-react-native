@@ -1,8 +1,8 @@
 // Local Host Environment
-// var API_URL = 'http://localhost:3000';
+var API_URL = 'http://localhost:3000';
 
 // Local Iphone Device Server
-var API_URL = 'http://192.168.1.80:3000';
+// var API_URL = 'http://192.168.1.80:3000';
 
 //Deployed Heroku Staging Server
 // var API_URL = "https://lit-coast-94226.herokuapp.com";

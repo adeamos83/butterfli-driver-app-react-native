@@ -12,6 +12,7 @@ import AlertContainer from './Alert/container/AlertContainer'
 import Menu from '../routes/Menu/container/MenuContainer';
 import HeaderComponent from '../Components/HeaderComponent';
 import CreateProfile from './Login/components/CreateProfile/';
+import CreateVehicleProfile from './Login/components/CreateProfile/vehicle';
 import ProfileContainer from './Profile/container/ProfileContainer';
 
 import RideSummary from './DropOff/components/RideSummary';
@@ -25,9 +26,11 @@ const MenuIcon = () => {
 }
 
 const scenes = Actions.create(
-    <Scene key='root' hideNavBar
-        <Scene key="login" component={LoginContainer} initial title="login"/>
-        <Scene key="createProfile" component={CreateProfile}  title="Create Profile"/>
+    <Scene key='root' hideNavBar>
+        <Scene key="createProfile" component={CreateProfile}  initial title="Create Profile"/>
+        <Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Vehicle Profile"/>
+        <Scene key="login" component={LoginContainer}  title="login"/>
+        
         <Drawer 
             key="drawer"
             contentComponent={Menu}

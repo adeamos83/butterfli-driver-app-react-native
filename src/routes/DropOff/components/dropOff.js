@@ -10,6 +10,7 @@ import NavHeaderComponent from '../../../Components/NavHeaderComponent';
 import UserFooterComponent from '../../../Components/UserFooterComponent';
 import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
 import DropOffFooterComponent from '../../../Components/DropOffFooterComponent';
+import RideSumarry from './RideSummary';
 
 //Image Imports
 const carMarker = require("../../../Assets/img/carMarker.png");
@@ -47,48 +48,57 @@ class DropOff extends React.Component {
     render() {
         return(
         <Container>
+        { this.props.bookingDetails.rideRequestStatus !== "completed" && 
             <View style={{flex:1}}>
-                {/* <HeaderComponent logo={buttefliLogo}/> */}
-                <NavHeaderComponent 
-                    navToPickUp={() => this.navToPickUp()}
-                    bookingDetails={this.props.bookingDetails}
-                    driverStatus={this.props.driverStatus}
-                />
-                {this.props.region.latitude &&
-                    <DropOffMapContainer region={this.props.region} 
-                    carMarker={carMarker}
-                    getMarkerLocation={this.props.getMarkerLocation}
-                    bookingDetails={this.props.bookingDetails}
-                    updateWatchDriverLocation={this.props.updateWatchDriverLocation}
-                    getPassengerRoute={this.props.getPassengerRoute}
-                    routes={this.props.routes}
-                    getDistanceFrom={this.props.getDistanceFrom}
-                    dropOffRoutes={this.props.dropOffRoutes}
+                <View style={{flex:1}}>
+                    {/* <HeaderComponent logo={buttefliLogo}/> */}
+                    <NavHeaderComponent 
+                        navToPickUp={() => this.navToPickUp()}
+                        bookingDetails={this.props.bookingDetails}
+                        driverStatus={this.props.driverStatus}
+                    />
+                    {this.props.region.latitude &&
+                        <DropOffMapContainer region={this.props.region} 
+                        carMarker={carMarker}
+                        getMarkerLocation={this.props.getMarkerLocation}
+                        bookingDetails={this.props.bookingDetails}
+                        updateWatchDriverLocation={this.props.updateWatchDriverLocation}
+                        getPassengerRoute={this.props.getPassengerRoute}
+                        routes={this.props.routes}
+                        getDistanceFrom={this.props.getDistanceFrom}
+                        dropOffRoutes={this.props.dropOffRoutes}
+                        />
+                    }
+                </View>
+                { this.props.distanceFrom.rows && 
+                    <DropOffFooterComponent 
+                        distanceFrom={this.props.distanceFrom}
+                        getDriverStatus={this.props.getDriverStatus}
+                        navToHomePage={this.navToHomePage}
+                        updateBookingDetails={this.props.updateBookingDetails}
                     />
                 }
-            </View>
-            { this.props.distanceFrom.rows && 
-                <DropOffFooterComponent 
-                    distanceFrom={this.props.distanceFrom}
-                    getDriverStatus={this.props.getDriverStatus}
-                    navToHomePage={this.navToHomePage}
-                    updateBookingDetails={this.props.updateBookingDetails}
-                />
-            }
-            { this.props.distanceFrom.rows && 
-                <ArrivingFooter 
-                    bookingDetails={this.props.bookingDetails} 
-                    distanceFrom={this.props.distanceFrom}
-                    driverStatus={this.props.driverStatus}
-                />
-            }
-            { this.props.distanceFrom.rows &&
-                <UserFooterComponent 
-                    bookingDetails={this.props.bookingDetails}
-                    distanceFrom={this.props.distanceFrom}
-                    driverStatus={this.props.driverStatus}
-                />
-            }    
+                { this.props.distanceFrom.rows && 
+                    <ArrivingFooter 
+                        bookingDetails={this.props.bookingDetails} 
+                        distanceFrom={this.props.distanceFrom}
+                        driverStatus={this.props.driverStatus}
+                    />
+                }
+                { this.props.distanceFrom.rows &&
+                    <UserFooterComponent 
+                        bookingDetails={this.props.bookingDetails}
+                        distanceFrom={this.props.distanceFrom}
+                        driverStatus={this.props.driverStatus}
+                    />
+                }  
+            </View> 
+            || 
+            <RideSumarry
+                bookingDetails={this.props.bookingDetails}
+                navToHomePage={this.navToHomePage}
+            />
+        }
         </Container>
         );
     }

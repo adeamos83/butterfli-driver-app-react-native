@@ -7,12 +7,12 @@ import styles from './ArrvingFooterComponentStyles.js';
 
 export const ArrivingFooter = ({ navToPickUp, bookingDetails, distanceFrom }) => {
       const { rideRequestStatus } = bookingDetails || {};
-      const { duration } = distanceFrom.rows[0].elements[0] || "";
+      const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
       const alertArrival = true; 
     return ( 
             <View>
                {
-                  (duration.value > 150 && duration.value < 300) &&
+                  (distance.value > 480 && distance.value < 720) &&
             
                   <View style={styles.headerContainer} iosBarStyle="light-content">
                      <View style={styles.innerContainer}>

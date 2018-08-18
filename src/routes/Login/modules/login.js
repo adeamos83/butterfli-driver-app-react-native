@@ -110,21 +110,27 @@ export function needsToCreateProfile(payload){
  }
 
 export function createProfile(payload){
+    console.log("this is from the store", payload);
     return(dispatch, store) => {
-        var details = {
-            firstName: payload.firstName,
-            lastName: payload.lastName,
-            dob: payload.dob,
-            email: store().login.email,
-            vehicle: {
-                make: payload.make,
-                model: payload.model,
-                plateNumber: payload.license,
-                year: payload.year,
-                color: payload.color
-            }
-        }
-        console.log(details);
+        dispatch({
+            type:CREATE_USER_PROFILE,
+            payload: payload
+        })
+        console.log("this is from the store", payload);
+        // var details = {
+        //     firstName: payload.firstName,
+        //     lastName: payload.lastName,
+        //     dob: payload.dob,
+        //     email: store().login.email,
+        //     vehicle: {
+        //         make: payload.make,
+        //         model: payload.model,
+        //         plateNumber: payload.license,
+        //         year: payload.year,
+        //         color: payload.color
+        //     }
+        // }
+        // console.log(details);
         // return axios.post(CREATE_PROFILE, details).then((response) => {
         //      var deatils = response.data;
         //      console.log(details);
@@ -139,6 +145,16 @@ export function createProfile(payload){
     }
  }
  
+ export function createVehicleProfile(payload){
+    console.log("this is from the store", payload);
+    return(dispatch, store) => {
+        dispatch({
+            type:CREATE_VEHICLE_PROFILE,
+            payload: payload
+        })
+        console.log("this is from the Vehicle store", payload);
+    }
+ }
 
 // export function addAlert(text){
 //     return(dispatch) => {
@@ -205,7 +221,15 @@ function handleNeedsProfile(state, action){
 
 function handleCreateProfile(state, action){
     return update(state, {
-        profile: {
+        userProfile: {
+            $set: action.payload
+        }
+    });
+}
+
+function handleCreateVehicleProfile(state, action){
+    return update(state, {
+        vehicleProfile: {
             $set: action.payload
         }
     });
@@ -256,8 +280,9 @@ const ACTION_HANDLERS = {
     UNAUTH_USER: handleUnAuthUser,
     // ADD_ALERT: handleAddAlert,
     REMOVE_ALERT: handleRemoveAlert,
-    NEEDS_PROFILE: handleNeedsProfile
-    // CREATE_USER_PROFILE: handleCreateProfile
+    NEEDS_PROFILE: handleNeedsProfile,
+    CREATE_USER_PROFILE: handleCreateProfile,
+    CREATE_VEHICLE_PROFILE: handleCreateVehicleProfile
 }
 
 

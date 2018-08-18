@@ -7,9 +7,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from "./RideSummaryStyles";
 
-export const RideSummary = ({ driverInfo, getDriverLocation}) => {
+export const RideSummary = ({ driverInfo, bookingDetails, navToHomePage}) => {
+    const { pickUp, dropOff, tripDistance} = bookingDetails || {};
     const { profilePic } = driverInfo || "";
     const { vehicle } = driverInfo || {};
+
+    // This function navigates the user back to the app home screen
+    rideSummaryNav = () => {
+        navToHomePage();
+    }
+
     return (
         <View style={styles.findDriverContainer}>
                <View style={styles.rideheader}>
@@ -31,7 +38,7 @@ export const RideSummary = ({ driverInfo, getDriverLocation}) => {
                      </View>
                      <View style={{flexDirection: "column",  justifyContent: "center"}}>
                         <Text style={styles.routeHeader}>Pick Up</Text>
-                        <Text style={styles.routeText}>31382 Wilshire Blvd, Los Angeles, CA 90010</Text>
+                        <Text style={styles.routeText}>{pickUp.address}</Text>
                      </View>
                   </View>
                   <View style={styles.routeContainer}>
@@ -40,7 +47,7 @@ export const RideSummary = ({ driverInfo, getDriverLocation}) => {
                      </View>
                      <View style={{flexDirection: "column",  justifyContent: "center"}}>
                         <Text style={styles.routeHeader}>Drop Off</Text>
-                        <Text style={styles.routeText}>865 South Figeroa, Los Angeles, CA 90010</Text>
+                        <Text style={styles.routeText}>{dropOff.address}</Text>
                      </View>
                   </View>
                   <View style={styles.routeContainer}>
@@ -48,12 +55,12 @@ export const RideSummary = ({ driverInfo, getDriverLocation}) => {
                         <Icon name="road" style={styles.locationIcon} />
                      </View>
                      <View style={{flexDirection: "column",  justifyContent: "center"}}>
-                        <Text style={styles.routeHeader}>2.4 Miles</Text>
+                        <Text style={styles.routeHeader}>{tripDistance}</Text>
                      </View>
                   </View>
                </View>
                <View style={styles.buttonContainer}>
-                     <Button style={styles.navButton}>
+                     <Button style={styles.navButton} onPress={()=>this.rideSummaryNav()}>
                         <Text style={styles.btnText}>Ok</Text>
                      </Button>
                </View>

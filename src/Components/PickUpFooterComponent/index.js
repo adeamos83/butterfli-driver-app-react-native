@@ -8,7 +8,7 @@ import styles from './PickUpFooterComponentStyles';
 export const PickUpFooterComponent = ({ bookingDetails, distanceFrom, getDriverStatus, pickUpPassenger, updateBookingDetails }) => {
     const { firstName } = bookingDetails || "";
     console.log(firstName);
-    const { duration } = distanceFrom.rows[0].elements[0] || "";
+    const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
     pickUpConfrim = () => {
         getDriverStatus('DropOff');
         pickUpPassenger();
@@ -16,7 +16,7 @@ export const PickUpFooterComponent = ({ bookingDetails, distanceFrom, getDriverS
     }
     return (
         <View>
-            { (duration.value < 120) &&
+            { (distance.value < 480) &&
                 <View style={styles.footerContainer}>
                     return (
                         <View style={styles.buttonContainer}>

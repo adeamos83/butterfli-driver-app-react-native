@@ -307,10 +307,17 @@ export function postDriverLocation(){
 // Update Booking Details 
 export function updateBookingDetails(key, instance){
     return(dispatch, store) => {
+        // var testBoolean;
+        // var updatedDate;
+        // if(instance == 'enRoute'){
+        //     testBoolean = true
+        //     updatedDate = new Date();
+        // };
         const payload = {
             data: {
                 ...store().home.bookingDetails,
                 [key]: instance,
+                // bookingCompletedAt: testBoolean ? updatedDate : ''
             }
         };
         const bookingID = store().home.bookingDetails._id;

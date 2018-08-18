@@ -6,15 +6,24 @@ import { Actions } from 'react-native-router-flux';
 import styles from './CreateProfileStyles';
 import TextField from '../TextField/TextField';
 import { TextInputField } from '../../../../Components/Common';
-import { createProfile } from '../../modules/login';
 
-export const CreateProfile =({addAlert, user_id,
-   handleSubmit, fields: {firstName, lastName, phonenumber}}) => {
+import { createVehicleProfile } from '../../modules/login';
+
+export const CreateVehicleProfile =({addAlert, user_id, createProfile,
+   handleSubmit, fields: { make, model, year, license, color}}) => {
   // const {handleSubmit, fields: {email, password}} = this.props;
+
    onCreateProfile = (values) => {
-      Actions.createVehicleProfile({type: "replace"})
-   //  console.log(values)
-    createProfile(values)
+    // console.log('submitting form', values)
+    console.log(values)
+    createVehicleProfile(values)
+    // console.log(values.email, values.password);
+    // addAlert('hello');
+    // addAlert('Testing 123');
+    // authUser('fakeid');
+   //  createProfile(values);
+    // var {email, password} = this.props.fields;
+      
    }
 
    onSignUp = (values) => {
@@ -28,58 +37,55 @@ export const CreateProfile =({addAlert, user_id,
             <Image style={styles.logo} source={require('../../../../Assets/img/ButterFLi-logo-header.png')}/>
             {/* <Text style={styles.title}> ButterFLi </Text> */}
          </View>
+         <Text style={{fontSize: 18, fontWeight: "700", justifyContent: "center"}}>Vehicle Information</Text>
          <View style={styles.field}>
             <Field
-               {...firstName}
-               withRef
-               refField='firstName'
-               ref={(c) => this.firstName = c}
-               name="firstName"
+               {...make}
+               name="make"
                component={TextInputField}
-               placeholder="First Name"
+               placeholder="Vehicle Make"
                validate={this.renderError}
-               returnKeyType="next"
-               onEnter={() => { 
-                  this.lastName.getRenderedComponent().refs.lastName.focus()
-               }}
-            />
-            
-         </View>
-         <View style={styles.field}>
-            <Field
-               {...lastName}
-               withRef
-               refField='lastName'
-               ref={(c) => this.lastName = c}
-               name="lastName"
-               component={TextInputField}
-               placeholder="Last Name"
-               validate={this.renderError}
-               returnKeyType="next"
-               onEnter={() => { 
-                  this.phonenumber.getRenderedComponent().refs.phonenumber.focus()
-               }}
             />
          </View>
          <View style={styles.field}>
             <Field
-               {...phonenumber}
-               withRef
-               refField='phonenumber'
-               ref={(c) => this.phonenumber = c}
-               name="phonenumber"
+               {...model}
+               name="model"
                component={TextInputField}
-               placeholder="Phone Number"
+               placeholder="Car Model"
                validate={this.renderError}
-               returnKeyType="next"
-               onEnter={() => { 
-                  this.dob.getRenderedComponent().refs.dob.focus()
-               }}
+            />
+         </View>
+         <View style={styles.field}>
+            <Field
+               {...year}
+               name="year"
+               component={TextInputField}
+               placeholder="Year"
+               validate={this.renderError}
+            />
+         </View>
+         <View style={styles.field}>
+            <Field
+               {...license}
+               name="license"
+               component={TextInputField}
+               placeholder="License Plate"
+               validate={this.renderError}
+            />
+         </View>
+         <View style={styles.field}>
+            <Field
+               {...color}
+               name="color"
+               component={TextInputField}
+               placeholder="Color of Vehicle"
+               validate={this.renderError}
             />
          </View>
          <View style={styles.buttonView}>
             <Button style={styles.signinBtn} onPress={handleSubmit(this.onCreateProfile)}>
-               <Text style={styles.btnText}>Next</Text>
+               <Text style={styles.btnText}>Submit</Text>
             </Button>
             {/* 
                <Button  style={styles.signup}>
@@ -95,20 +101,23 @@ export const CreateProfile =({addAlert, user_id,
 
 var validate = (formProps) => {
    var errors = {};
-   if(!formProps.firstName){
-      errors.firstName = "Please enter an first name."
+   if(!formProps.make){
+      errors.make = "Please enter the vehicle car make."
    }
-   if(!formProps.lastName){
-      errors.lastName = "Please enter a last name."
+   if(!formProps.model){
+      errors.model = "Please enter the vehicle model."
    }
-   if(!formProps.phonenumber){
-      errors.phonenumber = "Please enter a phone number."
+   if(!formProps.year){
+      errors.year = "Please enter the year of the car."
+   }
+   if(!formProps.color){
+      errors.color = "Please enter color of car."
    }
    return errors;
 }
 
 module.exports = reduxForm({
-   form: 'createProfile',
-   fields: ['firstName', 'lastName', 'phonenumber'],
+   form: 'createVehicleProfile',
+   fields: ['make', 'model', 'year', 'license', 'color'],
    validate: validate
-}, null, null)(CreateProfile);
+}, null, null)(CreateVehicleProfile);

@@ -7,15 +7,15 @@ import styles from './DropOffFooterComponentStyles';
 
 export const DropOffFooterComponent = ({ distanceFrom, getDriverStatus, navToHomePage, updateBookingDetails }) => {
 
-    const { duration } = distanceFrom.rows[0].elements[0] || "";
+    const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
     dropOffConfrim = () => {
         getDriverStatus('available');
-        navToHomePage();
+        // navToHomePage();
         updateBookingDetails("rideRequestStatus", "completed")
     }
     return (
         <View>
-            { (duration.value < 120) &&
+            { (distance.value < 480) &&
                 <View style={styles.footerContainer}>
                     return (
                         <View style={styles.buttonContainer}>

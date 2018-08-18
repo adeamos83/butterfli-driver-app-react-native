@@ -19,7 +19,7 @@ class PickUp extends React.Component {
 
     componentDidMount(){
         // this.props.getCurrentLocation();
-        this.props.getDistanceFrom();
+        this.props.getDistanceFrom("intial");
         this.props.getPickUpRoute();
         this.watchId = this.props.watchDriverLocation();
     }

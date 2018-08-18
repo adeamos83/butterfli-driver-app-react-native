@@ -6,15 +6,21 @@ import { Actions } from 'react-native-router-flux';
 import styles from './CreateProfileStyles';
 import TextField from '../TextField/TextField';
 import { TextInputField } from '../../../../Components/Common';
-import { createProfile } from '../../modules/login';
 
-export const CreateProfile =({addAlert, user_id,
-   handleSubmit, fields: {firstName, lastName, phonenumber}}) => {
+export const CreateProfile =({addAlert, user_id, createProfile,
+   handleSubmit, fields: {firstName, lastName, phonenumber, dob, make, model, year, license, color}}) => {
   // const {handleSubmit, fields: {email, password}} = this.props;
+
    onCreateProfile = (values) => {
-      Actions.createVehicleProfile({type: "replace"})
-   //  console.log(values)
-    createProfile(values)
+    // console.log('submitting form', values)
+    console.log(values)
+    // console.log(values.email, values.password);
+    // addAlert('hello');
+    // addAlert('Testing 123');
+    // authUser('fakeid');
+   //  createProfile(values);
+    // var {email, password} = this.props.fields;
+      
    }
 
    onSignUp = (values) => {
@@ -77,9 +83,66 @@ export const CreateProfile =({addAlert, user_id,
                }}
             />
          </View>
+         <View style={styles.field}>
+            <Field
+               {...dob}
+               withRef
+               refField='dob'
+               ref={(c) => this.dob = c}
+               name="dob"
+               component={TextInputField}
+               placeholder="Date of Birth"
+               returnKeyType="next"
+            />
+         </View>
+         <View style={styles.field}>
+            <Field
+               {...make}
+               name="make"
+               component={TextField}
+               placeholder="Vehicle Make"
+               validate={this.renderError}
+            />
+         </View>
+         <View style={styles.field}>
+            <Field
+               {...model}
+               name="model"
+               component={TextField}
+               placeholder="Car Model"
+               validate={this.renderError}
+            />
+         </View>
+         <View style={styles.field}>
+            <Field
+               {...year}
+               name="year"
+               component={TextField}
+               placeholder="Year"
+               validate={this.renderError}
+            />
+         </View>
+         <View style={styles.field}>
+            <Field
+               {...license}
+               name="license"
+               component={TextField}
+               placeholder="License Plate"
+               validate={this.renderError}
+            />
+         </View>
+         <View style={styles.field}>
+            <Field
+               {...color}
+               name="color"
+               component={TextField}
+               placeholder="Color of Vehicle"
+               validate={this.renderError}
+            />
+         </View>
          <View style={styles.buttonView}>
             <Button style={styles.signinBtn} onPress={handleSubmit(this.onCreateProfile)}>
-               <Text style={styles.btnText}>Next</Text>
+               <Text style={styles.btnText}>Submit</Text>
             </Button>
             {/* 
                <Button  style={styles.signup}>
@@ -104,11 +167,14 @@ var validate = (formProps) => {
    if(!formProps.phonenumber){
       errors.phonenumber = "Please enter a phone number."
    }
+   if(!formProps.dob){
+      errors.dob = "Please enter a date of birth."
+   }
    return errors;
 }
 
 module.exports = reduxForm({
    form: 'createProfile',
-   fields: ['firstName', 'lastName', 'phonenumber'],
+   fields: ['firstName', 'lastName', 'phonenumber', 'dob', 'make', 'model', 'year', 'license', 'color'],
    validate: validate
 }, null, null)(CreateProfile);

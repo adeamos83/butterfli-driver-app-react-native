@@ -2,7 +2,7 @@ import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
 import { API_URL, MAPBOX_ACCESS_TOKEN } from '../../../api';
-
+import { updateBookingDetails } from '../../Home/modules/home'
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
 //-------------------------------
@@ -181,7 +181,7 @@ export function watchDriverLocation(){
 
 // Get Distance from Driver to pickUp or dropOff Location
 
-export function getDistanceFrom() {
+export function getDistanceFrom(instance) {
     return(dispatch, store) => {
         if(store().home.updateWatchDriverLocation){
             console.log("Getting arrival time");
@@ -200,6 +200,10 @@ export function getDistanceFrom() {
                     type: GET_DISTANCE_FROM,
                     payload: res.body
                 })
+                if(instance == 'intial'){
+                    dispatch(updateBookingDetails("tripDistance", res.body.rows[0].elements[0].distance.text));
+                    console.log(res.body.rows[0].elements[0].distance.text);
+                }
             })
         }
     }
