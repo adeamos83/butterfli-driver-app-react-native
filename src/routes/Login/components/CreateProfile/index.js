@@ -6,15 +6,17 @@ import { Actions } from 'react-native-router-flux';
 import styles from './CreateProfileStyles';
 import TextField from '../TextField/TextField';
 import { TextInputField } from '../../../../Components/Common';
-import { createProfile } from '../../modules/login';
+import CreateVehicleProfile from './vehicle';
 
-export const CreateProfile =({addAlert, user_id,
-   handleSubmit, fields: {firstName, lastName, phonenumber}}) => {
+
+export const CreateProfile =({addAlert, user_id, createProfile, createUserProfile, createCarProfile,
+   gotoCarProfile, navToCarPage, isSigningUp, newUserProfile, signingUp,handleSubmit, fields: {firstName, lastName, phonenumber}}) => {
   // const {handleSubmit, fields: {email, password}} = this.props;
+   
    onCreateProfile = (values) => {
-      Actions.createVehicleProfile({type: "replace"})
-   //  console.log(values)
-    createProfile(values)
+   // Actions.createVehicleProfile({type: "replace"})
+   createUserProfile(values)
+    gotoCarProfile(true);
    }
 
    onSignUp = (values) => {
@@ -23,71 +25,82 @@ export const CreateProfile =({addAlert, user_id,
 
    return (
       <KeyboardAvoidingView behavior="padding"  keyboardVerticalOffset={Platform.select({ios: 0, android: 25})} style={styles.container}>
-      <ScrollView>
-         <View style={styles.titleContainer}>
-            <Image style={styles.logo} source={require('../../../../Assets/img/ButterFLi-logo-header.png')}/>
-            {/* <Text style={styles.title}> ButterFLi </Text> */}
-         </View>
-         <View style={styles.field}>
-            <Field
-               {...firstName}
-               withRef
-               refField='firstName'
-               ref={(c) => this.firstName = c}
-               name="firstName"
-               component={TextInputField}
-               placeholder="First Name"
-               validate={this.renderError}
-               returnKeyType="next"
-               onEnter={() => { 
-                  this.lastName.getRenderedComponent().refs.lastName.focus()
-               }}
-            />
-            
-         </View>
-         <View style={styles.field}>
-            <Field
-               {...lastName}
-               withRef
-               refField='lastName'
-               ref={(c) => this.lastName = c}
-               name="lastName"
-               component={TextInputField}
-               placeholder="Last Name"
-               validate={this.renderError}
-               returnKeyType="next"
-               onEnter={() => { 
-                  this.phonenumber.getRenderedComponent().refs.phonenumber.focus()
-               }}
-            />
-         </View>
-         <View style={styles.field}>
-            <Field
-               {...phonenumber}
-               withRef
-               refField='phonenumber'
-               ref={(c) => this.phonenumber = c}
-               name="phonenumber"
-               component={TextInputField}
-               placeholder="Phone Number"
-               validate={this.renderError}
-               returnKeyType="next"
-               onEnter={() => { 
-                  this.dob.getRenderedComponent().refs.dob.focus()
-               }}
-            />
-         </View>
-         <View style={styles.buttonView}>
-            <Button style={styles.signinBtn} onPress={handleSubmit(this.onCreateProfile)}>
-               <Text style={styles.btnText}>Next</Text>
-            </Button>
-            {/* 
-               <Button  style={styles.signup}>
-                  <Text style={styles.btnText}>Cancel</Text>
+      { (navToCarPage == false) && 
+         <ScrollView>
+            <View style={styles.titleContainer}>
+               <Image style={styles.logo} source={require('../../../../Assets/img/ButterFLi-logo-header.png')}/>
+               {/* <Text style={styles.title}> ButterFLi </Text> */}
+            </View>
+            <View style={styles.field}>
+               <Field
+                  {...firstName}
+                  withRef
+                  refField='firstName'
+                  ref={(c) => this.firstName = c}
+                  name="firstName"
+                  component={TextInputField}
+                  placeholder="First Name"
+                  validate={this.renderError}
+                  returnKeyType="next"
+                  onEnter={() => { 
+                     this.lastName.getRenderedComponent().refs.lastName.focus()
+                  }}
+               />
+               
+            </View>
+            <View style={styles.field}>
+               <Field
+                  {...lastName}
+                  withRef
+                  refField='lastName'
+                  ref={(c) => this.lastName = c}
+                  name="lastName"
+                  component={TextInputField}
+                  placeholder="Last Name"
+                  validate={this.renderError}
+                  returnKeyType="next"
+                  onEnter={() => { 
+                     this.phonenumber.getRenderedComponent().refs.phonenumber.focus()
+                  }}
+               />
+            </View>
+            <View style={styles.field}>
+               <Field
+                  {...phonenumber}
+                  withRef
+                  refField='phonenumber'
+                  ref={(c) => this.phonenumber = c}
+                  name="phonenumber"
+                  component={TextInputField}
+                  placeholder="Phone Number"
+                  validate={this.renderError}
+                  returnKeyType="next"
+                  onEnter={() => { 
+                     this.dob.getRenderedComponent().refs.dob.focus()
+                  }}
+               />
+            </View>
+            <View style={styles.buttonView}>
+               <Button style={styles.signinBtn} onPress={handleSubmit(this.onCreateProfile)}>
+                  <Text style={styles.btnText}>Next</Text>
                </Button>
-            */}
-         </View>
-         </ScrollView>
+               {/* 
+                  <Button  style={styles.signup}>
+                     <Text style={styles.btnText}>Cancel</Text>
+                  </Button>
+               */}
+            </View>
+            </ScrollView>
+            ||
+            <CreateVehicleProfile 
+               createCarProfile={createCarProfile}
+               createProfile={createProfile}
+               createUserProfile={createUserProfile}
+               isSigningUp={isSigningUp}
+               signingUp={signingUp}
+               newUserProfile={newUserProfile}
+            />
+         }
       </KeyboardAvoidingView>
    )
 }

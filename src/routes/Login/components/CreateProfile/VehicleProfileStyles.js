@@ -2,15 +2,16 @@ import { StyleSheet, Dimensions } from "react-native";
 const { width } = Dimensions.get("window");
 const styles = {
    container: {
-       flex: 1,
+		 flex: 1,
+		 justifyContent: "center",
     //    justifyContent: "flex-start",
     //    alignItems: "stretch",
-       padding: 20,
+       padding: 0,
        backgroundColor: '#FFF'
    },
    titleContainer: {
-      // padding: 10,
-      flexGrow: 2.5,
+   	// padding: 10,
+   	flexGrow: 2.5,
 		justifyContent: "center",
       alignItems: "center",
    },
@@ -61,7 +62,7 @@ const styles = {
 		flex: 1, 
 		flexDirection: 'row', 
 		justifyContent: 'space-around',
-		width:width * 0.8,
+		width:width * 0.88,
 		paddingVertical: 20,
 	},
   	submitBtn:{

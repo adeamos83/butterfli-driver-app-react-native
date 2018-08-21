@@ -17,7 +17,7 @@ class Login extends React.Component {
    }
 
    componentDidUpdate(prevProps, prevState) {
-      if(this.props.user_id  && !prevProps.user_id && !this.props.needsProfile){
+      if(this.props.user_id  && !prevProps.user_id && !this.props.needsProfile && this.props.loggingIn){
          if(this.props.user_id){
             console.log("user is found");
             Actions.home({type: "replace"});
@@ -44,6 +44,10 @@ class Login extends React.Component {
                   needsToCreateProfile={this.props.needsToCreateProfile}
                   getInputData={this.props.getInputData}
                   inputData={this.props.inputData}
+                  isLoggingIn={this.props.isLoggingIn}
+                  loggingIn={this.props.loggingIn}
+                  isSigningUp={this.props.isSigningUp}
+                  signingUp={this.props.signingUp}
                />
          </View>
             ||
@@ -53,6 +57,13 @@ class Login extends React.Component {
                   addAlert={this.props.addAlert}
                   signupUser={this.props.signupUser}
                   createProfile={this.props.createProfile}
+                  createCarProfile={this.props.createCarProfile}
+                  gotoCarProfile={this.props.gotoCarProfile}
+                  navToCarPage={this.props.navToCarPage}
+                  createUserProfile={this.props.createUserProfile}
+                  isSigningUp={this.props.isSigningUp}
+                  signingUp={this.props.signingUp}
+                  newUserProfile={this.props.newUserProfile}
                />
          }
          

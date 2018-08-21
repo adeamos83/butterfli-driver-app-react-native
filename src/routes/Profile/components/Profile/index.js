@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './ProfileContainerStyles';
 
 export const ProfileContainer =({ driverInfo }) => {
-	const {firstName, lastName, email, phone, profilePic, vehicle} = driverInfo || {};
+	const {firstName, lastName, email, phoneNumber, profilePic, vehicle} = driverInfo || {};
 	console.log(firstName)
    return(
 		<ScrollView style={styles.container}>
@@ -37,31 +37,37 @@ export const ProfileContainer =({ driverInfo }) => {
 					</Item>
 					<Item inlineLabel last>
 						<Label>Phone</Label>
-						<Input defaultValue={phone}/>
+						<Input defaultValue={phoneNumber}/>
 					</Item>
 					<Item inlineLabel last>
 						<Label>Company</Label>
 						<Input defaultValue="SMS Transportation"/>
 					</Item>
-			 	</Form>
-				<View style={{flex: 1}}>
-					<View style={{borderBottomWidth: 2, borderColor: '#ECECEC', marginBottom: 20}}>
-						<Text style={{fontSize: 16, fontWeight: "700", marginTop: 20, marginBottom: 15}}>Vehicle Profile</Text>
+				 </Form>
+				 {/* 
+					<View style={{flex: 1}}>
+						<View style={{borderBottomWidth: 2, borderColor: '#ECECEC', marginBottom: 20}}>
+							<Text style={{fontSize: 16, fontWeight: "700", marginTop: 20, marginBottom: 15}}>Vehicle Profile</Text>
+						</View>
+						<View style={styles.avatarHeader}>
+							<View style={styles.imageContainer}>
+								{ vehicle.vehiclePic && 
+									<Image resizemode="cover" style={styles.vehiclePic} source={{uri: vehicle.vehiclePic}} />
+									||
+									<Icon name="user-circle-o" style={styles.icon} />
+								}
+							</View>							
+						</View>
+						<Item inlineLabel>
+							<Label>Car Make</Label>
+							<Input defaultValue={vehicle.make} editable={false}/>
+						</Item>
+						<Item inlineLabel last>
+							<Label>Car Model</Label>
+							<Input defaultValue={vehicle.model} editable={false}/>
+						</Item>
 					</View>
-					<View style={styles.avatarHeader}>
-						<View style={styles.imageContainer}>
-							<Image resizemode="cover" style={styles.vehiclePic} source={{uri: vehicle.vehiclePic}} />
-						</View>							
-					</View>
-					<Item inlineLabel>
-						<Label>Car Make</Label>
-						<Input defaultValue={vehicle.make} editable={false}/>
-					</Item>
-					<Item inlineLabel last>
-						<Label>Car Model</Label>
-						<Input defaultValue={vehicle.model} editable={false}/>
-					</Item>
-				</View>
+				*/}
 			</View>
 		</ScrollView>
    )

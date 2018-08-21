@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import update from 'react-addons-update';
 import { Field, reduxForm } from 'redux-form';
 import { Text, View, TextInput, Image, KeyboardAvoidingView } from 'react-native';
 import { Button } from 'native-base';
@@ -7,6 +8,7 @@ import styles from './LoginStyles';
 import TextField from '../TextField/TextField';
 import PassTextField from '../TextField/PassTextField'
 import { TextInputField } from '../../../../Components/Common/'
+import { Spinner } from '../../../../Components/Common';
 
 export const LoginContainer =({addAlert, 
 										authUser, 
@@ -17,10 +19,15 @@ export const LoginContainer =({addAlert,
 										handleSubmit, 
                               getInputData,
                               inputData,
+                              loggingIn,
+                              isLoggingIn,
+                              isSigningUp,
+                              signingUp,
 										fields: {email, password}}) => {
   // const {handleSubmit, fields: {email, password}} = this.props;
 
    onSignIn = (values) => {
+      isLoggingIn(true);
     // console.log('submitting form', values)
     // console.log(values)
     // console.log(values.email, values.password);
@@ -33,8 +40,12 @@ export const LoginContainer =({addAlert,
    }
 
    onSignUp = (values) => {
-    needsToCreateProfile(true);  
-    signupUser(values.email, values.password);  
+      isSigningUp(true) 
+      signupUser(values.email, values.password); 
+      needsToCreateProfile(true); 
+      // if(user_id){
+      //    needsToCreateProfile(true); 
+      // } 
    }
 
    return (
@@ -73,10 +84,18 @@ export const LoginContainer =({addAlert,
          */}
          <View style={styles.buttonView}>
             <Button info style={styles.signinBtn} onPress={handleSubmit(this.onSignIn)}>
+            { loggingIn &&
+               <Spinner size="small"/>
+               ||   
                <Text style={styles.btnText}>Sign In</Text>
+            }
             </Button>
             <Button  style={styles.signup} onPress={handleSubmit(this.onSignUp)}>
+            { signingUp &&
+               <Spinner size="small"/>
+               ||
                <Text style={styles.btnText}>Sign Up</Text>
+            }   
             </Button>
          </View>
       </KeyboardAvoidingView>

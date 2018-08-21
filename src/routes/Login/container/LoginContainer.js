@@ -2,15 +2,19 @@ import { connect } from 'react-redux';
 import Login from '../components/login';
 
 import { authUser, 
-         unAuthUser, 
-         addAlert,
-         removeAlert,
-         loginUser,
-         signupUser,
-         needsToCreateProfile,
-         createProfile,
-         getInputData,
-         createVehicleProfile
+            unAuthUser, 
+            addAlert,
+            removeAlert,
+            loginUser,
+            signupUser,
+            needsToCreateProfile,
+            createProfile,
+            getInputData,
+            createCarProfile,
+            createUserProfile,
+            gotoCarProfile,
+            isLoggingIn,
+            isSigningUp
         } from '../modules/login';
 
 const mapStateToProps = (state) => ({
@@ -19,7 +23,11 @@ const mapStateToProps = (state) => ({
     needsProfile: state.login.needsProfile,
     inputData: state.login.inputData || {},
     vehicleProfile: state.login.vehicleProfile || {},
-    userProfile: state.login.userProfile || {}
+    userProfile: state.login.userProfile || {},
+    navToCarPage: state.login.navToCarPage || "",
+    loggingIn: state.login.loggingIn,
+    signingUp: state.login.signingUp,
+    newUserProfile: state.login.newUserProfile || {}
 });
 
 const mapActionCreators = {
@@ -32,7 +40,11 @@ const mapActionCreators = {
    needsToCreateProfile,
    createProfile,
    getInputData,
-   createVehicleProfile
+   createUserProfile,
+   createCarProfile,
+   gotoCarProfile,
+   isLoggingIn,
+   isSigningUp
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Login)

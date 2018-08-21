@@ -3,31 +3,23 @@ import { Field, reduxForm } from 'redux-form';
 import { Text, View, TextInput, Image, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-import styles from './CreateProfileStyles';
+import styles from './VehicleProfileStyles';
 import TextField from '../TextField/TextField';
-import { TextInputField } from '../../../../Components/Common';
+import { Spinner, TextInputField } from '../../../../Components/Common';
 
-import { createVehicleProfile } from '../../modules/login';
 
-export const CreateVehicleProfile =({addAlert, user_id, createProfile,
-   handleSubmit, fields: { make, model, year, license, color}}) => {
-  // const {handleSubmit, fields: {email, password}} = this.props;
+export const CreateVehicleProfile =({addAlert, user_id, createUserProfile, createProfile, createCarProfile, 
+   isSigningUp, signingUp, newUserProfile, handleSubmit, fields: { make, model, year, license, color}}) => {
 
    onCreateProfile = (values) => {
-    // console.log('submitting form', values)
-    console.log(values)
-    createVehicleProfile(values)
-    // console.log(values.email, values.password);
-    // addAlert('hello');
-    // addAlert('Testing 123');
-    // authUser('fakeid');
-   //  createProfile(values);
-    // var {email, password} = this.props.fields;
-      
+      isSigningUp(true)
+      createCarProfile(values)
+      createProfile();
    }
 
    onSignUp = (values) => {
-    signupUser(values.email, values.password)      
+      isSigningUp(true)
+      signupUser(values.email, values.password)      
    }
 
    return (
@@ -37,7 +29,7 @@ export const CreateVehicleProfile =({addAlert, user_id, createProfile,
             <Image style={styles.logo} source={require('../../../../Assets/img/ButterFLi-logo-header.png')}/>
             {/* <Text style={styles.title}> ButterFLi </Text> */}
          </View>
-         <Text style={{fontSize: 18, fontWeight: "700", justifyContent: "center"}}>Vehicle Information</Text>
+         <Text style={{fontSize: 18, fontWeight: "700", justifyContent: "center", paddingLeft: 5, paddingBottom: 5}}>Vehicle Information</Text>
          <View style={styles.field}>
             <Field
                {...make}
@@ -83,9 +75,13 @@ export const CreateVehicleProfile =({addAlert, user_id, createProfile,
                validate={this.renderError}
             />
          </View>
-         <View style={styles.buttonView}>
-            <Button style={styles.signinBtn} onPress={handleSubmit(this.onCreateProfile)}>
-               <Text style={styles.btnText}>Submit</Text>
+         <View style={styles.sumbitBtnView}>
+            <Button style={styles.submitBtn} onPress={handleSubmit(this.onCreateProfile)}>
+               { signingUp &&
+                  <Spinner size="small" color="white"/>
+                  ||
+                  <Text style={styles.btnText}>Submit</Text>
+               }
             </Button>
             {/* 
                <Button  style={styles.signup}>

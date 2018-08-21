@@ -1,10 +1,12 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+
 import uuid from 'uuid';
 import axios from 'axios';
 
-import {SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE} from '../../../api';
+import {SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE_URL} from '../../../api';
 import {addAlert} from '../../Alert/modules/alerts';
 import { disconnectSocketIO } from '../../Home/modules/home';
 
@@ -16,8 +18,13 @@ const { AUTH_USER,
         ADD_ALERT,
         REMOVE_ALERT,
         CREATE_USER_PROFILE,
+        CREATE_VEHICLE_PROFILE,
         NEEDS_PROFILE,
-        GET_INPUT
+        GET_INPUT,
+        NAV_TO_CAR_PROFILE,
+        IS_LOGGING_IN,
+        IS_SIGNING_UP,
+        USER_PROFILE_CREATED
         } = constants;
 
 //-------------------------------
@@ -28,6 +35,9 @@ const initialState = {
     alerts:[],
     needsProfile: false,
     inputData: {},
+    gotoCarPage: false,
+    loggingIn: false,
+    signingUp: false
 };
 
 
@@ -35,6 +45,27 @@ const initialState = {
 //-------------------------------
 // Action
 //-------------------------------
+
+// Used for the spinning loading Sign In button 
+export function isLoggingIn(payload){
+    return (dispatch) => {
+        dispatch({
+            type: IS_LOGGING_IN,
+            payload: payload
+        })
+    }
+}
+
+// Used for the spinning loading Sign Up button 
+export function isSigningUp(payload){
+    return (dispatch) => {
+        dispatch({
+            type: IS_SIGNING_UP,
+            payload: payload
+        })
+    }
+}
+
 
 // Get User Input
 export function getInputData(payload) {
@@ -47,16 +78,20 @@ export function getInputData(payload) {
 export function loginUser(email, password){
    return(dispatch) => {
        return axios.post(SIGNIN_URL, {email, password}).then((response) => {
-            var {user_id, token} = response.data;
+            var {user_id, token, isProfileCreated} = response.data;
             var userDetails = {
                 user_id: user_id,
-                email: email
+                email: email,
+                token: token
             }
             dispatch({
                 type: AUTH_USER,
                 payload: userDetails
             });
+            dispatch(isLoggingIn(false));
+            dispatch(needsToCreateProfile(isProfileCreated));
        }).catch((error) => {
+        dispatch(isLoggingIn(false));
         dispatch(addAlert("Could not log in."));
        });
    }
@@ -68,15 +103,21 @@ export function signupUser(email, password){
              var {user_id, token} = response.data;
              var userDetails = {
                 user_id: user_id,
-                email: email
+                email: email,
+                token: token
             }
-             dispatch(addAlert(token));
              dispatch({
                  type: AUTH_USER,
                  payload: userDetails
              });
+             setTimeout(function(){
+                dispatch(isSigningUp(false));
+             }, 3000)
         }).catch((error) => {
          dispatch(addAlert("Could not sign up."));
+         setTimeout(function(){
+            dispatch(isSigningUp(false));
+         }, 3000)
         });
     }
  }
@@ -109,14 +150,21 @@ export function needsToCreateProfile(payload){
     }
  }
 
-export function createProfile(payload){
-    console.log("this is from the store", payload);
+export function createProfile(){
     return(dispatch, store) => {
-        dispatch({
-            type:CREATE_USER_PROFILE,
-            payload: payload
-        })
-        console.log("this is from the store", payload);
+        // dispatch({
+        //     type:CREATE_USER_PROFILE,
+        //     payload: payload
+        // })
+        var details = {
+            user_id: store().login.user_id,
+            email: store().login.email,
+            ...store().login.userProfile,
+            vehicle: {
+                ...store().login.vehicleProfile
+            }
+        }
+        console.log("from create profile redux function", details);
         // var details = {
         //     firstName: payload.firstName,
         //     lastName: payload.lastName,
@@ -131,28 +179,49 @@ export function createProfile(payload){
         //     }
         // }
         // console.log(details);
-        // return axios.post(CREATE_PROFILE, details).then((response) => {
-        //      var deatils = response.data;
-        //      console.log(details);
-        //      dispatch(addAlert("User Profile Created"));
-        //     //  dispatch({
-        //     //      type: CREATE_USER_PROFILE,
-        //     //      payload: details
-        //     //  });
-        // }).catch((error) => {
-        //  dispatch(addAlert("Could not create User Profile."));
-        // });
+        return axios.post(CREATE_PROFILE_URL, details, {
+            headers: {authorization: store().login.token}
+        }).then((response) => {
+             var details = response.data;
+             console.log(details);
+             dispatch(addAlert("User Profile Created"));
+             dispatch({
+                 type: USER_PROFILE_CREATED,
+                 payload: details
+             });
+             Actions.home({type: "replace"})
+             dispatch(isSigningUp(false));
+
+            //  setTimeout(function(){
+            //     dispatch(isSigningUp(false));
+            //  }, 3000)
+        }).catch((error) => {
+            dispatch(addAlert("Could not create User Profile."));
+            dispatch(isSigningUp(false));
+            // setTimeout(function(){
+            //     dispatch(isSigningUp(false));
+            // }, 3000)
+        });
     }
  }
  
- export function createVehicleProfile(payload){
-    console.log("this is from the store", payload);
+ export function createCarProfile(payload){
+    console.log("this is from the Car Profile", payload);
     return(dispatch, store) => {
         dispatch({
             type:CREATE_VEHICLE_PROFILE,
             payload: payload
         })
-        console.log("this is from the Vehicle store", payload);
+    }
+ }
+
+ export function createUserProfile(payload){
+    console.log("this is from the User Profile", payload);
+    return(dispatch, store) => {
+        dispatch({
+            type:CREATE_USER_PROFILE,
+            payload: payload
+        })
     }
  }
 
@@ -174,9 +243,35 @@ export function createProfile(payload){
      }
  }
 
+ export function gotoCarProfile(payload){
+    return(dispatch) => {
+        dispatch({
+            type: NAV_TO_CAR_PROFILE,
+            payload: payload
+        });
+    }
+}
+
 //-------------------------------
 // Action Handlers
 //-------------------------------
+
+// Used for the spinng loading button
+function handleIsLoggingIn(state, action ) {
+    return update(state, {
+        loggingIn: {
+            $set: action.payload
+        }
+    })
+}
+
+function handleIsSigningUp(state, action ) {
+    return update(state, {
+        signingUp: {
+            $set: action.payload
+        }
+    })
+}
 
 function handleGetInputData(state, action) {
     const { key, value } = action.payload;
@@ -196,6 +291,9 @@ function handleUserAuth(state, action){
        },
         email: {
             $set: action.payload.email
+        },
+        token: {
+            $set: action.payload.token
         }
    });
 }
@@ -206,6 +304,9 @@ function handleUnAuthUser(state, action){
             $set: undefined
         },
         email: {
+            $set: undefined
+        },
+        token: {
             $set: undefined
         }
    });
@@ -230,6 +331,22 @@ function handleCreateProfile(state, action){
 function handleCreateVehicleProfile(state, action){
     return update(state, {
         vehicleProfile: {
+            $set: action.payload
+        }
+    });
+}
+
+function handleGetNewUserProfile(state, action){
+    return update(state, {
+        newUserProfile: {
+            $set: action.payload
+        }
+    });
+}
+
+function handleNavToCarPage(state, action){
+    return update(state, {
+        navToCarPage: {
             $set: action.payload
         }
     });
@@ -282,7 +399,11 @@ const ACTION_HANDLERS = {
     REMOVE_ALERT: handleRemoveAlert,
     NEEDS_PROFILE: handleNeedsProfile,
     CREATE_USER_PROFILE: handleCreateProfile,
-    CREATE_VEHICLE_PROFILE: handleCreateVehicleProfile
+    CREATE_VEHICLE_PROFILE: handleCreateVehicleProfile,
+    NAV_TO_CAR_PROFILE: handleNavToCarPage,
+    IS_LOGGING_IN: handleIsLoggingIn,
+    IS_SIGNING_UP: handleIsSigningUp,
+    USER_PROFILE_CREATED: handleGetNewUserProfile
 }
 
 

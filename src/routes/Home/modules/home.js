@@ -1,11 +1,15 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
+import axios from 'axios';
+
 
 import { API_URL } from '../../../api';
 import request from '../../../util/request';
 
 import io from "socket.io-client/dist/socket.io";
+
+import { addAlert } from '../../Alert/modules/alerts';
 // const socket = io.connect(API_URL, {jsonp:false, forceNew: true});
 
 // let socket = io(API_URL, {jsonp:false, 'force new connection':true});
@@ -105,15 +109,28 @@ export function getDriverStatus(driverStatus){
         });
 
         //Updates database with Driver Status
-        request.put(`${API_URL}/api/driverLocation/` + id)
-        .send(payload)
-        .finish((error, res) => {
-                dispatch({
-                    type: POST_DRIVER_LOCATION,
-                    payload: res.body
-                });
-                dispatch(isDriverConnecting(false));   
-        });
+        return axios.put(`${API_URL}/api/driverLocation/` + id, {payload}, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
+            dispatch({
+                type: POST_DRIVER_LOCATION,
+                payload: res.data
+            });
+            dispatch(isDriverConnecting(false)); 
+        }).catch((error) => {
+            console.log(error);
+        })
+
+
+        // request.put(`${API_URL}/api/driverLocation/` + id)
+        // .send(payload)
+        // .finish((error, res) => {
+        //         dispatch({
+        //             type: POST_DRIVER_LOCATION,
+        //             payload: res.body
+        //         });
+        //         dispatch(isDriverConnecting(false));   
+        // });
     }
 }
 
@@ -229,13 +246,27 @@ export function getDriverInfo() {
         let user_id = store().login.user_id;
         console.log(user_id);
         let id = "5b5d05220fdb907bdb8a5c2d";
-        request.get(`${API_URL}/api/driver/` + user_id)
-        .finish((error, res)=>{
+
+        return axios.get(`${API_URL}/api/driver/` + user_id, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
+            console.log("This is Get Driver Info", res);
             dispatch({
                 type: GET_DRIVER_INFORMATION,
-                payload: res.body
+                payload: res.data
             });
+        }).catch((error) => {
+            console.log(error);
+            dispatch(addAlert("Could not get Driver Profile."));
         });
+
+        // request.get(`${API_URL}/api/driver/` + user_id)
+        // .finish((error, res)=>{
+        //     dispatch({
+        //         type: GET_DRIVER_INFORMATION,
+        //         payload: res.body
+        //     });
+        // });
     }
 }
 //Get Driver Socket ID from server
@@ -280,8 +311,7 @@ export function disconnectSocketIO() {
 // Post Driver Location and status to server
 export function postDriverLocation(){
     return(dispatch, store) => {
-        const payload = {
-            data: {
+        const data = {
                 // DriverId is always equal to User_id
                 driverId: store().login.user_id,
                 coordinates: {
@@ -290,17 +320,28 @@ export function postDriverLocation(){
                 },
                 socketId: store().home.driverSocketId,
                 driverStatus: store().home.driverStatus
-            }
         };
-        console.log(payload);
-        request.post(`${API_URL}/api/driverLocation`)
-        .send(payload)
-        .finish((error, res) => {
+
+        return axios.post(`${API_URL}/api/driverLocation`, {data}, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
             dispatch({
                 type: POST_DRIVER_LOCATION,
-                payload: res.body
+                payload: res.data
             });
-        });
+        }).catch((error) => {
+            console.log(error); 
+        })
+
+
+        // request.post(`${API_URL}/api/driverLocation`)
+        // .send(payload)
+        // .finish((error, res) => {
+        //     dispatch({
+        //         type: POST_DRIVER_LOCATION,
+        //         payload: res.body
+        //     });
+        // });
     }
 }
 
@@ -313,22 +354,32 @@ export function updateBookingDetails(key, instance){
         //     testBoolean = true
         //     updatedDate = new Date();
         // };
-        const payload = {
-            data: {
-                ...store().home.bookingDetails,
-                [key]: instance,
-                // bookingCompletedAt: testBoolean ? updatedDate : ''
-            }
+        const data = {
+            ...store().home.bookingDetails,
+            [key]: instance,
+            // bookingCompletedAt: testBoolean ? updatedDate : ''
         };
         const bookingID = store().home.bookingDetails._id;
-        request.put(`${API_URL}/api/bookings/${bookingID}`)
-        .send(payload)
-        .finish((error, res) => {
-                dispatch({
-                    type: UPDATE_BOOKING_DETAILS,
-                    payload: res.body
-                });
-        });
+
+        return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
+            console.log("This is the Updated Booking Details", res);
+            dispatch({
+                type: UPDATE_BOOKING_DETAILS,
+                payload: res.data
+            });
+        }).catch((error) => {
+            console.log(error);
+        })
+        // request.put(`${API_URL}/api/bookings/${bookingID}`)
+        // .send(payload)
+        // .finish((error, res) => {
+        //         dispatch({
+        //             type: UPDATE_BOOKING_DETAILS,
+        //             payload: res.body
+        //         });
+        // });
     }
 }
 
@@ -395,24 +446,34 @@ export function acceptRideRequest(){
         //     socketId: store().home.driverSocketId,
         //     driverStatus: store().home.driverStatus
         // };
-        const payload = {
-            data: {
-                ...store().home.bookingDetails,
-                rideRequestStatus: "accepted",
-                selectedDriver: store().home.updateWatchDriverLocation,
-            }
+        const data = {
+            ...store().home.bookingDetails,
+            rideRequestStatus: "accepted",
+            selectedDriver: store().home.updateWatchDriverLocation,
         };
         const bookingID = store().home.bookingDetails._id
-        console.log(payload);
-        request.put(`${API_URL}/api/bookings/${bookingID}`)
-        .send(payload)
-        .finish((error, res) => {
-                dispatch({
-                    type: SELECTED_DRIVERS,
-                    payload: res.body
-                });
+
+        return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
+            console.log("This Accept Ride Request", res);
+            dispatch({
+                type: SELECTED_DRIVERS,
+                payload: res.data
+            });
+        }).catch((error) => {
+            console.log(error);
+        })
+        
+        // request.put(`${API_URL}/api/bookings/${bookingID}`)
+        // .send(payload)
+        // .finish((error, res) => {
+        //         dispatch({
+        //             type: SELECTED_DRIVERS,
+        //             payload: res.body
+        //         });
             
-        });
+        // });
     }
 }
 
