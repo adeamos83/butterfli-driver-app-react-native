@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput } from 'react-native';
-import PropTypes from 'prop-types';
 
 class TextInputField extends React.Component {
     

@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
-import { API_URL } from '../../../api';
+import { API_URL, MAPBOX_ACCESS_TOKEN } from '../../../api';
 
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
@@ -176,8 +176,7 @@ export function getPassengerRoute(){
         const origin = buildLngLat(pickUpArr);
         const destination = buildLngLat(dropOffArr);
         const driver = buildLngLat(driverArr);
-        const accessToken = "pk.eyJ1IjoiYWRlYW1vczgzIiwiYSI6ImNqaWdic2ZvbDBiYzczcm54YzNwem1tMWYifQ.OEp7GdVv_W-9fxj6Ix9yzQ";
-        const url = buildMapBoxUrl(mode, driver, origin, destination, accessToken);
+        const url = buildMapBoxUrl(mode, driver, origin, destination, MAPBOX_ACCESS_TOKEN);
         // const url = `https://api.mapbox.com/directions/v5/mapbox/${mode}/${driver};${origin};${destination}.json?access_token=${accessToken}&steps=true&overview=full&geometries=polyline`
     
         getCoordinates = (json) => {

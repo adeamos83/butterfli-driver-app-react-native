@@ -14,16 +14,17 @@ const carMarker = require("../../../Assets/img/carMarker.png");
 class Login extends React.Component {
 
    componentDidMount(){
+		console.log(Actions.currentScene);  
    }
 
-   componentDidUpdate(prevProps, prevState) {
-      if(this.props.user_id  && !prevProps.user_id && !this.props.needsProfile && this.props.loggingIn){
-         if(this.props.user_id){
-            console.log("user is found");
-            Actions.home({type: "replace"});
-         }
-      }
-   }
+//    componentDidUpdate(prevProps, prevState) {
+//       // if(this.props.user_id  && !prevProps.user_id && !this.props.needsProfile && this.props.loggingIn){
+//       //    if(this.props.user_id){
+//       //       console.log("user is found");
+//       //       Actions.home({type: "replace"});
+//       //    }
+//       // }
+//    }
 
    navToHomePage = () => {
       //Takes user to the HomePage route
@@ -33,7 +34,7 @@ class Login extends React.Component {
    render() {
       return(
       <Container>
-      { (this.props.needsProfile == false) &&
+      { (this.props.needsProfile == false || !this.props.user_id) &&
          <View style={{flex:1}}>
                <LoginContainer 
                   user_id={this.props.user_id}
@@ -51,7 +52,7 @@ class Login extends React.Component {
                />
          </View>
             ||
-            (this.props.needsProfile == true) &&
+            (this.props.needsProfile == true && this.props.user_id ) &&
                <CreateProfile 
                   user_id={this.props.user_id}
                   addAlert={this.props.addAlert}

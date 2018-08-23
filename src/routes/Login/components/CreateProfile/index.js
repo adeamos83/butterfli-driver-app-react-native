@@ -75,9 +75,6 @@ export const CreateProfile =({addAlert, user_id, createProfile, createUserProfil
                   placeholder="Phone Number"
                   validate={this.renderError}
                   returnKeyType="next"
-                  onEnter={() => { 
-                     this.dob.getRenderedComponent().refs.dob.focus()
-                  }}
                />
             </View>
             <View style={styles.buttonView}>

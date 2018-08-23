@@ -27,11 +27,9 @@ const MenuIcon = () => {
 
 const scenes = Actions.create(
     <Scene key='root' hideNavBar>
-    <Scene key="login" component={LoginContainer}  initial title="login"/>
-
+        <Scene key="login" component={LoginContainer}  initial title="login"/>
         <Scene key="createProfile" component={CreateProfile}   title="Create Profile"/>
         <Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Vehicle Profile"/>
-        
         <Drawer 
             key="drawer"
             contentComponent={Menu}

@@ -15,9 +15,9 @@ export const NewBooking = ({bookingDetails, acceptRideRequest, openMapsRoute, re
         // updateBookingDetails("driverStatus", "available");
         getDriverStatus('pickUp');
         acceptRideRequest();
-        setTimeout(function(){
-            updateBookingDetails("rideRequestStatus", "enRoute");
-        }, 7000)
+        // setTimeout(function(){
+        //     updateBookingDetails("rideRequestStatus", "enRoute");
+        // }, 7000)
     }
     rejectBooking = () => {
         // updateBookingDetails("rideRequestStatus", "rejected");

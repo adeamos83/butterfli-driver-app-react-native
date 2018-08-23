@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
-import { API_URL, MAPBOX_ACCESS_TOKEN } from '../../../api';
+import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY } from '../../../api';
 import { updateBookingDetails } from '../../Home/modules/home'
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
@@ -193,7 +193,7 @@ export function getDistanceFrom(instance) {
                 destinations: store().home.bookingDetails.pickUp.latitude + 
                 "," + store().home.bookingDetails.pickUp.longitude,
                 mode: "driving",
-                key: "AIzaSyDYndj5Gfh1rp5VUFHHu6gnN4vy2GQ0hvo"
+                key: GOOGLE_API_KEY
             })
             .finish((error, res) => {
                 dispatch({
@@ -240,7 +240,6 @@ export function getPickUpRoute(){
         // const origin = buildLngLat(pickUpArr);
         const destination = buildLngLat(pickUpArr);
         const driver = buildLngLat(driverArr);
-        // const accessToken = "pk.eyJ1IjoiYWRlYW1vczgzIiwiYSI6ImNqaWdic2ZvbDBiYzczcm54YzNwem1tMWYifQ.OEp7GdVv_W-9fxj6Ix9yzQ";
         const url = buildMapBoxUrl(mode, driver, destination, MAPBOX_ACCESS_TOKEN);
         // const url = `https://api.mapbox.com/directions/v5/mapbox/${mode}/${driver};${origin};${destination}.json?access_token=${accessToken}&steps=true&overview=full&geometries=polyline`
     

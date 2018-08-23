@@ -1,6 +1,8 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+
 import axios from 'axios';
 
 
@@ -19,6 +21,7 @@ import { addAlert } from '../../Alert/modules/alerts';
 // Constants
 //-------------------------------
 const { DRIVER_CONNECTING,
+        CURRENT_ROUTE,
         GET_CURRENT_LOCATION, 
         DRIVER_STATUS,
         // GET_INPUT, 
@@ -60,6 +63,31 @@ const initialState = {
 // Action
 //-------------------------------
 
+//Get current route
+export function getCurrentRoute(payload){
+    return (dispatch, store) => {
+        var prevRoute,
+        currentRoute;
+        if(!store().home.currentRoute){
+            console.log(!store().home.currentScene)
+            console.log(store().home.currentScene)
+            console.log("Home should be undefined");
+            currentRoute = Actions.currentScene
+        } else {
+            prevRoute = store().home.currentRoute;
+            currentRoute = Actions.currentScene
+        }
+        payload = {
+            prevRoute, 
+            currentRoute
+        }
+        dispatch({
+            type: CURRENT_ROUTE,
+            payload: payload
+        })
+    }
+}
+
 // Used for the spinng loading buttong for connecting the driver to the socket io server
 export function isDriverConnecting(payload){
     return (dispatch) => {
@@ -93,6 +121,8 @@ export function getDriverStatus(driverStatus){
         const payload = {
                 // DriverId is always equal to User_id
                 driverId: store().login.user_id,
+                name: store().home.driverInfo.firstName + " " + store().home.driverInfo.lastName,
+                phoneNumber: store().home.driverInfo.phoneNumber,
                 coordinates: {
                     type: "Point",
                     coordinates: [store().home.region.longitude, store().home.region.latitude]
@@ -158,7 +188,7 @@ export function getDriverStatus(driverStatus){
 // }
 
 // Updates booking details that the driver rejected ride, Updates nearByDrivers array removing this driver from array
-export function rejectBookingRequest(payload){
+export function rejectBookingRequest(){
     return(dispatch, store) => {
         const nearByDrivers = store().home.bookingDetails.nearByDrivers;
         const id = store().home.bookingDetails._id
@@ -167,14 +197,34 @@ export function rejectBookingRequest(payload){
         let nextDrivers = nearByDrivers.filter((nearBy) => {
             return nearBy.socketId !== store().home.driverSocketId
         });
+        
+        if(nextDrivers.length == 0){
+            nextDrivers = [null];
+        }
 
+        console.log("These are the near by drivers", nextDrivers);
         const payload = {
             data: {
                 ...store().home.bookingDetails,
                 rideRequestStatus: "rejected",
-                nearByDrivers: nextDrivers,
+                nearByDrivers: nextDrivers, 
             }
         };
+        console.log("Near by drivers is being sent ", payload.data.nearByDrivers == undefined);
+
+        // return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
+        //     headers: {authorization: store().login.token}
+        // }).then((res) => {
+        //     console.log("This Accept Ride Request", res);
+        //     dispatch({
+        //         type: SELECTED_DRIVERS,
+        //         payload: res.data
+        //     });
+        //     Actions.rideRequest({type: "replace"});
+        // }).catch((error) => {
+        //     console.log(error);
+        // })
+
 
         request.put(`${API_URL}/api/rejectedbookings/${id}`)
         .send(payload)
@@ -314,6 +364,8 @@ export function postDriverLocation(){
         const data = {
                 // DriverId is always equal to User_id
                 driverId: store().login.user_id,
+                name: store().home.driverInfo.firstName + " " + store().home.driverInfo.lastName,
+                phoneNumber: store().home.driverInfo.phoneNumber,
                 coordinates: {
                     type: "Point",
                     coordinates: [store().home.region.longitude, store().home.region.latitude]
@@ -461,6 +513,7 @@ export function acceptRideRequest(){
                 type: SELECTED_DRIVERS,
                 payload: res.data
             });
+            Actions.rideRequest({type: "replace"});
         }).catch((error) => {
             console.log(error);
         })
@@ -481,6 +534,17 @@ export function acceptRideRequest(){
 //-------------------------------
 // Action Handlers
 //-------------------------------
+
+function handleGetCurrentRoute(state,action){
+    return update(state, {
+        currentRoute: {
+            $set: action.payload.currentRoute
+        },
+        prevRoute: {
+            $set: action.payload.prevRoute
+        }
+    })
+}
 
 function handleDriverConnecting(state, action ) {
     return update(state, {
@@ -647,6 +711,7 @@ function handleInRouteTo(state, action){
 
 const ACTION_HANDLERS = {
     DRIVER_CONNECTING: handleDriverConnecting,
+    CURRENT_ROUTE: handleGetCurrentRoute,
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
     // GET_INPUT: handleGetInputData,

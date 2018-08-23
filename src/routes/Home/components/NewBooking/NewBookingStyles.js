@@ -3,7 +3,7 @@ const { width } = Dimensions.get("window");
 const styles = {
     newBookingContainer:{
         flex:1,
-        backgroundColor:"#FF5E3A",
+        backgroundColor:"#DCC6E0",
         justifyContent: "center",
         alignItems: "center",
     },
@@ -75,10 +75,10 @@ const styles = {
         width:width * 0.3,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius:7,
-        borderWidth: 1,
-        borderColor:"#fff",
-        backgroundColor:"transparent"
+        borderRadius: 0,
+        // borderWidth: 1,
+        // borderColor:"#fff",
+        backgroundColor:"#FF1744"
     },
     cancelBtnText:{
         color: "#fff",
@@ -87,10 +87,10 @@ const styles = {
         width:width * 0.3,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius:7,
-        borderWidth: 1,
-        borderColor:"#fff",
-        backgroundColor:"#5cb85c"
+        borderRadius: 0,
+        // borderWidth: 1,
+        // borderColor:"#fff",
+        backgroundColor:"#663399"
     },
     accpetBtnText:{
         color: "#fff",

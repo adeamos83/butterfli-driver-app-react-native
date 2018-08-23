@@ -12,12 +12,6 @@ const carMarker = require("../../../Assets/img/carMarker.png");
 
 class Alert extends React.Component {
 
-   componentDidMount(){
-   }
-
-   componentDidUpdate(prevProps, prevState) {
-   }
-
    renderAlert = () => {
       return this.props.alerts.map((alert) => {
          return(

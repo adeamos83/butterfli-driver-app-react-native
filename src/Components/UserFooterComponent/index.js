@@ -10,7 +10,6 @@ export const UserFooterComponent = ({ navToPickUp, bookingDetails, distanceFrom,
     const { duration } = distanceFrom.rows[0].elements[0] || "";
 
     return (
-        
             <View style={styles.footerContainer} iosBarStyle="light-content">
                 <View style={styles.innerContainer}>
                     <Icon size={25} name="user" style={{color: "#9E9E9E", paddingRight: 10}}/> 
@@ -23,7 +22,6 @@ export const UserFooterComponent = ({ navToPickUp, bookingDetails, distanceFrom,
                     </View>
                 </View>
             </View>
-    
     );
 }
 

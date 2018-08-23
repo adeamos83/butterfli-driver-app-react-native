@@ -8,7 +8,7 @@ import styles from './HeaderComponentStyles';
 
 const buttefliLogo = require("../../Assets/img/butterfli_name_logo.png");
 
-export const HeaderComponent = ({logo}) => {
+export const HeaderComponent = () => {
     return (
         <Header style={{backgroundColor: "#DCC6E0"}} iosBarStyle="light-content">
             <Left>

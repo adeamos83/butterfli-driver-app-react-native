@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 import PickUp from '../components/pickUp';
 import { getDriverStatus } from '../../Home/modules/home';
 
-import { updateBookingDetails, 
+import { updateBookingDetails,
+        getCurrentRoute, 
         getMarkerLocation, 
         openMapsRoute,
         getCurrentLocation} from '../../Home/modules/home';
@@ -34,6 +35,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionCreators = {
     getCurrentLocation,
+    getCurrentRoute,
     openMapsRoute,
     watchDriverLocation,
     getDriverStatus,

@@ -7,7 +7,8 @@ import { API_URL } from '../../../api';
 // Constants
 //-------------------------------
 const { 
-        } = constants;
+    UNAUTH_USER        
+    } = constants;
 
 
 //-------------------------------

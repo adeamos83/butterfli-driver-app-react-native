@@ -8,6 +8,8 @@ import { authUser,
 const mapStateToProps = (state) => ({
     user_id: state.login.user_id || "",
     driverInfo: state.home.driverInfo || {},
+    currentRoute: state.home.currentRoute || "",
+    prevRoute: state.home.prevRoute || ""
 });
 
 const mapActionCreators = {

@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import Home from '../components/home';
 
 import { isDriverConnecting,
+        getCurrentRoute,
         getCurrentLocation, 
         // getInputData, 
         getDriverInfo,
@@ -16,11 +17,12 @@ import { isDriverConnecting,
         updateBookingDetails,
         rejectBookingRequest,
         disconnectSocketIO,
-        acceptRideRequest
+        acceptRideRequest,
         } from '../modules/home';
 
 const mapStateToProps = (state) => ({
     driverConnecting: state.home.driverConnecting,
+    currentRoute: state.home.currentRoute,
     region: state.home.region,
     // inputData: state.home.inputData || {},
     driverInfo: state.home.driverInfo || {},
@@ -35,6 +37,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionCreators = {
     isDriverConnecting,
+    getCurrentRoute,
     getCurrentLocation,
     // getInputData,
     getDriverInfo,

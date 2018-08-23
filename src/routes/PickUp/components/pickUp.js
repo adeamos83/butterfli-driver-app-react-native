@@ -22,6 +22,7 @@ class PickUp extends React.Component {
         this.props.getDistanceFrom("intial");
         this.props.getPickUpRoute();
         this.watchId = this.props.watchDriverLocation();
+        this.props.getCurrentRoute();
     }
     
 
@@ -53,9 +54,6 @@ class PickUp extends React.Component {
     }
 
     render() {
-        
-        const { status } = this.props.bookingDetails;
-
         return(
         <Container>
             <View style={{flex:1}}>
@@ -79,6 +77,12 @@ class PickUp extends React.Component {
                 }
             </View>
             { this.props.distanceFrom.rows && 
+                <ArrivingFooter 
+                    bookingDetails={this.props.bookingDetails} 
+                    distanceFrom={this.props.distanceFrom}
+                />
+            }
+            { this.props.distanceFrom.rows && 
                 <PickUpFooterComponent 
                     distanceFrom={this.props.distanceFrom}
                     getDriverStatus={this.props.getDriverStatus}
@@ -86,20 +90,14 @@ class PickUp extends React.Component {
                     updateBookingDetails={this.props.updateBookingDetails}
                     bookingDetails={this.props.bookingDetails}
                 />
-            }
-            { this.props.distanceFrom.rows && 
-                <ArrivingFooter 
-                    bookingDetails={this.props.bookingDetails} 
-                    distanceFrom={this.props.distanceFrom}
-                />
-            }
+            } 
             { this.props.distanceFrom.rows &&
                 <UserFooterComponent 
                     bookingDetails={this.props.bookingDetails}
                     distanceFrom={this.props.distanceFrom}
                     driverStatus={this.props.driverStatus}
                 />
-            }    
+            }   
         </Container>
         );
        

@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import RideRequest from '../components/rideRequest';
 
-import { openMapsRoute, watchDriverLocation } from '../../Home/modules/home';
+import { openMapsRoute, 
+        getCurrentRoute,
+        watchDriverLocation, 
+        updateBookingDetails } from '../../Home/modules/home';
 
 import { getCurrentLocation, 
         getDriverStatus,
@@ -23,11 +26,13 @@ const mapStateToProps = (state) => ({
 
 const mapActionCreators = {
     getCurrentLocation,
+    getCurrentRoute,
     watchDriverLocation,
     getDriverStatus,
     getMarkerLocation,
     getPassengerRoute,
-    openMapsRoute
+    openMapsRoute,
+    updateBookingDetails
 };
 
 export default connect(mapStateToProps, mapActionCreators)(RideRequest)

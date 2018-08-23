@@ -6,15 +6,21 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './MenuStyles';
 
-export const MenuContainer =({ unAuthUser, authUser, user_id, driverInfo }) => {
+export const MenuContainer =({ unAuthUser, authUser, user_id, driverInfo, currentRoute, prevRoute }) => {
    const { profilePic } = driverInfo || {};
    onlogOut = () =>{
       console.log("logging out")
-      console.log(this.props);
       unAuthUser();
       Actions.login({type: "reset"});
    }
 
+   startTrip = () => {
+      if(currentRoute !== '_profile'){
+         Actions.drawerClose();
+      } else {
+         Actions[prevRoute.slice(1)].call({type: 'replace'})
+      }
+   }
 
 
    return(
@@ -29,7 +35,7 @@ export const MenuContainer =({ unAuthUser, authUser, user_id, driverInfo }) => {
          <View style={{flex: 2}}>
             <Content>
                <List>
-                  <ListItem onPress={() => Actions.home({type: 'replace'})}>
+                  <ListItem onPress={this.startTrip}>
                      <Text style={{fontSize: 16}}>Start a trip</Text>
                   </ListItem>
                   <ListItem onPress={() => Actions.profile({type: 'replace'})}>

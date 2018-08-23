@@ -27,6 +27,9 @@ class Home extends React.Component {
     componentDidMount(){
         this.props.getCurrentLocation();
         this.props.getDriverInfo();
+        const page = Actions.currentScene;
+        console.log(page);
+        this.props.getCurrentRoute();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -39,9 +42,9 @@ class Home extends React.Component {
             this.watchId = this.props.watchDriverLocation();
         }
 
-        if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
-            Actions.rideRequest({type: "replace"});
-        }
+        // if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
+        //     Actions.rideRequest({type: "replace"});
+        // }
 
         if(this.props.driverSocketId  !== prevProps.driverSocketId) {
             this.props.postDriverLocation();

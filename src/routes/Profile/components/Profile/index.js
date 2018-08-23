@@ -74,20 +74,3 @@ export const ProfileContainer =({ driverInfo }) => {
 }
 
 export default ProfileContainer; 
-
-// <View style={styles.row}>
-// 		<View style={styles.innerCol}>
-// 			<Text style={styles.heading}>Car Make</Text>
-// 		</View>
-// 		<View style={styles.innerColLg}>
-// 			<Text style={styles.infoText}>Honda</Text>
-// 		</View>
-// 	</View>
-// 	<View style={styles.row}>
-// 		<View style={styles.innerCol}>
-// 			<Text style={styles.heading}>Car Model</Text>
-// 		</View>
-// 		<View style={styles.innerColLg}>
-// 			<Text style={styles.infoText}>Accord</Text>
-// 		</View>
-// </View>

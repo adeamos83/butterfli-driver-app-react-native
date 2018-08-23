@@ -22,11 +22,7 @@ class DropOff extends React.Component {
         this.props.getDistanceFrom();
         this.props.getDropOffRoute();
         this.watchId = this.props.watchDriverLocation();
-
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-            
+        this.props.getCurrentRoute();
     }
 
     componentWillUnmount() {

@@ -17,26 +17,25 @@ export const LoginContainer =({addAlert,
 										loginUser, 
 										signupUser, 
 										handleSubmit, 
-                              getInputData,
-                              inputData,
-                              loggingIn,
-                              isLoggingIn,
-                              isSigningUp,
-                              signingUp,
+                    getInputData,
+                    inputData,
+                    loggingIn,
+                    isLoggingIn,
+                    isSigningUp,
+                    signingUp,
 										fields: {email, password}}) => {
   // const {handleSubmit, fields: {email, password}} = this.props;
 
+	var loginInProcess = false;
+
    onSignIn = (values) => {
-      isLoggingIn(true);
-    // console.log('submitting form', values)
-    // console.log(values)
-    // console.log(values.email, values.password);
-    // addAlert('hello');
-    // addAlert('Testing 123');
-    // authUser('fakeid');
-    loginUser(values.email, values.password)
-    // var {email, password} = this.props.fields;
-      
+		if(!loginInProcess){
+			loginInProcess = true;
+			isLoggingIn(true);
+   		loginUser(values.email, values.password)
+		} else {
+			addAlert("Trying to logging into your account");
+		}
    }
 
    onSignUp = (values) => {

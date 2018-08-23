@@ -12,14 +12,16 @@ const styles = ({
     },
     buttonContainer: {
         width: width,
-        paddingTop: 5,
-        paddingBottom: 5,
+        // paddingTop: 5,
+        // paddingBottom: 5,
         justifyContent: "center",
         flexDirection:"row",
     },
     navButton: {
-        width: width * 0.8,
+        // width: width * 0.8,
+        width: width, 
         justifyContent: "center",
+        borderRadius: 0
     },
     btnText: {
         fontSize: 20,

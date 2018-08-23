@@ -1,1 +1,8 @@
-../../../../../node_modules/react-native-maps/lib/ios/AirMaps/AIRMapOverlayRenderer.h
+#import <MapKit/MapKit.h>
+
+@interface AIRMapOverlayRenderer : MKOverlayRenderer
+
+@property (nonatomic, assign) NSInteger rotation;
+@property (nonatomic, assign) CGFloat transparency;
+
+@end

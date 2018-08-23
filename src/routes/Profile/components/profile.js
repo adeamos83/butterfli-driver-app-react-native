@@ -11,6 +11,9 @@ const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 
 class Profile extends React.Component {
 
+   componentDidMount(){
+      this.props.getCurrentRoute();
+   }
 
    render() {
       return(

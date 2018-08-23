@@ -30,7 +30,7 @@ export const PickUpMapContainer = ({
         getMarkerLocation(event);
         setTimeout(function(){
             getDistanceFrom();
-        }, 10000)
+        }, 5000)
     }
 
     return(

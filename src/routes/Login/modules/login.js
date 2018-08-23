@@ -90,6 +90,7 @@ export function loginUser(email, password){
             });
             dispatch(isLoggingIn(false));
             dispatch(needsToCreateProfile(isProfileCreated));
+            Actions.home({type: "replace"})
        }).catch((error) => {
         dispatch(isLoggingIn(false));
         dispatch(addAlert("Could not log in."));

@@ -12,13 +12,6 @@ const carMarker = require("../../../Assets/img/carMarker.png");
 
 class Menu extends React.Component {
 
-   componentDidMount(){
-   }
-
-   componentDidUpdate(prevProps, prevState) {
-     
-   }
-
    navToHomePage = () => {
       //Takes user to the HomePage route
       Actions.home({type: "replace"});
@@ -33,6 +26,8 @@ class Menu extends React.Component {
                authUser={this.props.authUser}
                unAuthUser={this.props.unAuthUser}
                driverInfo={this.props.driverInfo}
+               currentRoute={this.props.currentRoute}
+               prevRoute={this.props.prevRoute}
             />
          </View>
       </Container>
