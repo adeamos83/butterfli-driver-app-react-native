@@ -5,10 +5,10 @@ import { getDriverStatus,
         getCurrentRoute,
         updateBookingDetails,
         getMarkerLocation,
-        openMapsRoute } from '../../Home/modules/home';
+        openMapsRoute,
+        watchingDriverLocation } from '../../Home/modules/home';
 
 import { getCurrentLocation,
-        watchDriverLocation,
         // getNearDriverAlerted,
         getDistanceFrom,
         getDropOffRoute
@@ -34,7 +34,7 @@ const mapActionCreators = {
     getCurrentRoute,
     updateBookingDetails,
     openMapsRoute,
-    watchDriverLocation,
+    watchingDriverLocation,
     getDriverStatus,
     getMarkerLocation,
     // getNearDriverAlerted,

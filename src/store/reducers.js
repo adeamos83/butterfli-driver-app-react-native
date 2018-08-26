@@ -29,3 +29,11 @@ export const makeRootReducer = (asyncReducers) =>
 
 export default makeRootReducer;
 
+// // This is needed if you use reducer code split (you don't put ALL your reducers in the makeRootReducer function...). 
+// export const injectReducer = (store, { key, reducer }) => {
+// 	if (Object.hasOwnProperty.call(store.asyncReducers, key)) return
+ 
+// 	store.asyncReducers[key] = reducer
+// 	store.replaceReducer(persistReducer(persistConfig, combineReducers(makeRootReducer(store.asyncReducers))))
+// 	store.persistor.persist() // => **I think this is not needed anymore, i left it here when i was trying to make all this work together...**
+//  }

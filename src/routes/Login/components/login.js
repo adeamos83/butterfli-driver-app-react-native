@@ -13,8 +13,17 @@ const carMarker = require("../../../Assets/img/carMarker.png");
 
 class Login extends React.Component {
 
-   componentDidMount(){
-		console.log(Actions.currentScene);  
+   componentWillMount(){
+            console.log("This is the current from last load", this.props.currentRoute);
+            if(this.props.user_id && this.props.token){
+                  // Actions.home({type: "replace"})
+                  if(this.props.currentRoute){
+                        Actions[this.props.currentRoute.slice(1)].call({type: 'replace'})
+                  } else {
+                        Actions.home({type: "replace"});
+                  }
+                  
+            }  
    }
 
 //    componentDidUpdate(prevProps, prevState) {

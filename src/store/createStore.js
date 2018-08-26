@@ -1,7 +1,12 @@
-import { createStore, applyMiddleware, compose } from "redux";
+import { AsyncStorage } from 'react-native'
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";
 import makeRootReducer from "./reducers";
 import { createLogger } from "redux-logger";
+import { persistStore, persistReducer, persistCombineReducers } from 'redux-persist'
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 import createSocketIoMiddleware from "redux-socket.io";
 
@@ -12,6 +17,15 @@ let socket = io(API_URL, {jsonp:false, 'force new connection':true, reconnection
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
 const log =  createLogger({ diff: true, collapsed: true });
+
+export const persistConfig = {
+    key: 'root',
+    storage: AsyncStorage,
+    blacklist: ['home'],
+    stateReconciler: autoMergeLevel2
+}
+
+const persistedReducer = persistReducer(persistConfig,  makeRootReducer())
 
 // a function which can create our store and auto-persist the data
 export default (initialState = {}) => {
@@ -33,12 +47,13 @@ export default (initialState = {}) => {
     // Store Instantiation
     // ======================================================
     const store = createStore(
-        makeRootReducer(),
+        persistedReducer, 
         initialState,
-        compose(
+        composeWithDevTools(
             applyMiddleware(...middleware),
             ...enhancers
         )
     );
-    return store;
+    const persistor = persistStore(store);  
+    return {store, persistor };
 };

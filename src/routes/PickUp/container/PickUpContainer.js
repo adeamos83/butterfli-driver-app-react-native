@@ -4,13 +4,13 @@ import { getDriverStatus } from '../../Home/modules/home';
 
 import { updateBookingDetails,
         getCurrentRoute, 
+        watchingDriverLocation,
         getMarkerLocation, 
         openMapsRoute,
         getCurrentLocation} from '../../Home/modules/home';
 
 import { 
         // updateBookingDetails, 
-        watchDriverLocation,
         // getMarkerLocation,
         // getNearDriverAlerted,
         getDistanceFrom,
@@ -37,7 +37,7 @@ const mapActionCreators = {
     getCurrentLocation,
     getCurrentRoute,
     openMapsRoute,
-    watchDriverLocation,
+    watchingDriverLocation,
     getDriverStatus,
     getMarkerLocation,
     // getNearDriverAlerted,

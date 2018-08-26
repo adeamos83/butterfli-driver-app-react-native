@@ -19,6 +19,7 @@ import { authUser,
 
 const mapStateToProps = (state) => ({
     user_id: state.login.user_id || "",
+    token: state.login.token,
     alerts: state.alerts,
     needsProfile: state.login.needsProfile,
     inputData: state.login.inputData || {},
@@ -27,7 +28,8 @@ const mapStateToProps = (state) => ({
     navToCarPage: state.login.navToCarPage || "",
     loggingIn: state.login.loggingIn,
     signingUp: state.login.signingUp,
-    newUserProfile: state.login.newUserProfile || {}
+    newUserProfile: state.login.newUserProfile || {},
+    currentRoute: state.home.currentRoute,
 });
 
 const mapActionCreators = {

@@ -13,7 +13,7 @@ const { GET_CURRENT_LOCATION,
         // UPDATE_BOOKING_DETAILS,
         // DRIVER_STATUS,
         // IN_ROUTE_TO,
-        WATCH_DRIVER_LOCATION,
+        // WATCH_DRIVER_LOCATION,
         // MARKER_LOCATION,
         // NEAR_DRIVER_ALERTED,
         GET_DISTANCE_FROM,
@@ -99,28 +99,28 @@ export function getCurrentLocation() {
 // }
 
 
-export function watchDriverLocation(){
-    return(dispatch, store) => {
-        navigator.geolocation.watchPosition(
-            (position) => {
-                dispatch({
-                    type: WATCH_DRIVER_LOCATION,
-                    payload: position
-                });
+// export function watchDriverLocation(){
+//     return(dispatch, store) => {
+//         navigator.geolocation.watchPosition(
+//             (position) => {
+//                 dispatch({
+//                     type: WATCH_DRIVER_LOCATION,
+//                     payload: position
+//                 });
 
-                if(true){
-                    console.log("Sending drivers location to passenger")
-                        dispatch({
-                            type: "server/driverlocation",
-                            payload: position
-                        });
-                }
-            },
-            (error) => console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
-        );
-    }
-}
+//                 if(true){
+//                     console.log("Sending drivers location to passenger")
+//                         dispatch({
+//                             type: "server/driverlocation",
+//                             payload: position
+//                         });
+//                 }
+//             },
+//             (error) => console.log(error.message),
+//             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+//         );
+//     }
+// }
 
 // export function getMarkerLocation(location){
 //     return(dispatch, store) => {
@@ -184,8 +184,10 @@ export function getDistanceFrom() {
             request.get("https://maps.googleapis.com/maps/api/distancematrix/json")
             .query({
                 units: 'imperial',
-                origins: store().pickUp.updateWatchDriverLocation.coordinates.coordinates[1] + 
-                "," + store().pickUp.updateWatchDriverLocation.coordinates.coordinates[0],
+                // origins: store().home.updateWatchDriverLocation.coordinates.coordinates[1] + 
+                // "," + store().home.updateWatchDriverLocation.coordinates.coordinates[0],
+                origins: store().home.watchDriverLocation.coords.latitude + 
+                "," + store().home.watchDriverLocation.coords.longitude,
                 destinations: store().home.bookingDetails.dropOff.latitude + 
                 "," + store().home.bookingDetails.dropOff.longitude,
                 mode: "driving",
@@ -206,8 +208,10 @@ export function getDropOffRoute(){
     return(dispatch, store) => {
         
         const driverArr = {
-            latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
-            longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
+            // latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
+            // longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
+            latitude:  store().home.watchDriverLocation.coords.latitude,
+            longitude: store().home.watchDriverLocation.coords.longitude,
         }   
 
         const pickUpArr = {
@@ -318,13 +322,13 @@ function handleGetCurrentLocation(state, action) {
 
 
 
-function handelWatchDriverLocation(state, action) {
-    return update(state, {
-        watchDriverLocation: {
-            $set: action.payload
-        }
-    });
-}
+// function handelWatchDriverLocation(state, action) {
+//     return update(state, {
+//         watchDriverLocation: {
+//             $set: action.payload
+//         }
+//     });
+// }
 
 function handleUpdateDriverLocation(state, action) {
     return update(state, {
@@ -371,7 +375,7 @@ const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     // DRIVER_STATUS: handleDriverStatus,
     // IN_ROUTE_TO: handleInRouteTo,
-    WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
+    // WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     // MARKER_LOCATION: handleGetMarkerLocation,
     // NEAR_DRIVER_ALERTED: handleNearDriverAlerted,

@@ -3,7 +3,7 @@ import RideRequest from '../components/rideRequest';
 
 import { openMapsRoute, 
         getCurrentRoute,
-        watchDriverLocation, 
+        watchingDriverLocation, 
         updateBookingDetails } from '../../Home/modules/home';
 
 import { getCurrentLocation, 
@@ -27,7 +27,7 @@ const mapStateToProps = (state) => ({
 const mapActionCreators = {
     getCurrentLocation,
     getCurrentRoute,
-    watchDriverLocation,
+    watchingDriverLocation,
     getDriverStatus,
     getMarkerLocation,
     getPassengerRoute,

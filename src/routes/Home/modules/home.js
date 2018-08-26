@@ -28,6 +28,7 @@ const { DRIVER_CONNECTING,
         GET_DRIVER_INFORMATION,
         GET_SOCKET_ID,
         POST_DRIVER_LOCATION,
+        DB_UPDATED_DRIVER_LOCATION,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
@@ -35,7 +36,8 @@ const { DRIVER_CONNECTING,
         // UPDATE_RIDE_REQUEST_STATUS,
         UPDATE_BOOKING_DETAILS,
         REJECT_BOOKING_REQUEST,
-        SELECTED_DRIVERS
+        SELECTED_DRIVERS,
+        TEST_ROUTE
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -50,6 +52,7 @@ const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 const initialState = {
     driverConnecting: false,
     region: {},
+    watchDriverLocation: {},
     inputData: {},
     nearDriverAlerted: false,
     driverStatus: "notAvailable",
@@ -63,24 +66,37 @@ const initialState = {
 // Action
 //-------------------------------
 
+export function testingSomething(){
+    console.log("This is test from the action creators!!");
+    return (dispatch, store) => {
+        dispatch({
+            type: TEST_ROUTE,
+            payload: "This is The Relaod test from the action creators!!"
+        })
+    }
+}
+
 //Get current route
-export function getCurrentRoute(payload){
+export function getCurrentRoute(){
     return (dispatch, store) => {
         var prevRoute,
         currentRoute;
+        
         if(!store().home.currentRoute){
-            console.log(!store().home.currentScene)
-            console.log(store().home.currentScene)
-            console.log("Home should be undefined");
+            console.log("Current scene from 1st IF Statement ", store().home.currentRoute)
             currentRoute = Actions.currentScene
         } else {
             prevRoute = store().home.currentRoute;
+            console.log("This is prevRoute ", prevRoute);
             currentRoute = Actions.currentScene
+            console.log("This is Store CurrentRoute ", store().home.currentRoute)
         }
+
         payload = {
             prevRoute, 
             currentRoute
         }
+        console.log("Current route payload ", payload)
         dispatch({
             type: CURRENT_ROUTE,
             payload: payload
@@ -143,7 +159,7 @@ export function getDriverStatus(driverStatus){
             headers: {authorization: store().login.token}
         }).then((res) => {
             dispatch({
-                type: POST_DRIVER_LOCATION,
+                type: DB_UPDATED_DRIVER_LOCATION,
                 payload: res.data
             });
             dispatch(isDriverConnecting(false)); 
@@ -242,7 +258,7 @@ export function rejectBookingRequest(){
     This Function uses the geolocation API to watch consistenly what the 
     drivers location when ever they move more 10meters
 */
-export function watchDriverLocation(){
+export function watchingDriverLocation(){
     return(dispatch, store) => {
         navigator.geolocation.watchPosition(
             (position) => {
@@ -327,6 +343,7 @@ export function getDriverSocketId() {
             dispatch({
                 type: "server/hello",
             })
+            dispatch(postDriverLocation());
         } else {
             console.log("Trying to reconnect!");
             let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
@@ -439,8 +456,10 @@ export function updateBookingDetails(key, instance){
 export function openMapsRoute(payload){
     return(dispatch, store) => {
         const driverArr = {
-            latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
-            longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
+            // latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
+            // longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
+            latitude:  store().home.watchDriverLocation.coords.latitude,
+            longitude: store().home.watchDriverLocation.coords.longitude,
         }  
 
         const pickUpArr = {
@@ -501,7 +520,7 @@ export function acceptRideRequest(){
         const data = {
             ...store().home.bookingDetails,
             rideRequestStatus: "accepted",
-            selectedDriver: store().home.updateWatchDriverLocation,
+            selectedDriver: store().home.watchDriverLocation,
         };
         const bookingID = store().home.bookingDetails._id
 
@@ -536,12 +555,21 @@ export function acceptRideRequest(){
 //-------------------------------
 
 function handleGetCurrentRoute(state,action){
+    console.log("Current Scene from Action Handlers ", action.payload)
     return update(state, {
         currentRoute: {
             $set: action.payload.currentRoute
         },
         prevRoute: {
             $set: action.payload.prevRoute
+        }
+    })
+}
+
+function handleTesttingSomething(state, action ) {
+    return update(state, {
+        testingPayload: {
+            $set: action.payload
         }
     })
 }
@@ -718,6 +746,7 @@ const ACTION_HANDLERS = {
     GET_DRIVER_INFORMATION: handleGetDriverInfo,
     GET_SOCKET_ID: handelGetDriverSocket,
     POST_DRIVER_LOCATION: handlePostDriverLocation,
+    DB_UPDATED_DRIVER_LOCATION: handlePostDriverLocation,
     NEW_BOOKING: handleGetNewBooking,
     IN_ROUTE_TO: handleInRouteTo,
     WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
@@ -728,7 +757,8 @@ const ACTION_HANDLERS = {
     UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
     UPDATED_DB_BOOKING_DETAILS: handleDBBookingDetailsUpdated,
     REJECT_BOOKING_REQUEST: handleRejectedBookingRequest,
-    SELECTED_DRIVERS: handelAcceptRideRequest
+    SELECTED_DRIVERS: handelAcceptRideRequest,
+    TEST_ROUTE: handleTesttingSomething
 }
 
 

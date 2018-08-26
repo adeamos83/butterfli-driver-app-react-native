@@ -8,11 +8,13 @@ export const MapContainer = ({
                             region, 
                             getInputData,
                             carMarker,
-                            getMarkerLocation
+                            getMarkerLocation,
+                            watchDriverLocation
                             }) => {
     
 
     const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
+    // const {latitude, longitude } = watchDriverLocation.coords;
     
     return(
         <View style={styles.container}>
@@ -25,7 +27,7 @@ export const MapContainer = ({
             >
             { region &&
                 <MapView.Marker 
-                    coordinate={{latitude: region.latitude, longitude: region.longitude}}
+                    coordinate={{latitude: watchDriverLocation.coords.latitude, longitude: watchDriverLocation.coords.longitude}}
                     image={carMarker}
                 />
             }

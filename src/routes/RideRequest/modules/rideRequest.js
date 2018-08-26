@@ -150,8 +150,10 @@ export function getPassengerRoute(){
     return(dispatch, store) => {
         
         const driverArr = {
-            latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
-            longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
+            // latitude:  store().home.updateWatchDriverLocation.coordinates.coordinates[1],
+            // longitude: store().home.updateWatchDriverLocation.coordinates.coordinates[0]
+            latitude:  store().home.watchDriverLocation.coords.latitude,
+            longitude: store().home.watchDriverLocation.coords.longitude,
         }   
 
         const pickUpArr = {
@@ -251,13 +253,13 @@ function handleDriverStatus(state, action){
 //     });
 // }
 
-// function handleUpdateDriverLocation(state, action) {
-//     return update(state, {
-//         updateWatchDriverLocation: {
-//             $set: action.payload
-//         }
-//     });
-// }
+function handleUpdateDriverLocation(state, action) {
+    return update(state, {
+        updateWatchDriverLocation: {
+            $set: action.payload
+        }
+    });
+}
 
 function handleGetMarkerLocation(state, action) {
     return update(state, {
@@ -290,7 +292,7 @@ const ACTION_HANDLERS = {
     DRIVER_STATUS: handleDriverStatus,
     // IN_ROUTE_TO: handleInRouteTo,
     // WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
-    // UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
+    UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
     GET_PASSENGER_ROUTES: handleGetPassengerRoutes
 }

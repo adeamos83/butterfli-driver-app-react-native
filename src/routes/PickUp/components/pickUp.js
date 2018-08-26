@@ -21,8 +21,8 @@ class PickUp extends React.Component {
         // this.props.getCurrentLocation();
         this.props.getDistanceFrom("intial");
         this.props.getPickUpRoute();
-        this.watchId = this.props.watchDriverLocation();
-        this.props.getCurrentRoute();
+        this.watchId = this.props.watchingDriverLocation();
+        this.props.getCurrentRoute(Actions.currentScene);
     }
     
 
@@ -73,6 +73,7 @@ class PickUp extends React.Component {
                     routes={this.props.routes}
                     getDistanceFrom={this.props.getDistanceFrom}
                     pickUpRoutes={this.props.pickUpRoutes}
+                    watchDriverLocation={this.props.watchDriverLocation}
                     />
                 }
             </View>

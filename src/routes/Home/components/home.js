@@ -23,33 +23,34 @@ const carMarker = require("../../../Assets/img/carMarker.png");
 class Home extends React.Component {
 
 
-    
+    componentWillMount() {
+        console.log("Component will mount current Actions.currentScene ", Actions.currentScene)
+        console.log("Component will mount current currentRoute props ", this.props.currentRoute)
+    }
     componentDidMount(){
+        this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentLocation();
         this.props.getDriverInfo();
-        const page = Actions.currentScene;
-        console.log(page);
         this.props.getCurrentRoute();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if(this.props.bookingDetails.status == "pending" && prevProps.bookingDetails.status !=="pending") {
-            console.log("You have a new booking");
-            console.log(this.props.bookingDetails);
-        }
+    // componentDidUpdate(prevProps, prevState) {
+    //     // if(this.props.driverStatus == "available" && prevProps.driverStatus !=="available"){
+    //     //     this.watchId = this.props.watchDriverLocation();
+    //     // }
 
-        if(this.props.driverStatus == "available" && prevProps.driverStatus !=="available"){
-            this.watchId = this.props.watchDriverLocation();
-        }
+    //     // if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
+    //     //     Actions.rideRequest({type: "replace"});
+    //     // }
+    //     console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
+    //     console.log("this user is true or false", this.props.user_id)
 
-        // if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
-        //     Actions.rideRequest({type: "replace"});
-        // }
-
-        if(this.props.driverSocketId  !== prevProps.driverSocketId) {
-            this.props.postDriverLocation();
-        }
-    }
+    //     // if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
+    //     //     console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
+    //     //     console.log("this user is true or false", this.props.user_id)
+    //     //     this.props.postDriverLocation();
+    //     // }
+    // }
 
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchId);
@@ -71,7 +72,7 @@ class Home extends React.Component {
         }
 
         // This disonnects drivers from socket.io server and driver will not longer received ride requests
-        if(this.props.driverStatus == "available"){
+        if(this.props.driverStatus !== "notAvailable"){
             this.props.getDriverStatus("notAvailable");
             setTimeout(function(){
                 rk.props.disconnectSocketIO();
@@ -98,6 +99,7 @@ class Home extends React.Component {
                         getInputData={this.props.getInputData}
                         carMarker={carMarker}
                         getMarkerLocation={this.props.getMarkerLocation}
+                        watchDriverLocation={this.props.watchDriverLocation}
                         />
                     }
                     <Fab 

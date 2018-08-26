@@ -8,9 +8,11 @@ import styles from './MenuStyles';
 
 export const MenuContainer =({ unAuthUser, authUser, user_id, driverInfo, currentRoute, prevRoute }) => {
    const { profilePic } = driverInfo || {};
+
    onlogOut = () =>{
       console.log("logging out")
-      unAuthUser();
+      // unAuthUser();
+      // unAuthUser();
       Actions.login({type: "reset"});
    }
 

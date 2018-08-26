@@ -10,6 +10,7 @@ export const DropOffMapContainer = ({
                             getMarkerLocation,
                             bookingDetails,
                             updateWatchDriverLocation,
+                            watchDriverLocation,
                             getDistanceFrom,
                             dropOffRoutes
                             }) => {
@@ -17,18 +18,21 @@ export const DropOffMapContainer = ({
 
     const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
     const { dropOff} = bookingDetails || {};
-    const driver = {latitude: updateWatchDriverLocation.coordinates.coordinates[1], longitude: updateWatchDriverLocation.coordinates.coordinates[0]}
+    // const driver = {latitude: updateWatchDriverLocation.coordinates.coordinates[1], longitude: updateWatchDriverLocation.coordinates.coordinates[0]}
+    // const {latitude, longitude } = watchDriverLocation.coords || "";
+    const driver = {latitude: watchDriverLocation.coords.latitude, longitude: watchDriverLocation.coords.longitude}
     const dropOffRegion = {
-        latitude: updateWatchDriverLocation.coordinates.coordinates[1], 
-        longitude: updateWatchDriverLocation.coordinates.coordinates[0],
+        latitude: watchDriverLocation.coords.latitude, 
+        longitude: watchDriverLocation.coords.longitude,
         latitudeDelta: region.latitudeDelta,
         longitudeDelta: region.longitudeDelta
     }
+    
 
     console.log(dropOffRegion);
 
     fitAllMarker = () =>{
-        if(this.map !==null){
+        if(this.map !==null && this.map !== undefined){
             this.map.fitToElements(true);
         }
     }
@@ -50,7 +54,7 @@ export const DropOffMapContainer = ({
             >
             { region &&
                 <MapView.Marker 
-                    coordinate={{latitude: updateWatchDriverLocation.coordinates.coordinates[1], longitude: updateWatchDriverLocation.coordinates.coordinates[0]}}
+                    coordinate={{latitude: watchDriverLocation.coords.latitude, longitude: watchDriverLocation.coords.longitude}}
                     image={carMarker}
                 />
             }
