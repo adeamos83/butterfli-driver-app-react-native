@@ -7,7 +7,6 @@ import styles from './PickUpFooterComponentStyles';
 
 export const PickUpFooterComponent = ({ bookingDetails, distanceFrom, getDriverStatus, pickUpPassenger, updateBookingDetails }) => {
     const { firstName } = bookingDetails || "";
-    console.log(firstName);
     const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
     pickUpConfrim = () => {
         getDriverStatus('DropOff');

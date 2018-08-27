@@ -46,11 +46,13 @@ class RideRequest extends React.Component {
         <Container>
             <View style={{flex:1}}>
                 {/* <HeaderComponent logo={buttefliLogo}/> */}
-                <NavHeaderComponent 
+                { this.props.bookingDetails && 
+                    <NavHeaderComponent 
                     navToPickUp={() => this.navToPickUp()}
                     bookingDetails={this.props.bookingDetails}
                     driverStatus={this.props.driverStatus}
-                />
+                    />
+                }
                 {this.props.region.latitude &&
                     <RideRequestMapContainer region={this.props.region} 
                         carMarker={carMarker}

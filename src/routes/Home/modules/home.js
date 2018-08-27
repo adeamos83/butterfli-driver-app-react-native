@@ -1,6 +1,6 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
-import { Dimensions, Platform, Linking } from 'react-native';
+import { Dimensions, Platform, Linking, AppState } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 import axios from 'axios';
@@ -37,7 +37,8 @@ const { DRIVER_CONNECTING,
         UPDATE_BOOKING_DETAILS,
         REJECT_BOOKING_REQUEST,
         SELECTED_DRIVERS,
-        TEST_ROUTE
+        APP_STATE,
+        UPDATE_DRIVER_LOCATION_DETAILS
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -66,15 +67,15 @@ const initialState = {
 // Action
 //-------------------------------
 
-export function testingSomething(){
-    console.log("This is test from the action creators!!");
-    return (dispatch, store) => {
+export function getAppState(payload) {
+    return ( dispatch, store ) => {
         dispatch({
-            type: TEST_ROUTE,
-            payload: "This is The Relaod test from the action creators!!"
+            type: APP_STATE,
+            payload: payload
         })
     }
 }
+
 
 //Get current route
 export function getCurrentRoute(){
@@ -417,17 +418,11 @@ export function postDriverLocation(){
 // Update Booking Details 
 export function updateBookingDetails(key, instance){
     return(dispatch, store) => {
-        // var testBoolean;
-        // var updatedDate;
-        // if(instance == 'enRoute'){
-        //     testBoolean = true
-        //     updatedDate = new Date();
-        // };
         const data = {
             ...store().home.bookingDetails,
             [key]: instance,
-            // bookingCompletedAt: testBoolean ? updatedDate : ''
         };
+       
         const bookingID = store().home.bookingDetails._id;
 
         return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
@@ -449,6 +444,28 @@ export function updateBookingDetails(key, instance){
         //             payload: res.body
         //         });
         // });
+    }
+}
+
+export function updateDriverLocationDetails(key, instance){
+    return(dispatch, store) => {
+        const data = {
+            ...store().home.driverLocation,
+            [key]: instance,
+        };
+        console.log(data)
+        const driverLocationId = store().home.driverLocation._id;
+        return axios.put(`${API_URL}/api/driverLocation/${driverLocationId}`, {data}, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
+            console.log("This is the Updated Driver Location Details", res);
+            dispatch({
+                type: UPDATE_DRIVER_LOCATION_DETAILS,
+                payload: res.data
+            });
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 }
 
@@ -517,11 +534,26 @@ export function acceptRideRequest(){
         //     socketId: store().home.driverSocketId,
         //     driverStatus: store().home.driverStatus
         // };
+
+        const selectedDriverData = {
+            // DriverId is always equal to User_id
+            driverId: store().login.user_id,
+            name: store().home.driverInfo.firstName + " " + store().home.driverInfo.lastName,
+            phoneNumber: store().home.driverInfo.phoneNumber,
+            coordinates: {
+                type: "Point",
+                coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
+            },
+            socketId: store().home.driverSocketId,
+            driverStatus: store().home.driverStatus
+        };
+
         const data = {
             ...store().home.bookingDetails,
             rideRequestStatus: "accepted",
-            selectedDriver: store().home.watchDriverLocation,
+            selectedDriver: selectedDriverData,
         };
+
         const bookingID = store().home.bookingDetails._id
 
         return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
@@ -549,11 +581,54 @@ export function acceptRideRequest(){
     }
 }
 
+// This will update the near drivers socket Id
+export function newSelectedDriverSocketId(){
+    return(dispatch, store) => {
+        const selectedDriverData = {
+            // DriverId is always equal to User_id
+            driverId: store().login.user_id,
+            name: store().home.driverInfo.firstName + " " + store().home.driverInfo.lastName,
+            phoneNumber: store().home.driverInfo.phoneNumber,
+            coordinates: {
+                type: "Point",
+                coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
+            },
+            socketId: store().home.driverSocketId,
+            driverStatus: store().home.driverStatus
+        };
+
+        const data = {
+            ...store().home.bookingDetails,
+            selectedDriver: selectedDriverData,
+        };
+
+        const bookingID = store().home.bookingDetails._id
+
+        return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
+            console.log("This Accept Ride Request", res);
+            dispatch({
+                type: SELECTED_DRIVERS,
+                payload: res.data
+            });
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+}
+
 
 //-------------------------------
 // Action Handlers
 //-------------------------------
-
+function handelGetAppState(state, action){
+    return update(state, {
+        appState: {
+            $set: action.payload
+        }
+    })
+}
 function handleGetCurrentRoute(state,action){
     console.log("Current Scene from Action Handlers ", action.payload)
     return update(state, {
@@ -562,14 +637,6 @@ function handleGetCurrentRoute(state,action){
         },
         prevRoute: {
             $set: action.payload.prevRoute
-        }
-    })
-}
-
-function handleTesttingSomething(state, action ) {
-    return update(state, {
-        testingPayload: {
-            $set: action.payload
         }
     })
 }
@@ -678,6 +745,16 @@ function handleGetMarkerLocation(state, action) {
     return update(state, {
         markerLocation: {
             $set: action.payload
+        },
+        watchDriverLocation: {
+            coords: {
+                latitude: {
+                    $set: action.payload.latitude
+                },
+                longitude: {
+                    $set: action.payload.longitude
+                }
+            }
         }
     });
 }
@@ -726,6 +803,14 @@ function handleGetNewBooking(state, action) {
         });
 }
 
+function handleUpdateDriverLocationDetails(state, action) {
+    return update(state, {
+        driverLocation: {
+            $set: action.payload
+        }
+    });
+}
+
 function handleInRouteTo(state, action){
     return update(state, {
         bookingDetails: {
@@ -758,7 +843,8 @@ const ACTION_HANDLERS = {
     UPDATED_DB_BOOKING_DETAILS: handleDBBookingDetailsUpdated,
     REJECT_BOOKING_REQUEST: handleRejectedBookingRequest,
     SELECTED_DRIVERS: handelAcceptRideRequest,
-    TEST_ROUTE: handleTesttingSomething
+    APP_STATE: handelGetAppState,
+    UPDATE_DRIVER_LOCATION_DETAILS: handleUpdateDriverLocationDetails
 }
 
 

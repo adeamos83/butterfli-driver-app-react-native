@@ -18,6 +18,7 @@ import { isDriverConnecting,
         rejectBookingRequest,
         disconnectSocketIO,
         acceptRideRequest,
+        updateDriverLocationDetails,
         } from '../modules/home';
 
 const mapStateToProps = (state) => ({
@@ -53,7 +54,8 @@ const mapActionCreators = {
     updateBookingDetails,
     rejectBookingRequest,
     disconnectSocketIO,
-    acceptRideRequest
+    acceptRideRequest,
+    updateDriverLocationDetails
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Home)

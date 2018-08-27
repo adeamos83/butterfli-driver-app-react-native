@@ -183,7 +183,7 @@ const initialState = {
 
 export function getDistanceFrom(instance) {
     return(dispatch, store) => {
-        if(store().home.updateWatchDriverLocation){
+        if(store().home.watchDriverLocation){
             console.log("Getting arrival time");
             request.get("https://maps.googleapis.com/maps/api/distancematrix/json")
             .query({

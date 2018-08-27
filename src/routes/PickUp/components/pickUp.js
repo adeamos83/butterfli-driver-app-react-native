@@ -25,10 +25,17 @@ class PickUp extends React.Component {
         this.props.getCurrentRoute(Actions.currentScene);
     }
     
-
     componentDidUpdate(prevProps, prevState)  {
+        if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
+            console.log("Changing Socket Id")
+            // this.props.updateBookingDetails("socketId", this.props.driverSocketId);
+            this.props.newSelectedDriverSocketId();
+            this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
+            // this.props.postDriverLocation();
+        }
+
         // Changes rideRequestStatus to "arriving"
-        if(prevProps.distanceFrom.rows){
+        if(prevProps.distanceFrom.rows && this.props.distanceFrom.rows){
         const { duration } = this.props.distanceFrom.rows[0].elements[0] || "";
         const prevDuration = prevProps.distanceFrom.rows[0].elements[0] || "";
             if(prevDuration.duration.value > 300 && duration.value < 300){

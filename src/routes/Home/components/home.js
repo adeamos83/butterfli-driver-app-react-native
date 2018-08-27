@@ -34,7 +34,7 @@ class Home extends React.Component {
         this.props.getCurrentRoute();
     }
 
-    // componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState) {
     //     // if(this.props.driverStatus == "available" && prevProps.driverStatus !=="available"){
     //     //     this.watchId = this.props.watchDriverLocation();
     //     // }
@@ -42,15 +42,15 @@ class Home extends React.Component {
     //     // if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
     //     //     Actions.rideRequest({type: "replace"});
     //     // }
-    //     console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
+        console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
     //     console.log("this user is true or false", this.props.user_id)
 
-    //     // if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
-    //     //     console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
-    //     //     console.log("this user is true or false", this.props.user_id)
-    //     //     this.props.postDriverLocation();
-    //     // }
-    // }
+        if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
+            console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
+            console.log("this user is true or false", this.props.user_id)
+            // this.props.postDriverLocation();
+        }
+    }
 
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchId);

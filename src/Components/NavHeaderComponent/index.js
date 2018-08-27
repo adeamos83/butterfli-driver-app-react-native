@@ -19,7 +19,9 @@ export const NavHeaderComponent = ({ navToPickUp, bookingDetails, driverStatus }
                         </Button>
                     </View>
                     <View style={styles.navTextContainer}>
-                        <Text style={styles.navText}>{ (driverStatus == "pickUp") ? pickUp.address : dropOff.address }</Text>
+                        { pickUp && 
+                            <Text style={styles.navText}>{ (driverStatus == "pickUp") ? pickUp.address : dropOff.address }</Text>
+                        }
                     </View>
                 </View>
             </View>

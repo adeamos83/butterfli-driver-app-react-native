@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native'
+import storage from 'redux-persist/lib/storage'
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";
@@ -20,15 +20,14 @@ const log =  createLogger({ diff: true, collapsed: true });
 
 export const persistConfig = {
     key: 'root',
-    storage: AsyncStorage,
-    blacklist: ['home'],
+    storage: storage,
     stateReconciler: autoMergeLevel2
 }
 
 const persistedReducer = persistReducer(persistConfig,  makeRootReducer())
 
 // a function which can create our store and auto-persist the data
-export default (initialState = {}) => {
+export default function configureStore(initialState = {}) {
     // ======================================================
     // Middleware Configuration
     // ======================================================
@@ -54,6 +53,8 @@ export default (initialState = {}) => {
             ...enhancers
         )
     );
-    const persistor = persistStore(store);  
+    const persistor = persistStore(store, null, () => {
+        console.log("Store has be reloaded!")
+    });   
     return {store, persistor };
 };

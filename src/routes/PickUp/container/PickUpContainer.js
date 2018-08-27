@@ -7,7 +7,9 @@ import { updateBookingDetails,
         watchingDriverLocation,
         getMarkerLocation, 
         openMapsRoute,
-        getCurrentLocation} from '../../Home/modules/home';
+        getCurrentLocation,
+        updateDriverLocationDetails,
+        newSelectedDriverSocketId} from '../../Home/modules/home';
 
 import { 
         // updateBookingDetails, 
@@ -26,6 +28,7 @@ const mapStateToProps = (state) => ({
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
     driverStatus: state.home.driverStatus,
+    user_id: state.login.user_id,
     // nearDriverAlerted: state.home.nearDriverAlerted, 
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
     routes: state.rideRequest.routes || {},
@@ -43,7 +46,9 @@ const mapActionCreators = {
     // getNearDriverAlerted,
     getDistanceFrom,
     updateBookingDetails,
-    getPickUpRoute
+    getPickUpRoute,
+    updateDriverLocationDetails,
+    newSelectedDriverSocketId
 };
 
 export default connect(mapStateToProps, mapActionCreators)(PickUp)

@@ -179,7 +179,7 @@ export function getCurrentLocation() {
 // Get Distance from Driver to pickUp or dropOff Location
 export function getDistanceFrom() {
     return(dispatch, store) => {
-        if(store().home.updateWatchDriverLocation){
+        if(store().home.watchDriverLocation){
             console.log("Getting arrival time");
             request.get("https://maps.googleapis.com/maps/api/distancematrix/json")
             .query({

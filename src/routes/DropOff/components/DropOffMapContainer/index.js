@@ -51,6 +51,8 @@ export const DropOffMapContainer = ({
                 provider={MapView.PROVIDER_GOOGLE}
                 style={styles.map}
                 initialRegion={dropOffRegion}
+                showsUserLocation={true}
+                showsMyLocationButton={true}
             >
             { region &&
                 <MapView.Marker 

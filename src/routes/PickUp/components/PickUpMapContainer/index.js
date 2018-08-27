@@ -42,6 +42,8 @@ export const PickUpMapContainer = ({
                 provider={MapView.PROVIDER_GOOGLE}
                 style={styles.map}
                 initialRegion={region}
+                showsUserLocation={true}
+                showsMyLocationButton={true}
             >
             { region &&
                 <MapView.Marker 

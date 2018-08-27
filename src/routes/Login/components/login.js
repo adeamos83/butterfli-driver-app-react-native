@@ -13,33 +13,30 @@ const carMarker = require("../../../Assets/img/carMarker.png");
 
 class Login extends React.Component {
 
-   componentWillMount(){
-            console.log("This is the current from last load", this.props.currentRoute);
-            if(this.props.user_id && this.props.token){
-                  // Actions.home({type: "replace"})
-                  if(this.props.currentRoute){
-                        Actions[this.props.currentRoute.slice(1)].call({type: 'replace'})
-                  } else {
-                        Actions.home({type: "replace"});
-                  }
-                  
-            }  
+   constructor(props){
+         super(props);
+
+      if(this.props.loggingOut){
+            console.log("Perfom log out action")
+            // this.props.unAuthUser();
+      } else if(this.props.user_id && this.props.token){
+            // Actions.home({type: "replace"})
+            console.log("Going to last active scene.")
+            if(this.props.currentRoute){
+                  Actions[this.props.currentRoute.slice(1)].call({type: 'replace'})
+            } else {
+                  Actions.home({type: "replace"});
+            }
+      }  
    }
 
-//    componentDidUpdate(prevProps, prevState) {
-//       // if(this.props.user_id  && !prevProps.user_id && !this.props.needsProfile && this.props.loggingIn){
-//       //    if(this.props.user_id){
-//       //       console.log("user is found");
-//       //       Actions.home({type: "replace"});
-//       //    }
-//       // }
-//    }
-
-   navToHomePage = () => {
-      //Takes user to the HomePage route
-      Actions.home({type: "replace"});
-      console.log("Goto Homepage");
+   componentDidMount() {
+      if(this.props.loggingOut){
+            console.log("Perfom log out action")
+            this.props.unAuthUser();
+      }
    }
+
    render() {
       return(
       <Container>

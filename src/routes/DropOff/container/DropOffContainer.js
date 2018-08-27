@@ -23,6 +23,7 @@ const mapStateToProps = (state) => ({
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
     driverStatus: state.home.driverStatus,
+    user_id: state.login.user_id,
     // nearDriverAlerted: state.home.nearDriverAlerted, 
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
     distanceFrom: state.dropOff.distanceFrom || {},

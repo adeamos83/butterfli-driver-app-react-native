@@ -24,6 +24,7 @@ export const MapContainer = ({
                 style={styles.map}
                 initialRegion={region}
                 showsUserLocation={true}
+                showsMyLocationButton={true}
             >
             { region &&
                 <MapView.Marker 

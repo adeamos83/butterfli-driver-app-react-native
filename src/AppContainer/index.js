@@ -8,9 +8,11 @@ import Alert from '../routes/Alert/components/alerts'
 import AlertContainer from '../routes/Alert/container/AlertContainer'
 
 import { Provider } from 'react-redux';
-import factory from '../store/createStore';
-const { store, persistor } = factory();
-import { testingSomething } from '../routes/Home/modules/home';
+
+import configureStore from '../store/createStore';
+const { store, persistor } = configureStore();
+
+import { getAppState, testingSomething } from '../routes/Home/modules/home';
 export default class AppContainer extends Component {
     // static propTypes = {
     //     store: PropTypes.object.isRequired,
@@ -23,7 +25,15 @@ export default class AppContainer extends Component {
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
         console.log("This is the component did mount App ")
-        store.dispatch(testingSomething());
+    }
+    
+    componentDidUpdate(prevProps, prevState) {
+            console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)    
+            if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
+                console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
+                console.log("this user is true or false", this.props.user_id)
+                // this.props.postDriverLocation();
+            }
     }
 
     componentWillUnmount() {
@@ -36,6 +46,7 @@ export default class AppContainer extends Component {
         console.log('App has come to the foreground!')
         }
         this.setState({appState: nextAppState});
+        store.dispatch(getAppState(nextAppState));
     }
 
     onBeforeLift = () => {
