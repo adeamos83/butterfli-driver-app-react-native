@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 import Menu from '../components/menu';
 
+import { unAuthUser } from '../../Login/modules/login';
+
 import { authUser, 
-         unAuthUser, 
         } from '../modules/menu';
 
 const mapStateToProps = (state) => ({

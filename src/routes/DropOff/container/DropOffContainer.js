@@ -6,7 +6,9 @@ import { getDriverStatus,
         updateBookingDetails,
         getMarkerLocation,
         openMapsRoute,
-        watchingDriverLocation } from '../../Home/modules/home';
+        watchingDriverLocation,
+        updateDriverLocationDetails,
+        newSelectedDriverSocketId } from '../../Home/modules/home';
 
 import { getCurrentLocation,
         // getNearDriverAlerted,
@@ -16,6 +18,7 @@ import { getCurrentLocation,
 
 const mapStateToProps = (state) => ({
     region: state.home.region,
+    user_id: state.login.user_id,
     inputData: state.home.inputData || {},
     driverInfo: state.home.driverInfo || {},
     driverLocation: state.home.driverLocation || {},
@@ -40,7 +43,9 @@ const mapActionCreators = {
     getMarkerLocation,
     // getNearDriverAlerted,
     getDistanceFrom,
-    getDropOffRoute
+    getDropOffRoute,
+    updateDriverLocationDetails,
+    newSelectedDriverSocketId
 };
 
 export default connect(mapStateToProps, mapActionCreators)(DropOff)

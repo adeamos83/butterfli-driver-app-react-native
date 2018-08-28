@@ -15,14 +15,10 @@ class Login extends React.Component {
 
    constructor(props){
          super(props);
-
-      if(this.props.loggingOut){
-            console.log("Perfom log out action")
-            // this.props.unAuthUser();
-      } else if(this.props.user_id && this.props.token){
+      if(this.props.user_id && this.props.token){
             // Actions.home({type: "replace"})
-            console.log("Going to last active scene.")
             if(this.props.currentRoute){
+                  console.log("Going to last active scene.")
                   Actions[this.props.currentRoute.slice(1)].call({type: 'replace'})
             } else {
                   Actions.home({type: "replace"});
@@ -31,10 +27,10 @@ class Login extends React.Component {
    }
 
    componentDidMount() {
-      if(this.props.loggingOut){
-            console.log("Perfom log out action")
-            this.props.unAuthUser();
-      }
+      // if(this.props.loggingOut){
+      //       console.log("Perfom log out action")
+      //       this.props.unAuthUser();
+      // }
    }
 
    render() {

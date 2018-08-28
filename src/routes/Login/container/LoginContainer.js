@@ -20,6 +20,7 @@ import { authUser,
 const mapStateToProps = (state) => ({
     user_id: state.login.user_id || "",
     token: state.login.token,
+    expData: state.login.expData,
     alerts: state.alerts,
     needsProfile: state.login.needsProfile,
     inputData: state.login.inputData || {},

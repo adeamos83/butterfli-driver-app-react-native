@@ -11,10 +11,8 @@ export const MenuContainer =({ unAuthUser, authUser, user_id, driverInfo, curren
 
    onlogOut = () =>{
       console.log("logging out")
-      // unAuthUser();
-      // unAuthUser();
+      unAuthUser();
       Actions.login({type: "reset", loggingOut: true});
-      // unAuthUser();
    }
 
    startTrip = () => {

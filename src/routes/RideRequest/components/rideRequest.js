@@ -25,6 +25,13 @@ class RideRequest extends React.Component {
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchId);
     } 
+    componentDidUpdate(prevProps, prevState) {
+        if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
+            console.log("Changing Socket Id")
+            this.props.newSelectedDriverSocketId();
+            this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
+        }
+    }
 
     connectDriver = () => {
         this.props.getDriverStatus("available");
@@ -39,6 +46,7 @@ class RideRequest extends React.Component {
     startTrip = () => {
         Actions.pickUp({type: "replace"});
         this.props.updateBookingDetails("rideRequestStatus", "enRoute");
+        getDriverStatus('enRoute');
     }
 
     render() {

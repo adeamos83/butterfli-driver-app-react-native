@@ -9,9 +9,9 @@ const styles = StyleSheet.create({
     driverPic: {
         borderColor: "#ffffff",
         borderWidth: 1,
-        height: 100,
-        width: 100,
-        borderRadius: 50,
+        height: 150,
+        width: 150,
+        borderRadius: 75,
         alignItems: "center",
         justifyContent: "center",
         shadowColor: "#000",

@@ -25,6 +25,14 @@ class DropOff extends React.Component {
         this.props.getCurrentRoute(Actions.currentScene);
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
+            console.log("Changing Socket Id")
+            this.props.newSelectedDriverSocketId();
+            this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
+        }
+    }
+
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchId);
     } 

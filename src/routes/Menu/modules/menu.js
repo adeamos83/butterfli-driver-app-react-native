@@ -6,8 +6,7 @@ import { API_URL } from '../../../api';
 //-------------------------------
 // Constants
 //-------------------------------
-const { AUTH_USER,
-        UNAUTH_USER
+const { AUTH_USER
         } = constants;
 
 //-------------------------------
@@ -33,13 +32,6 @@ export function authUser(user_id){
    }
 }
 
-export function unAuthUser(){
-    return(dispatch) => {
-        dispatch({
-            type: UNAUTH_USER,
-        });
-    }
-}
 
 //-------------------------------
 // Action Handlers
@@ -53,18 +45,8 @@ function handleUserAuth(state, action){
    });
 }
 
-function handleUnAuthUser(state, action){
-   return update(state, {
-       user_id: {
-           $set: undefined
-       }
-   });
-}
-
-
 const ACTION_HANDLERS = {
     AUTH_USER: handleUserAuth,
-    UNAUTH_USER: handleUnAuthUser,
 }
 
 

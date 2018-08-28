@@ -4,7 +4,9 @@ import RideRequest from '../components/rideRequest';
 import { openMapsRoute, 
         getCurrentRoute,
         watchingDriverLocation, 
-        updateBookingDetails } from '../../Home/modules/home';
+        updateBookingDetails,
+        newSelectedDriverSocketId,
+        updateDriverLocationDetails } from '../../Home/modules/home';
 
 import { getCurrentLocation, 
         getDriverStatus,
@@ -14,6 +16,7 @@ import { getCurrentLocation,
 
 const mapStateToProps = (state) => ({
     region: state.home.region,
+    user_id: state.login.user_id,
     driverInfo: state.home.driverInfo || {},
     driverLocation: state.home.driverLocation || {},
     bookingDetails: state.home.bookingDetails || {},
@@ -32,7 +35,9 @@ const mapActionCreators = {
     getMarkerLocation,
     getPassengerRoute,
     openMapsRoute,
-    updateBookingDetails
+    updateBookingDetails,
+    newSelectedDriverSocketId,
+    updateDriverLocationDetails
 };
 
 export default connect(mapStateToProps, mapActionCreators)(RideRequest)

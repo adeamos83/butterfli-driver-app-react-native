@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import {SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE_URL} from '../../../api';
 import {addAlert} from '../../Alert/modules/alerts';
-import { disconnectSocketIO } from '../../Home/modules/home';
+import { disconnectSocketIO, updateBookingDetails } from '../../Home/modules/home';
 
 //-------------------------------
 // Constants
@@ -78,11 +78,12 @@ export function getInputData(payload) {
 export function loginUser(email, password){
    return(dispatch) => {
        return axios.post(SIGNIN_URL, {email, password}).then((response) => {
-            var {user_id, token, isProfileCreated} = response.data;
+            var {user_id, token, isProfileCreated, expDate} = response.data;
             var userDetails = {
                 user_id: user_id,
                 email: email,
-                token: token
+                token: token,
+                expDate: expDate
             }
             dispatch({
                 type: AUTH_USER,
@@ -101,11 +102,12 @@ export function loginUser(email, password){
 export function signupUser(email, password){
     return(dispatch) => {
         return axios.post(SIGNUP_URL, {email, password}).then((response) => {
-             var {user_id, token} = response.data;
+             var {user_id, token, expDate} = response.data;
              var userDetails = {
                 user_id: user_id,
                 email: email,
-                token: token
+                token: token,
+                expDate: expDate
             }
              dispatch({
                  type: AUTH_USER,
@@ -134,7 +136,11 @@ export function authUser(user_id){
  }
 
 export function unAuthUser(){
-    return(dispatch) => {
+    return(dispatch, store) => {
+        if(store().home.driverStatus !== "available" && store().home.driverStatus !== "notAvailable"){ 
+            console.log("Driver is canceling ride request")
+            dispatch(updateBookingDetails("rideRequestStatus", "canceled"));
+        }
         disconnectSocketIO();
         dispatch({
             type: UNAUTH_USER,
@@ -295,6 +301,9 @@ function handleUserAuth(state, action){
         },
         token: {
             $set: action.payload.token
+        },
+        expDate: {
+            $set: action.payload.expDate
         }
    });
 }
@@ -308,6 +317,9 @@ function handleUnAuthUser(state, action){
             $set: undefined
         },
         token: {
+            $set: undefined
+        },
+        expDate: {
             $set: undefined
         }
    });

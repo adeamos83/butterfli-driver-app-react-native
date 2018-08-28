@@ -35,6 +35,13 @@ class Home extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
+            console.log("Changing Socket Id")
+            if(this.props.driverStatus !== "notAvailable"){
+                this.props.newSelectedDriverSocketId();
+                this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
+            }
+        }
     //     // if(this.props.driverStatus == "available" && prevProps.driverStatus !=="available"){
     //     //     this.watchId = this.props.watchDriverLocation();
     //     // }
