@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import Home from '../components/home';
 
+import { getRideHistory } from '../../Profile/modules/profile';
+
 import { isDriverConnecting,
         getCurrentRoute,
         getCurrentLocation, 
@@ -57,7 +59,8 @@ const mapActionCreators = {
     disconnectSocketIO,
     acceptRideRequest,
     updateDriverLocationDetails,
-    newSelectedDriverSocketId
+    newSelectedDriverSocketId,
+    getRideHistory
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Home)

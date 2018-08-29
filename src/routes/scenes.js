@@ -16,6 +16,7 @@ import CreateVehicleProfile from './Login/components/CreateProfile/vehicle';
 import ProfileContainer from './Profile/container/ProfileContainer';
 
 import RideSummary from './DropOff/components/RideSummary';
+import RideHistoryContainer from './Profile/components/RideHistory';
 
 
 
@@ -27,7 +28,7 @@ const MenuIcon = () => {
 
 const scenes = Actions.create(
     <Scene key='root' hideNavBar>
-        <Scene key="login" component={LoginContainer}  initial title="login"/>
+        <Scene key="login" component={LoginContainer} initial title="login"/>
         <Scene key="createProfile" component={CreateProfile}   title="Create Profile"/>
         <Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Vehicle Profile"/>
         <Drawer 
@@ -42,6 +43,7 @@ const scenes = Actions.create(
             <Scene key="pickUp" component={PickUpContainer} title="pickUp"/>
             <Scene key="dropOff" component={DropOffContainer} title="dropOff"/>
             <Scene key="profile" component={ProfileContainer}  title="Profile"/>
+            <Scene key="rideHistory" component={RideHistoryContainer} title="Ride History"/>
             <Scene key="rideSummary" component={RideSummary}    title="Ride Summary"/>
         </Drawer>
         <Scene key="alert" component={AlertContainer} title="alert"/>

@@ -55,7 +55,7 @@ export const RideSummary = ({ driverInfo, bookingDetails, navToHomePage}) => {
                         <Icon name="road" style={styles.locationIcon} />
                      </View>
                      <View style={{flexDirection: "column",  justifyContent: "center"}}>
-                        <Text style={styles.routeHeader}>{tripDistance}</Text>
+                        <Text style={styles.routeHeader}>{tripDistance[0].totalMiles + " miles"}</Text>
                      </View>
                   </View>
                </View>

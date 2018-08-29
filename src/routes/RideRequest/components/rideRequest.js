@@ -20,6 +20,7 @@ class RideRequest extends React.Component {
         this.props.getPassengerRoute();
         this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentRoute(Actions.currentScene);
+        this.props.getTotalDistance();
     }
 
     componentWillUnmount() {
@@ -46,7 +47,7 @@ class RideRequest extends React.Component {
     startTrip = () => {
         Actions.pickUp({type: "replace"});
         this.props.updateBookingDetails("rideRequestStatus", "enRoute");
-        getDriverStatus('enRoute');
+        this.props.getDriverStatus('pickUp');
     }
 
     render() {

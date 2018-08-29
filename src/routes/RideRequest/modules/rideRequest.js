@@ -1,8 +1,8 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
-import { API_URL, MAPBOX_ACCESS_TOKEN } from '../../../api';
-
+import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY } from '../../../api';
+import { updateBookingDetails } from '../../Home/modules/home'
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
 //-------------------------------
@@ -14,6 +14,7 @@ const { GET_CURRENT_LOCATION,
         // WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
         GET_PASSENGER_ROUTES,
+        GET_TOTAL_DISTANCE
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -93,6 +94,57 @@ export function getMarkerLocation(location){
             type: "server/driverlocation",
             payload: location
         });
+    }
+}
+
+export function getTotalDistance() {
+    return(dispatch, store) => {
+        if(store().home.watchDriverLocation){
+            console.log("Getting arrival time");
+
+            var origin1 = store().home.watchDriverLocation.coords.latitude + "," + store().home.watchDriverLocation.coords.longitude
+
+            var origin2 = store().home.bookingDetails.pickUp.latitude + "," + store().home.bookingDetails.pickUp.longitude;
+
+            var destination2 = store().home.bookingDetails.dropOff.latitude + "," + store().home.bookingDetails.dropOff.longitude;
+
+            request.get("https://maps.googleapis.com/maps/api/distancematrix/json")
+            .query({
+                units: 'imperial',
+                // origins: store().home.updateWatchDriverLocation.coordinates.coordinates[1] + 
+                // "," + store().home.updateWatchDriverLocation.coordinates.coordinates[0],
+                // origins: store().home.watchDriverLocation.coords.latitude + 
+                // "," + store().home.watchDriverLocation.coords.longitude,
+                origins: origin1 + "|" + origin2,
+                // destinations: store().home.bookingDetails.pickUp.latitude + 
+                // "," + store().home.bookingDetails.pickUp.longitude,
+                destinations: origin2 + "|" + destination2,
+                mode: "driving",
+                key: GOOGLE_API_KEY
+            })
+            .finish((error, res) => {
+                console.log(error);
+                route1 =  res.body.rows[0].elements[0].distance.value
+                route2 =  res.body.rows[1].elements[1].distance.value
+                time1 = res.body.rows[0].elements[0].duration.value
+                time2 = res.body.rows[1].elements[1].duration.value
+                totalMiles = (route1 + route2) / 1609.344;
+                totalTime = (time1 + time2) / 60;
+                console.log("This is the total miles expected to be traveled", totalMiles);
+                console.log("This is the total time expected to be traveled", totalTime);
+                dispatch({
+                    type: GET_TOTAL_DISTANCE,
+                    payload: {
+                        totalTime: Math.round(totalTime * 100) / 100,
+                        totalMiles: Math.round(totalMiles * 100) / 100
+                    }
+                });
+                dispatch(updateBookingDetails("tripDistance", {
+                    totalTime: Math.round(totalTime * 100) / 100, 
+                    totalMiles: Math.round(totalMiles * 100) / 100
+                }));
+            })
+        }
     }
 }
 
@@ -261,6 +313,14 @@ function handleUpdateDriverLocation(state, action) {
     });
 }
 
+function handleGetTotalDistance(state, action) {
+    return update(state, {
+        totalTripDistance: {
+            $set: action.payload
+        }
+    });
+}
+
 function handleGetMarkerLocation(state, action) {
     return update(state, {
         markerLocation: {
@@ -294,7 +354,8 @@ const ACTION_HANDLERS = {
     // WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
-    GET_PASSENGER_ROUTES: handleGetPassengerRoutes
+    GET_PASSENGER_ROUTES: handleGetPassengerRoutes,
+    GET_TOTAL_DISTANCE: handleGetTotalDistance
 }
 
 

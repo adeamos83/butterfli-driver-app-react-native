@@ -26,12 +26,12 @@ class Login extends React.Component {
       }  
    }
 
-   componentDidMount() {
-      // if(this.props.loggingOut){
-      //       console.log("Perfom log out action")
-      //       this.props.unAuthUser();
-      // }
-   }
+//    componentDidMount() {
+//       // if(this.props.loggingOut){
+//       //       console.log("Perfom log out action")
+//       //       this.props.unAuthUser();
+//       // }
+//    }
 
    render() {
       return(

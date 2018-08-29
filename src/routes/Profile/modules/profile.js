@@ -2,17 +2,21 @@ import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
 import { API_URL } from '../../../api';
+import axios from 'axios';
+
+import { addAlert } from '../../Alert/modules/alerts';
 
 //-------------------------------
 // Constants
 //-------------------------------
 const { 
-    UNAUTH_USER        
+    UNAUTH_USER,
+    DRIVER_RIDE_HISTORY       
     } = constants;
 
 
 //-------------------------------
-// Intial State
+// Intial Stat
 //-------------------------------
 
 const initialState = {
@@ -34,10 +38,23 @@ export function authUser(user_id){
    }
 }
 
-export function unAuthUser(){
-    return(dispatch) => {
-        dispatch({
-            type: UNAUTH_USER,
+export function getRideHistory(){
+    return(dispatch, store) => {
+        const driverId = store().login.user_id
+        const rideHistoryUrl = API_URL + "/api/driver/" + driverId + "/bookings";
+        console.log(rideHistoryUrl);
+        return axios.get(rideHistoryUrl, {
+            headers: {authorization: store().login.token}
+        }).then((response) => {
+             var rideHistory = response.data;
+             console.log(rideHistory);
+             dispatch({
+                 type: DRIVER_RIDE_HISTORY,
+                 payload: rideHistory
+             });
+        }).catch((error) => {  
+            console.log(error); 
+            dispatch(addAlert("Could not get Ride History."));
         });
     }
 }
@@ -46,10 +63,17 @@ export function unAuthUser(){
 // Action Handlers
 //-------------------------------
 
+function handleGetRideHistory(state, action ) {
+    return update(state, {
+        rideHistory: {
+            $set: action.payload
+        }
+    })
+}
 
 
 const ACTION_HANDLERS = {
-    
+    DRIVER_RIDE_HISTORY: handleGetRideHistory
 }
 
 

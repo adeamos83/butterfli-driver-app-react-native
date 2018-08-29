@@ -21,7 +21,8 @@ const log =  createLogger({ diff: true, collapsed: true });
 export const persistConfig = {
     key: 'root',
     storage: storage,
-    stateReconciler: autoMergeLevel2
+    stateReconciler: autoMergeLevel2,
+    blacklist: ['alerts']
 }
 
 const persistedReducer = persistReducer(persistConfig,  makeRootReducer())

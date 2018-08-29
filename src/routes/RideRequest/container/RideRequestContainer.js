@@ -6,12 +6,13 @@ import { openMapsRoute,
         watchingDriverLocation, 
         updateBookingDetails,
         newSelectedDriverSocketId,
-        updateDriverLocationDetails } from '../../Home/modules/home';
+        updateDriverLocationDetails,
+        getDriverStatus } from '../../Home/modules/home';
 
 import { getCurrentLocation, 
-        getDriverStatus,
         getMarkerLocation,
         getPassengerRoute,
+        getTotalDistance
         } from '../modules/rideRequest';
 
 const mapStateToProps = (state) => ({
@@ -25,6 +26,7 @@ const mapStateToProps = (state) => ({
     driverStatus: state.home.driverStatus ,
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
     routes: state.rideRequest.routes || {},
+    totalTripDistance: state.rideRequest.totalTripDistance || {}
 });
 
 const mapActionCreators = {
@@ -37,7 +39,8 @@ const mapActionCreators = {
     openMapsRoute,
     updateBookingDetails,
     newSelectedDriverSocketId,
-    updateDriverLocationDetails
+    updateDriverLocationDetails,
+    getTotalDistance
 };
 
 export default connect(mapStateToProps, mapActionCreators)(RideRequest)

@@ -20,10 +20,6 @@ import { getAppState } from '../routes/Home/modules/home';
 var Spinner = require('react-native-spinkit');
 
 export default class AppContainer extends Component {
-    // static propTypes = {
-    //     store: PropTypes.object.isRequired,
-    //     persistor: PropTypes.object.isRequired,
-    // }
     constructor(props) {
         super(props);
         Text.defaultProps.allowFontScaling=false
@@ -31,9 +27,6 @@ export default class AppContainer extends Component {
             appState:AppState.currentState
         }
     }
-    // state = {
-    //     appState: AppState.currentState
-    // }
 
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
@@ -56,7 +49,7 @@ export default class AppContainer extends Component {
     }
 
     onBeforeLift = () => {
-        // take some action before the gate lifts
+        // take some action right before Rehydrate
         // JWT token has expired User need to login
         var dateNow = new Date();
         if (store.getState().login.expDate < (dateNow.getTime() / 1000)){
@@ -81,6 +74,7 @@ export default class AppContainer extends Component {
             <Provider store={store}>
                 <PersistGate persistor={persistor} onBeforeLift={this.onBeforeLift} loading={this.renderLoading()} >
                     <View style={{flex: 1}}>
+                        
                         <Router scenes={scenes} />
                         <AlertContainer />
                     </View>

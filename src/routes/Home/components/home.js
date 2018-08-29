@@ -32,6 +32,7 @@ class Home extends React.Component {
         this.props.getCurrentLocation();
         this.props.getDriverInfo();
         this.props.getCurrentRoute();
+        this.props.getRideHistory();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -42,20 +43,12 @@ class Home extends React.Component {
                 this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
             }
         }
-    //     // if(this.props.driverStatus == "available" && prevProps.driverStatus !=="available"){
-    //     //     this.watchId = this.props.watchDriverLocation();
-    //     // }
-
-    //     // if(this.props.driverStatus === "pickUp" && prevProps.driverStatus !=="pickUp") {
-    //     //     Actions.rideRequest({type: "replace"});
-    //     // }
+        console.log(Actions.currentScene);
         console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
-    //     console.log("this user is true or false", this.props.user_id)
-
+   
         if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
             console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
             console.log("this user is true or false", this.props.user_id)
-            // this.props.postDriverLocation();
         }
     }
 

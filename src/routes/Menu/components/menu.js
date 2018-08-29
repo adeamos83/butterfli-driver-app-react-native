@@ -28,6 +28,7 @@ class Menu extends React.Component {
                driverInfo={this.props.driverInfo}
                currentRoute={this.props.currentRoute}
                prevRoute={this.props.prevRoute}
+               driverStatus={this.props.driverStatus}
             />
          </View>
       </Container>

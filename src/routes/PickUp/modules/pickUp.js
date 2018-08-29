@@ -2,7 +2,7 @@ import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
 import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY } from '../../../api';
-import { updateBookingDetails } from '../../Home/modules/home'
+
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
 //-------------------------------
@@ -202,10 +202,6 @@ export function getDistanceFrom(instance) {
                     type: GET_DISTANCE_FROM,
                     payload: res.body
                 })
-                if(instance == 'intial'){
-                    dispatch(updateBookingDetails("tripDistance", res.body.rows[0].elements[0].distance.text));
-                    console.log(res.body.rows[0].elements[0].distance.text);
-                }
             })
         }
     }

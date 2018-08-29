@@ -9,7 +9,7 @@ export const PickUpFooterComponent = ({ bookingDetails, distanceFrom, getDriverS
     const { firstName } = bookingDetails || "";
     const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
     pickUpConfrim = () => {
-        getDriverStatus('DropOff');
+        getDriverStatus('dropOff');
         pickUpPassenger();
         updateBookingDetails("rideRequestStatus", "arrived");
     }

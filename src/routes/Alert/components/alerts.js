@@ -1,14 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { Container } from 'native-base';
-import { Actions } from 'react-native-router-flux';
+import { View } from 'react-native';
 
 //Component Imports
 import AlertContainer from './Alert'
-
-//Image Imports
-const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
-const carMarker = require("../../../Assets/img/carMarker.png");
 
 class Alert extends React.Component {
 

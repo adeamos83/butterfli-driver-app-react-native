@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './MenuStyles';
 
-export const MenuContainer =({ unAuthUser, authUser, user_id, driverInfo, currentRoute, prevRoute }) => {
+export const MenuContainer =({ unAuthUser, driverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute }) => {
    const { profilePic } = driverInfo || {};
 
    onlogOut = () =>{
@@ -16,13 +16,27 @@ export const MenuContainer =({ unAuthUser, authUser, user_id, driverInfo, curren
    }
 
    startTrip = () => {
-      if(currentRoute !== '_profile'){
-         Actions.drawerClose();
-      } else {
-         Actions[prevRoute.slice(1)].call({type: 'replace'})
+      // if(currentRoute !== '_profile'){
+      //    Actions.drawerClose();
+      //    console.log('drawer is closing')
+      // } else {
+      //    console.log(prevRoute);
+      //    Actions[prevRoute.slice(1)].call({type: 'replace'})
+      // }
+      if(driverStatus == "notAvailable" || driverStatus == "available"){
+         console.log("need to route home")
+         Actions.home({type: "replace"});
+      } else if( driverStatus == "enRoute"){
+         console.log("need to route ride request")
+         Actions.rideRequest({type: "replace"});
+      } else if (driverStatus == "pickUp") {
+         console.log("need to route pick up")
+         Actions.pickUp({type: "replace"});
+      } else if( driverStatus == "dropOff") {
+         console.log("need to route drop off")
+         Actions.dropOff({type: "replace"});
       }
    }
-
 
    return(
       <View style={{flex: 1}}>
@@ -37,10 +51,13 @@ export const MenuContainer =({ unAuthUser, authUser, user_id, driverInfo, curren
             <Content>
                <List>
                   <ListItem onPress={this.startTrip}>
-                     <Text style={{fontSize: 16}}>Start a trip</Text>
+                     <Text style={{fontSize: 16}}>{(driverStatus == "notAvailable" || driverStatus == "available")? "Start Trip" : "Back to Trip"}</Text>
                   </ListItem>
                   <ListItem onPress={() => Actions.profile({type: 'replace'})}>
                      <Text style={{fontSize: 16}}>Profile</Text>
+                  </ListItem>
+                  <ListItem onPress={() => Actions.rideHistory({type: 'replace'})}>
+                     <Text style={{fontSize: 16}}>Ride History</Text>
                   </ListItem>
                   <ListItem onPress={this.onlogOut}>
                      <Text style={{fontSize: 16}}>Log Out</Text>
