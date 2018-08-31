@@ -29,6 +29,8 @@ class Menu extends React.Component {
                currentRoute={this.props.currentRoute}
                prevRoute={this.props.prevRoute}
                driverStatus={this.props.driverStatus}
+               cancelBookingRequest={this.props.cancelBookingRequest}
+               getDriverStatus={this.props.getDriverStatus}
             />
          </View>
       </Container>

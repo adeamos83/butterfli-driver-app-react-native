@@ -11,10 +11,8 @@ import CreateVehicleProfile from './vehicle';
 
 export const CreateProfile =({addAlert, user_id, createProfile, createUserProfile, createCarProfile,
    gotoCarProfile, navToCarPage, isSigningUp, newUserProfile, signingUp,handleSubmit, fields: {firstName, lastName, phonenumber}}) => {
-  // const {handleSubmit, fields: {email, password}} = this.props;
    
    onCreateProfile = (values) => {
-   // Actions.createVehicleProfile({type: "replace"})
    createUserProfile(values)
     gotoCarProfile(true);
    }
@@ -29,7 +27,6 @@ export const CreateProfile =({addAlert, user_id, createProfile, createUserProfil
          <ScrollView>
             <View style={styles.titleContainer}>
                <Image style={styles.logo} source={require('../../../../Assets/img/ButterFLi-logo-header.png')}/>
-               {/* <Text style={styles.title}> ButterFLi </Text> */}
             </View>
             <View style={styles.field}>
                <Field

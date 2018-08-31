@@ -6,13 +6,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './MenuStyles';
 
-export const MenuContainer =({ unAuthUser, driverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute }) => {
+export const MenuContainer =({ unAuthUser, driverStatus, getDriverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute, cancelBookingRequest }) => {
    const { profilePic } = driverInfo || {};
 
-   onlogOut = () =>{
+   onlogOut = () => {
       console.log("logging out")
       unAuthUser();
       Actions.login({type: "reset", loggingOut: true});
+   }
+
+   onCancelTrip = () => {
+      cancelBookingRequest();
+      getDriverStatus("available");
+      Actions.home({type: "replace"});
    }
 
    startTrip = () => {
@@ -53,6 +59,11 @@ export const MenuContainer =({ unAuthUser, driverStatus, authUser, user_id, driv
                   <ListItem onPress={this.startTrip}>
                      <Text style={{fontSize: 16}}>{(driverStatus == "notAvailable" || driverStatus == "available")? "Start Trip" : "Back to Trip"}</Text>
                   </ListItem>
+                  { (driverStatus !== "notAvailable" && driverStatus !== "available") && 
+                     <ListItem onPress={this.onCancelTrip}>
+                        <Text style={{fontSize: 16, paddingLeft: 20, color: 'red'}}>Cancel Trip</Text>
+                     </ListItem>
+                  }
                   <ListItem onPress={() => Actions.profile({type: 'replace'})}>
                      <Text style={{fontSize: 16}}>Profile</Text>
                   </ListItem>

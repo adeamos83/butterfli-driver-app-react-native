@@ -1,6 +1,6 @@
 import React from "react";
 import { Text } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Body, Button, View } from "native-base";
+import { CardItem, Body, View } from "native-base";
 
 
 import styles from "./NewBookingCardStyles.js";

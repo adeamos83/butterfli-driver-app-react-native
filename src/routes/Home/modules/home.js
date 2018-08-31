@@ -2,21 +2,13 @@ import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking, AppState } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-
 import axios from 'axios';
-
-
 import { API_URL } from '../../../api';
 import request from '../../../util/request';
-
 import io from "socket.io-client/dist/socket.io";
 
 import { addAlert } from '../../Alert/modules/alerts';
-// const socket = io.connect(API_URL, {jsonp:false, forceNew: true});
 
-// let socket = io(API_URL, {jsonp:false, 'force new connection':true});
-
-// const polyline = require('@mapbox/polyline');
 //-------------------------------
 // Constants
 //-------------------------------
@@ -24,18 +16,15 @@ const { DRIVER_CONNECTING,
         CURRENT_ROUTE,
         GET_CURRENT_LOCATION, 
         DRIVER_STATUS,
-        // GET_INPUT, 
         GET_DRIVER_INFORMATION,
-        GET_SOCKET_ID,
         POST_DRIVER_LOCATION,
         DB_UPDATED_DRIVER_LOCATION,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
-        // NEAR_DRIVER_ALERTED,
-        // UPDATE_RIDE_REQUEST_STATUS,
         UPDATE_BOOKING_DETAILS,
         REJECT_BOOKING_REQUEST,
+        CANCEL_BOOKING_REQUEST,
         SELECTED_DRIVERS,
         APP_STATE,
         UPDATE_DRIVER_LOCATION_DETAILS
@@ -167,42 +156,8 @@ export function getDriverStatus(driverStatus){
         }).catch((error) => {
             console.log(error);
         })
-
-
-        // request.put(`${API_URL}/api/driverLocation/` + id)
-        // .send(payload)
-        // .finish((error, res) => {
-        //         dispatch({
-        //             type: POST_DRIVER_LOCATION,
-        //             payload: res.body
-        //         });
-        //         dispatch(isDriverConnecting(false));   
-        // });
     }
 }
-
-// export function getNearDriverAlerted(payload){
-//     return(dispatch) => {
-//         dispatch({
-//             type: NEAR_DRIVER_ALERTED,
-//             payload: payload
-//         });
-//     }
-// }
-
-
-// export function updateRideRequestStatus(payload){
-//     return(dispatch, store) => {
-//         let updateBooking = {
-//             status: payload,
-//             ...store().home.bookingDetails,
-//         }
-//         dispatch({
-//             type: UPDATE_RIDE_REQUEST_STATUS,
-//             payload:updateBooking
-//         });
-//     }
-// }
 
 // Updates booking details that the driver rejected ride, Updates nearByDrivers array removing this driver from array
 export function rejectBookingRequest(){
@@ -229,20 +184,6 @@ export function rejectBookingRequest(){
         };
         console.log("Near by drivers is being sent ", payload.data.nearByDrivers == undefined);
 
-        // return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
-        //     headers: {authorization: store().login.token}
-        // }).then((res) => {
-        //     console.log("This Accept Ride Request", res);
-        //     dispatch({
-        //         type: SELECTED_DRIVERS,
-        //         payload: res.data
-        //     });
-        //     Actions.rideRequest({type: "replace"});
-        // }).catch((error) => {
-        //     console.log(error);
-        // })
-
-
         request.put(`${API_URL}/api/rejectedbookings/${id}`)
         .send(payload)
         .finish((error, res) => {
@@ -255,30 +196,81 @@ export function rejectBookingRequest(){
     }
 }
 
+// This function cancels a trip one a driver is on the trip and send canelation back to server
+export function cancelBookingRequest(){
+    return(dispatch, store) => {
+        const id = store().home.bookingDetails._id
+        const payload = {
+            data: {
+                ...store().home.bookingDetails,
+                rideRequestStatus: "canceled",
+            }
+        };
+
+        //Updates database with Cancelation Request
+        // return axios.put(`${API_URL}/api/bookings.` + id, {payload}, {
+        //     headers: {authorization: store().login.token}
+        // }).then((res) => {
+        //     dispatch({
+        //         type: CANCEL_BOOKING_REQUEST,
+        //     });
+        // }).catch((error) => {
+        //     console.log(error);
+        // })
+
+        request.put(`${API_URL}/api/bookings/${id}`)
+        .send(payload)
+        .finish((error, res) => {
+            dispatch({
+                type: CANCEL_BOOKING_REQUEST
+            });
+            console.log("This is an error from the server", error);
+            console.log("This is a response from the server", res)
+        });
+    }
+}
+
 /*
     This Function uses the geolocation API to watch consistenly what the 
     drivers location when ever they move more 10meters
 */
-export function watchingDriverLocation(){
+export function watchingDriverLocation(position){
     return(dispatch, store) => {
-        navigator.geolocation.watchPosition(
-            (position) => {
+        dispatch({
+            type: WATCH_DRIVER_LOCATION,
+            payload: position
+        });
+        if(true){
+            console.log("Sending drivers location to passenger")
                 dispatch({
-                    type: WATCH_DRIVER_LOCATION,
+                    type: "server/driverlocation",
                     payload: position
                 });
-                // This funciton send the location to the server to be saved on the database using socket io
-                if(true){
-                    console.log("Sending drivers location to passenger")
-                        dispatch({
-                            type: "server/driverlocation",
-                            payload: position
-                        });
-                }
-            },
-            (error) => console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
-        );
+        }
+        //             console.log("Sending drivers location to passenger")
+        //                 dispatch({
+        //                     type: "server/driverlocation",
+        //                     payload: position
+        //                 });
+        //         }
+        // navigator.geolocation.watchPosition(
+        //     (position) => {
+        //         dispatch({
+        //             type: WATCH_DRIVER_LOCATION,
+        //             payload: position
+        //         });
+        //         // This funciton send the location to the server to be saved on the database using socket io
+        //         if(true){
+        //             console.log("Sending drivers location to passenger")
+        //                 dispatch({
+        //                     type: "server/driverlocation",
+        //                     payload: position
+        //                 });
+        //         }
+        //     },
+        //     (error) => console.log(error.message),
+        //     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000, distanceFilter: 5}
+        // );
     }
 }
 
@@ -297,14 +289,6 @@ export function getMarkerLocation(location){
         });
     }
 }
-
-// // Get User Input
-// export function getInputData(payload) {
-//     return{
-//         type: GET_INPUT,
-//         payload
-//     }
-// }
 
 //================================================ Need to Test ASAP
 // Get Driver Details from server
@@ -327,13 +311,6 @@ export function getDriverInfo() {
             dispatch(addAlert("Could not get Driver Profile."));
         });
 
-        // request.get(`${API_URL}/api/driver/` + user_id)
-        // .finish((error, res)=>{
-        //     dispatch({
-        //         type: GET_DRIVER_INFORMATION,
-        //         payload: res.body
-        //     });
-        // });
     }
 }
 //Get Driver Socket ID from server
@@ -403,15 +380,6 @@ export function postDriverLocation(){
             console.log(error); 
         })
 
-
-        // request.post(`${API_URL}/api/driverLocation`)
-        // .send(payload)
-        // .finish((error, res) => {
-        //     dispatch({
-        //         type: POST_DRIVER_LOCATION,
-        //         payload: res.body
-        //     });
-        // });
     }
 }
 
@@ -436,14 +404,7 @@ export function updateBookingDetails(key, instance){
         }).catch((error) => {
             console.log(error);
         })
-        // request.put(`${API_URL}/api/bookings/${bookingID}`)
-        // .send(payload)
-        // .finish((error, res) => {
-        //         dispatch({
-        //             type: UPDATE_BOOKING_DETAILS,
-        //             payload: res.body
-        //         });
-        // });
+
     }
 }
 
@@ -524,17 +485,6 @@ export function openMapsRoute(payload){
 // Updated booking detail the Selected Drivers information and updates RideRequestStatus to accpeted
 export function acceptRideRequest(){
     return(dispatch, store) => {
-        // const acceptedDriver = {
-        //     // DriverId is always equal to User_id
-        //     driverId: store().login.user_id,
-        //     coordinates: {
-        //         type: "Point",
-        //         coordinates: [store().home.region.longitude, store().home.region.latitude]
-        //     },
-        //     socketId: store().home.driverSocketId,
-        //     driverStatus: store().home.driverStatus
-        // };
-
         const selectedDriverData = {
             // DriverId is always equal to User_id
             driverId: store().login.user_id,
@@ -568,16 +518,6 @@ export function acceptRideRequest(){
         }).catch((error) => {
             console.log(error);
         })
-        
-        // request.put(`${API_URL}/api/bookings/${bookingID}`)
-        // .send(payload)
-        // .finish((error, res) => {
-        //         dispatch({
-        //             type: SELECTED_DRIVERS,
-        //             payload: res.body
-        //         });
-            
-        // });
     }
 }
 
@@ -601,20 +541,24 @@ export function newSelectedDriverSocketId(){
             ...store().home.bookingDetails,
             selectedDriver: selectedDriverData,
         };
+        
+        // Checks make sure there is an acutal booking in driver state
+        if(store().home.bookingDetails){
+            const bookingID = store().home.bookingDetails._id;
 
-        const bookingID = store().home.bookingDetails._id
-
-        return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
-            headers: {authorization: store().login.token}
-        }).then((res) => {
-            console.log("This Accept Ride Request", res);
-            dispatch({
-                type: SELECTED_DRIVERS,
-                payload: res.data
-            });
-        }).catch((error) => {
-            console.log(error);
-        })
+            return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
+                headers: {authorization: store().login.token}
+            }).then((res) => {
+                console.log("This Accept Ride Request", res);
+                dispatch({
+                    type: SELECTED_DRIVERS,
+                    payload: res.data
+                });
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+        
     }
 }
 
@@ -709,22 +653,6 @@ function handelAcceptRideRequest(state, action) {
     });
 }
 
-// function handleNearDriverAlerted(state, action){
-//     return update(state, {
-//         nearDriverAlerted: {
-//             $set: action.payload
-//         }
-//     });
-// }
-
-// function handleUpdateRideRequestStatus(state, action){
-//     return update(state, {
-//         bookingDetails: {
-//             $set: action.payload
-//         }
-//     });
-// }
-
 function handelWatchDriverLocation(state, action) {
     return update(state, {
         watchDriverLocation: {
@@ -758,17 +686,6 @@ function handleGetMarkerLocation(state, action) {
         }
     });
 }
-
-// function handleGetInputData(state, action) {
-//     const { key, value } = action.payload;
-//     return update(state, {
-//         inputData: {
-//             [key]: {
-//                 $set: value
-//             }
-//         }
-//     });
-// }
 
 function handleGetDriverInfo(state, action) {
     return update(state, {
@@ -827,7 +744,6 @@ const ACTION_HANDLERS = {
     CURRENT_ROUTE: handleGetCurrentRoute,
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
-    // GET_INPUT: handleGetInputData,
     GET_DRIVER_INFORMATION: handleGetDriverInfo,
     GET_SOCKET_ID: handelGetDriverSocket,
     POST_DRIVER_LOCATION: handlePostDriverLocation,
@@ -837,11 +753,10 @@ const ACTION_HANDLERS = {
     WATCH_DRIVER_LOCATION: handelWatchDriverLocation,
     UPDATE_WATCH_LOCATION: handleUpdateDriverLocation,
     MARKER_LOCATION: handleGetMarkerLocation,
-    // NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
-    // UPDATE_RIDE_REQUEST_STATUS: handleUpdateRideRequestStatus,
     UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
     UPDATED_DB_BOOKING_DETAILS: handleDBBookingDetailsUpdated,
     REJECT_BOOKING_REQUEST: handleRejectedBookingRequest,
+    CANCEL_BOOKING_REQUEST: handleRejectedBookingRequest,
     SELECTED_DRIVERS: handelAcceptRideRequest,
     APP_STATE: handelGetAppState,
     UPDATE_DRIVER_LOCATION_DETAILS: handleUpdateDriverLocationDetails

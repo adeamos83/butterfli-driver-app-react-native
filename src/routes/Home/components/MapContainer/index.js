@@ -6,7 +6,6 @@ import styles from "./MapContainerStyles.js"
 
 export const MapContainer = ({
                             region, 
-                            getInputData,
                             carMarker,
                             getMarkerLocation,
                             watchDriverLocation
@@ -14,7 +13,6 @@ export const MapContainer = ({
     
 
     const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
-    // const {latitude, longitude } = watchDriverLocation.coords;
     
     return(
         <View style={styles.container}>

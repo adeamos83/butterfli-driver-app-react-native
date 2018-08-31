@@ -12,53 +12,14 @@ export const NewBooking = ({bookingDetails, acceptRideRequest, openMapsRoute, re
     const { dropOff, pickUp} = bookingDetails || {};
 
     updateTripDetails = () => {
-        // updateBookingDetails("driverStatus", "available");
         getDriverStatus('enRoute');
         acceptRideRequest();
-        // setTimeout(function(){
-        //     updateBookingDetails("rideRequestStatus", "enRoute");
-        // }, 7000)
     }
     rejectBooking = () => {
-        // updateBookingDetails("rideRequestStatus", "rejected");
         rejectBookingRequest();
         Actions.home({type: "replace"});
     }
-
-     openMaps = () => {
-            const pickUpArr = {
-                latitude:  pickUp.latitude,
-                longitude: pickUp.longitude 
-            };
-        
-            const dropOffArr = {
-                latitude:  dropOff.latitude,
-                longitude: dropOff.longitude
-            };
-
-            buildLngLat = (position) => {
-                return `${position.latitude},${position.longitude}`
-            };
-            
-            const origin = this.buildLngLat(pickUpArr);
-            const destination = this.buildLngLat(dropOffArr);
-
-            buildMapBoxUrl = (origin, destination) => {
-                return `http://maps.apple.com/?saddr=${origin}&daddr=${destination}&dirflg=d`
-            } 
-
-            const url = this.buildMapBoxUrl(origin, destination);
-            console.log(url);
-            console.log('open directions') 
-            if (Platform.OS === "ios") { 
-                Linking.openURL(url) 
-            } else { 
-                Linking.openURL('http://maps.google.com/maps?daddr='); 
-            } 
-    }
-
     
-
     return (
         <View style={styles.newBookingContainer}>
             <Spinner style={styles.spinner} isVisible={true} size={125} type="Pulse" color="#ffffff" />

@@ -12,10 +12,6 @@ const { ADD_ALERT,
         REMOVE_ALERT
         } = constants;
 
-// var API_URL = "http://localhost:3000";
-// var API_URL = "https://dry-gorge-77566.herokuapp.com";
-
-
 //-------------------------------
 // Intial State
 //-------------------------------
@@ -23,8 +19,6 @@ const { ADD_ALERT,
 const initialState = {
     alerts:[]
 };
-
-
 
 //-------------------------------
 // Action

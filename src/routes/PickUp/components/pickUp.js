@@ -21,8 +21,16 @@ class PickUp extends React.Component {
         // this.props.getCurrentLocation();
         this.props.getDistanceFrom("intial");
         this.props.getPickUpRoute();
-        this.watchId = this.props.watchingDriverLocation();
+        // this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentRoute(Actions.currentScene);
+
+        this.watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                this.props.watchingDriverLocation(position)
+            },
+            (error) => console.log(error.message),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+        );
     }
     
     componentDidUpdate(prevProps, prevState)  {
@@ -39,9 +47,6 @@ class PickUp extends React.Component {
         const { duration } = this.props.distanceFrom.rows[0].elements[0] || "";
         const prevDuration = prevProps.distanceFrom.rows[0].elements[0] || "";
             if(prevDuration.duration.value > 300 && duration.value < 300){
-                console.log("This is arrival state log");
-                console.log(duration);
-                console.log("You are arrivng to riders location");
                 this.props.updateBookingDetails("rideRequestStatus", "arriving");
             }
         } 
@@ -90,7 +95,7 @@ class PickUp extends React.Component {
                     distanceFrom={this.props.distanceFrom}
                 />
             }
-            { this.props.distanceFrom.rows && 
+            { (this.props.distanceFrom.rows && this.props.bookingDetails.rideRequestStatus == "arriving") &&
                 <PickUpFooterComponent 
                     distanceFrom={this.props.distanceFrom}
                     getDriverStatus={this.props.getDriverStatus}

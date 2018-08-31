@@ -15,8 +15,6 @@ import { disconnectSocketIO, updateBookingDetails } from '../../Home/modules/hom
 //-------------------------------
 const { AUTH_USER,
         UNAUTH_USER,
-        ADD_ALERT,
-        REMOVE_ALERT,
         CREATE_USER_PROFILE,
         CREATE_VEHICLE_PROFILE,
         NEEDS_PROFILE,
@@ -75,6 +73,7 @@ export function getInputData(payload) {
     }
 }
 
+// Handle Post Request to login user
 export function loginUser(email, password){
    return(dispatch) => {
        return axios.post(SIGNIN_URL, {email, password}).then((response) => {
@@ -99,6 +98,7 @@ export function loginUser(email, password){
    }
 }
 
+// Handle Post Request to create a User account and profile
 export function signupUser(email, password){
     return(dispatch) => {
         return axios.post(SIGNUP_URL, {email, password}).then((response) => {
@@ -124,8 +124,7 @@ export function signupUser(email, password){
         });
     }
  }
- 
-
+ // Gets Authorized User creditonals to store in state
 export function authUser(user_id){
     return(dispatch) => {
         dispatch({
@@ -135,6 +134,7 @@ export function authUser(user_id){
     }
  }
 
+// Logs out user, remove user creditionals from state, and updates booking that ride has been canceled if driver is on a ride on the time of logout
 export function unAuthUser(){
     return(dispatch, store) => {
         if(store().home.driverStatus !== "available" && store().home.driverStatus !== "notAvailable"){ 
@@ -148,6 +148,7 @@ export function unAuthUser(){
     }
 }
 
+//Check to see if User need to create profile 
 export function needsToCreateProfile(payload){
     return(dispatch) => {
         dispatch({
@@ -157,12 +158,9 @@ export function needsToCreateProfile(payload){
     }
  }
 
+// Gathers needed information to send post request to create profile
 export function createProfile(){
     return(dispatch, store) => {
-        // dispatch({
-        //     type:CREATE_USER_PROFILE,
-        //     payload: payload
-        // })
         var details = {
             user_id: store().login.user_id,
             email: store().login.email,
@@ -172,20 +170,7 @@ export function createProfile(){
             }
         }
         console.log("from create profile redux function", details);
-        // var details = {
-        //     firstName: payload.firstName,
-        //     lastName: payload.lastName,
-        //     dob: payload.dob,
-        //     email: store().login.email,
-        //     vehicle: {
-        //         make: payload.make,
-        //         model: payload.model,
-        //         plateNumber: payload.license,
-        //         year: payload.year,
-        //         color: payload.color
-        //     }
-        // }
-        // console.log(details);
+
         return axios.post(CREATE_PROFILE_URL, details, {
             headers: {authorization: store().login.token}
         }).then((response) => {
@@ -199,15 +184,9 @@ export function createProfile(){
              Actions.home({type: "replace"})
              dispatch(isSigningUp(false));
 
-            //  setTimeout(function(){
-            //     dispatch(isSigningUp(false));
-            //  }, 3000)
         }).catch((error) => {
             dispatch(addAlert("Could not create User Profile."));
             dispatch(isSigningUp(false));
-            // setTimeout(function(){
-            //     dispatch(isSigningUp(false));
-            // }, 3000)
         });
     }
  }
@@ -230,25 +209,7 @@ export function createProfile(){
             payload: payload
         })
     }
- }
-
-// export function addAlert(text){
-//     return(dispatch) => {
-//         dispatch({
-//             type: ADD_ALERT,
-//             text
-//         });
-//     }
-//  }
- 
- export function removeAlert(id){
-     return(dispatch) => {
-         dispatch({
-             type: REMOVE_ALERT,
-             id
-         });
-     }
- }
+ } 
 
  export function gotoCarProfile(payload){
     return(dispatch) => {
@@ -365,51 +326,11 @@ function handleNavToCarPage(state, action){
     });
 }
 
-function handleAddAlert(state, action){
-    alert = [
-        {
-            text: action.text,
-            id: uuid.v4()
-        }
-    ]
-    
-    return update(state, {
-        alerts: {
-            $push: alert
-        }
-    });
- }
-
- function handleRemoveAlert(state=alerts, action){
-    if(state.alerts){
-        let alert = state.alerts.filter((alert) => {
-            if(alert.id === action.id){
-                return false
-            } else {
-                return true;
-            }
-        });
-        return update(state, {
-            alerts: {
-                $set: alert
-            }
-        });
-    } else {
-
-        return update(state, {
-            alerts: {
-                $set: []
-            }
-        });
-    }
-}
  
 const ACTION_HANDLERS = {
     GET_INPUT: handleGetInputData,
     AUTH_USER: handleUserAuth,
     UNAUTH_USER: handleUnAuthUser,
-    // ADD_ALERT: handleAddAlert,
-    REMOVE_ALERT: handleRemoveAlert,
     NEEDS_PROFILE: handleNeedsProfile,
     CREATE_USER_PROFILE: handleCreateProfile,
     CREATE_VEHICLE_PROFILE: handleCreateVehicleProfile,

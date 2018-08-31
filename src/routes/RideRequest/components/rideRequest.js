@@ -18,9 +18,17 @@ class RideRequest extends React.Component {
     componentDidMount(){
         this.props.getCurrentLocation();
         this.props.getPassengerRoute();
-        this.watchId = this.props.watchingDriverLocation();
+        // this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentRoute(Actions.currentScene);
         this.props.getTotalDistance();
+
+        this.watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                this.props.watchingDriverLocation(position)
+            },
+            (error) => console.log(error.message),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+        );
     }
 
     componentWillUnmount() {

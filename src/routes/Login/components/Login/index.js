@@ -24,7 +24,6 @@ export const LoginContainer =({addAlert,
                     isSigningUp,
                     signingUp,
 										fields: {email, password}}) => {
-  // const {handleSubmit, fields: {email, password}} = this.props;
 
 	var loginInProcess = false;
 
@@ -42,9 +41,6 @@ export const LoginContainer =({addAlert,
       isSigningUp(true) 
       signupUser(values.email, values.password); 
       needsToCreateProfile(true); 
-      // if(user_id){
-      //    needsToCreateProfile(true); 
-      // } 
    }
 
    return (

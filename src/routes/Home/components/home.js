@@ -1,38 +1,32 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { Container } from 'native-base';
-import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux'
 
 
 
 import MapContainer from './MapContainer';
-import HeaderComponent from '../../../Components/HeaderComponent';
-import FooterComponent from '../../../Components/FooterComponent';
-import UserFooterComponent from '../../../Components/UserFooterComponent';
-import InRouteFooter from '../../../Components/InRouteFooter';
 import Fab from './FAB';
-import NewBookingCard from './NewBookingCard'
 import NewBooking from './NewBooking'
-import PickUpFooterComponent from '../../../Components/PickUpFooterComponent';
 
-import { Spinner } from '../../../Components/Common';
-
-const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
 
 class Home extends React.Component {
 
-
-    componentWillMount() {
-        console.log("Component will mount current Actions.currentScene ", Actions.currentScene)
-        console.log("Component will mount current currentRoute props ", this.props.currentRoute)
-    }
     componentDidMount(){
-        this.watchId = this.props.watchingDriverLocation();
+        // this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentLocation();
         this.props.getDriverInfo();
         this.props.getCurrentRoute();
         this.props.getRideHistory();
+
+        this.watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                this.props.watchingDriverLocation(position)
+            },
+            (error) => console.log(error.message),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+        );
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -43,13 +37,6 @@ class Home extends React.Component {
                 this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
             }
         }
-        console.log(Actions.currentScene);
-        console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
-   
-        if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
-            console.log("this user is true or false", this.props.driverSocketId  !== prevProps.driverSocketId)
-            console.log("this user is true or false", this.props.user_id)
-        }
     }
 
     componentWillUnmount() {
@@ -58,9 +45,6 @@ class Home extends React.Component {
 
     connectDriver = () => {
         this.props.isDriverConnecting(true);
-        // if(!this.props.driverSocketId){
-        //     this.props.getDriverSocketId();
-        // }
         const rk = this;
         
         // This enables the drivers to receives ride request from the socket.io server
@@ -80,15 +64,8 @@ class Home extends React.Component {
         }
     }
     
-    // cancelBooking = () => {
-    //     this.props.getNearDriverAlerted(true);
-    //     this.props.updateRideRequestStatus();
-    //     console.log("Cancel Button Pressed");
-    // }
-
     render() {
         const { rideRequestStatus } = this.props.bookingDetails;
-
         return(
         <Container>
             { (rideRequestStatus !== "request") &&

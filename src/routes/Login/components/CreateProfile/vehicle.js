@@ -27,7 +27,6 @@ export const CreateVehicleProfile =({addAlert, user_id, createUserProfile, creat
       <ScrollView>
          <View style={styles.titleContainer}>
             <Image style={styles.logo} source={require('../../../../Assets/img/ButterFLi-logo-header.png')}/>
-            {/* <Text style={styles.title}> ButterFLi </Text> */}
          </View>
          <Text style={{fontSize: 18, fontWeight: "700", justifyContent: "center", paddingLeft: 5, paddingBottom: 5}}>Vehicle Information</Text>
          <View style={styles.field}>

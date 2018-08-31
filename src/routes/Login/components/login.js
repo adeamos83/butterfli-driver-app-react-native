@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { Container } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
@@ -7,16 +7,11 @@ import { Actions } from 'react-native-router-flux';
 import LoginContainer from './Login';
 import CreateProfile from './CreateProfile';
 
-//Image Imports
-const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
-const carMarker = require("../../../Assets/img/carMarker.png");
-
 class Login extends React.Component {
 
    constructor(props){
          super(props);
       if(this.props.user_id && this.props.token){
-            // Actions.home({type: "replace"})
             if(this.props.currentRoute){
                   console.log("Going to last active scene.")
                   Actions[this.props.currentRoute.slice(1)].call({type: 'replace'})
@@ -25,13 +20,6 @@ class Login extends React.Component {
             }
       }  
    }
-
-//    componentDidMount() {
-//       // if(this.props.loggingOut){
-//       //       console.log("Perfom log out action")
-//       //       this.props.unAuthUser();
-//       // }
-//    }
 
    render() {
       return(

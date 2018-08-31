@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Menu from '../components/menu';
 
 import { unAuthUser } from '../../Login/modules/login';
-
+import { getDriverStatus,cancelBookingRequest } from '../../Home/modules/home';
 import { authUser, 
         } from '../modules/menu';
 
@@ -16,7 +16,9 @@ const mapStateToProps = (state) => ({
 
 const mapActionCreators = {
    authUser,
-   unAuthUser
+   unAuthUser,
+   cancelBookingRequest,
+   getDriverStatus
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Menu)
