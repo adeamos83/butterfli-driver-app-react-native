@@ -1,3 +1,6 @@
+#Private files for Butterfli
+src/api
+
 # OSX
 #
 .DS_Store
