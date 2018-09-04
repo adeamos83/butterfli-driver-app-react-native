@@ -1,15 +1,24 @@
 import React from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
-import { Container, Form, Item, Input, Label  } from 'native-base';
+import { Container, Form, Item, Input, Label, Picker } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 import styles from './ProfileContainerStyles';
 
-export const ProfileContainer =({ driverInfo }) => {
-	const {firstName, lastName, email, phoneNumber, profilePic, vehicle} = driverInfo || {};
-	console.log(firstName)
+export const ProfileContainer =({ driverInfo, changeVehcileType,updatedDriverInfo }) => {
+	const {firstName, lastName, email, phoneNumber, profilePic} = driverInfo || {};
+	const { vehicleType } = updatedDriverInfo || {};
+
+	//Changes phone number to format telephone number
+	function formatPhoneNumber(phoneNumberString) {
+		var cleaned = ("" + phoneNumberString).replace(/\D/g, '');
+		var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+		return (!match) ? null : "(" + match[1] + ") " + match[2] + "-" + match[3];
+	}
+
+	const formattedPhoneNum = formatPhoneNumber(phoneNumber);
    return(
 		<ScrollView style={styles.container}>
 			<View style={styles.avatarHeader}>
@@ -35,14 +44,33 @@ export const ProfileContainer =({ driverInfo }) => {
 						<Label>Email</Label>
 						<Input defaultValue={email}/>
 					</Item>
-					<Item inlineLabel last>
+					<Item inlineLabel>
 						<Label>Phone</Label>
-						<Input defaultValue={phoneNumber}/>
+						<Input defaultValue={formattedPhoneNum}/>
 					</Item>
-					<Item inlineLabel last>
+					<Item inlineLabel>
 						<Label>Company</Label>
 						<Input defaultValue="SMS Transportation"/>
 					</Item>
+					<Item inlineLabel picker last>
+						<Label>Vehicle Type</Label>
+						<Picker
+							mode="dropdown"
+							iosIcon={<Icon name="angle-down" />}
+							style={{ width: undefined }}
+							placeholder="Select vehicle type"
+							placeholderStyle={{ color: "#bfc6ea" }}
+							placeholderIconColor="#007aff"
+							selectedValue={vehicleType}
+							onValueChange={changeVehcileType.bind(this)}
+						>
+							<Picker.Item label="Wheelchair" value="wheelchair" />
+							<Picker.Item label="Gurney" value="gurney" />
+							<Picker.Item label="Ambulatory" value="ambulatory" />
+							<Picker.Item label="General" value="general" />
+						</Picker>
+            	</Item>
+
 				 </Form>
 				 {/* 
 					<View style={{flex: 1}}>

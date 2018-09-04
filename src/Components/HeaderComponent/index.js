@@ -12,8 +12,8 @@ export const HeaderComponent = () => {
     return (
         <Header style={{backgroundColor: "#DCC6E0"}} iosBarStyle="light-content">
             <Left>
-                <Button transparent onPress={() => Actions.drawerOpen()}>
-                    <Icon name="user-circle-o" style={styles.icon} />>
+                <Button transparent onPress={() => Actions.drawerOpen()} style={styles.button}>
+                    <Icon name="bars" style={styles.icon} />>
                 </Button>
             </Left>
             <Body>

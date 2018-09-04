@@ -11,7 +11,8 @@ import { addAlert } from '../../Alert/modules/alerts';
 //-------------------------------
 const { 
     UNAUTH_USER,
-    DRIVER_RIDE_HISTORY       
+    DRIVER_RIDE_HISTORY,
+    UPDATE_VEHICLE_TYPE       
     } = constants;
 
 
@@ -36,6 +37,20 @@ export function authUser(user_id){
            payload: user_id
        });
    }
+}
+
+export function changeVehcileType(value){
+    return(dispatch, store) => {
+        newDriver = {
+            ...store().home.driverInfo,
+            vehicleType: value
+        }
+        console.log("Vehicle Info: ", store().home.driverInfo.vehicle)
+        dispatch({
+            type: UPDATE_VEHICLE_TYPE ,
+            payload: newDriver
+        })
+    }
 }
 
 export function getRideHistory(){
@@ -63,6 +78,14 @@ export function getRideHistory(){
 // Action Handlers
 //-------------------------------
 
+function handleChangeVehicleType(state, action ) {
+    return update(state, {
+        updatedDriverInfo: {
+            $set: action.payload
+        }
+    })
+}
+
 function handleGetRideHistory(state, action ) {
     return update(state, {
         rideHistory: {
@@ -73,6 +96,7 @@ function handleGetRideHistory(state, action ) {
 
 
 const ACTION_HANDLERS = {
+    UPDATE_VEHICLE_TYPE: handleChangeVehicleType,
     DRIVER_RIDE_HISTORY: handleGetRideHistory
 }
 
