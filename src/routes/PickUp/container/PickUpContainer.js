@@ -22,7 +22,7 @@ import {
 const mapStateToProps = (state) => ({
     region: state.home.region,
     inputData: state.home.inputData || {},
-    driverInfo: state.home.driverInfo || {},
+    driverInfo: state.profile.driverInfo || {},
     driverLocation: state.home.driverLocation || {},
     bookingDetails: state.home.bookingDetails || {},
     watchDriverLocation: state.home.watchDriverLocation || {},

@@ -36,14 +36,16 @@ class RideHistoryContainer extends React.Component {
 							</Left>
 							<Body>
 								<Text>{item.firstName + " " + item.lastName}</Text>
-								<Text note>
-									{item.tripDistance[0].totalMiles + "mi"}
-									<View style={{paddingHorizontal: 5}}>
-										<Icon name="circle" style={{ color: "#ccc", fontSize: 8, opacity: 5}} />
-									</View>
-									{item.tripDistance[0].totalTime + "m"}
-								</Text>
-							</Body>
+								{ item.tripDistance[0] &&
+									<Text note>
+										{item.tripDistance[0].totalMiles + "mi"}
+										<View style={{paddingHorizontal: 5}}>
+											<Icon name="circle" style={{ color: "#ccc", fontSize: 8, opacity: 5}} />
+										</View>
+										{item.tripDistance[0].totalTime + "m"}
+									</Text>
+								}
+							</Body> 
 							<Right>
 								<Text note>8/27/18 3:43 PM</Text>
 							</Right>
@@ -57,7 +59,7 @@ class RideHistoryContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-   driverInfo: state.home.driverInfo || {},
+   driverInfo: state.profile.driverInfo || {},
    user_id: state.home.user_id,
    rideHistory: state.profile.rideHistory || {},
    bookingDetails: state.home.bookDetails || {}

@@ -21,8 +21,12 @@ class Profile extends React.Component {
          <View style={{flex:1}}>
             <ProfileContainer 
                driverInfo={this.props.driverInfo}
-               changeVehcileType={this.props.changeVehcileType}
+               changeVehicleServiceType={this.props.changeVehicleServiceType}
                updatedDriverInfo={this.props.updatedDriverInfo}
+               getDriverInfo={this.props.getDriverInfo}
+               canEditProfile={this.props.canEditProfile}
+               canEdit={this.props.canEdit}
+               updateDriverProfile={this.props.updateDriverProfile}
             />
          </View>
       </Container>

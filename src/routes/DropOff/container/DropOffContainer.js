@@ -20,7 +20,7 @@ const mapStateToProps = (state) => ({
     region: state.home.region,
     user_id: state.login.user_id,
     inputData: state.home.inputData || {},
-    driverInfo: state.home.driverInfo || {},
+    driverInfo: state.profile.driverInfo || {},
     driverLocation: state.home.driverLocation || {},
     bookingDetails: state.home.bookingDetails || {},
     watchDriverLocation: state.home.watchDriverLocation || {},

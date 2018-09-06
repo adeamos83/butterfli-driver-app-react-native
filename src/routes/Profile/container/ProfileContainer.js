@@ -4,21 +4,28 @@ import Profile from '../components/profile';
 import { getCurrentRoute } from '../../Home/modules/home';
 
 import { getRideHistory,
-         changeVehcileType         
+         canEditProfile,
+         changeVehicleServiceType,
+         getDriverInfo,
+         updateDriverProfile        
          } from '../modules/profile';
 
 const mapStateToProps = (state) => ({
-   driverInfo: state.home.driverInfo || {},
+   driverInfo: state.profile.driverInfo || {},
    user_id: state.home.user_id,
    rideHistory: state.profile.rideHistory || {},
    bookingDetails: state.home.bookDetails || {},
-   updatedDriverInfo: state.profile.updatedDriverInfo || {}
+   updatedDriverInfo: state.profile.updatedDriverInfo || {},
+   canEdit: state.profile.canEdit
 });
 
 const mapActionCreators = {
    getRideHistory,
+   canEditProfile,
    getCurrentRoute,
-   changeVehcileType
+   changeVehicleServiceType,
+   getDriverInfo,
+   updateDriverProfile
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Profile)

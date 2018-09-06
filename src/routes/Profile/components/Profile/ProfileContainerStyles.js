@@ -1,5 +1,5 @@
-import { StyleSheet} from "react-native";
-
+import { StyleSheet, Dimensions} from "react-native";
+const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
    container: {
       flex: 1,
@@ -14,6 +14,11 @@ const styles = StyleSheet.create({
     },
     infoText: {
        fontSize: 14
+    },
+    editRow: {
+        justifyContent: 'space-between',
+        width:width * 0.85,
+        flexDirection: "row",
     },
     heading: {
         fontWeight: '600',
@@ -88,6 +93,34 @@ const styles = StyleSheet.create({
             height: 1,
             width: 0
         }
+    },
+    buttonView: {
+        flex: 1, 
+        flexDirection: 'row', 
+        justifyContent: 'space-around',
+        width:width * 0.9,
+        paddingTop: 20
+    },
+    signinBtn:{
+        width:width * 0.3,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#663399"
+    },
+    btnText: {
+        fontSize: 20,
+        color: 'white',
+        fontWeight: '700'
+    },
+    editBtn:{
+        width:width * 0.2,
+        borderColor: "#D9D5DC",
+        justifyContent: "center",
+        padding: 0
+    },
+    field: {
+        justifyContent: "center",
+
     }
 })
 

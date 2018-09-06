@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import Home from '../components/home';
 
-import { getRideHistory } from '../../Profile/modules/profile';
+import { getRideHistory, getDriverInfo } from '../../Profile/modules/profile';
 
 import { isDriverConnecting,
         getCurrentRoute,
-        getCurrentLocation, 
-        getDriverInfo,
+        getCurrentLocation,
         getDriverSocketId,
         postDriverLocation,
         openMapsRoute,
@@ -27,7 +26,7 @@ const mapStateToProps = (state) => ({
     user_id: state.login.user_id,
     currentRoute: state.home.currentRoute,
     region: state.home.region,
-    driverInfo: state.home.driverInfo || {},
+    driverInfo: state.profile.driverInfo || {},
     driverLocation: state.home.driverLocation || {},
     bookingDetails: state.home.bookingDetails || {},
     watchDriverLocation: state.home.watchDriverLocation || {},

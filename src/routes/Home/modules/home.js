@@ -16,7 +16,7 @@ const { DRIVER_CONNECTING,
         CURRENT_ROUTE,
         GET_CURRENT_LOCATION, 
         DRIVER_STATUS,
-        GET_DRIVER_INFORMATION,
+        // GET_DRIVER_INFORMATION,
         POST_DRIVER_LOCATION,
         DB_UPDATED_DRIVER_LOCATION,
         IN_ROUTE_TO,
@@ -44,7 +44,6 @@ const initialState = {
     region: {},
     watchDriverLocation: {},
     inputData: {},
-    nearDriverAlerted: false,
     driverStatus: "notAvailable",
     fetched: false,
     fetching: false
@@ -127,8 +126,8 @@ export function getDriverStatus(driverStatus){
         const payload = {
                 // DriverId is always equal to User_id
                 driverId: store().login.user_id,
-                name: store().home.driverInfo.firstName + " " + store().home.driverInfo.lastName,
-                phoneNumber: store().home.driverInfo.phoneNumber,
+                name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
+                phoneNumber: store().profile.driverInfo.phoneNumber,
                 coordinates: {
                     type: "Point",
                     coordinates: [store().home.region.longitude, store().home.region.latitude]
@@ -292,27 +291,28 @@ export function getMarkerLocation(location){
 
 //================================================ Need to Test ASAP
 // Get Driver Details from server
-export function getDriverInfo() {
-    return (dispatch, store) => {
-        let user_id = store().login.user_id;
-        console.log(user_id);
-        let id = "5b5d05220fdb907bdb8a5c2d";
+// export function getDriverInfo() {
+//     return (dispatch, store) => {
+//         let user_id = store().login.user_id;
+//         console.log(user_id);
+//         let id = "5b5d05220fdb907bdb8a5c2d";
 
-        return axios.get(`${API_URL}/api/driver/` + user_id, {
-            headers: {authorization: store().login.token}
-        }).then((res) => {
-            console.log("This is Get Driver Info", res);
-            dispatch({
-                type: GET_DRIVER_INFORMATION,
-                payload: res.data
-            });
-        }).catch((error) => {
-            console.log(error);
-            dispatch(addAlert("Could not get Driver Profile."));
-        });
+//         return axios.get(`${API_URL}/api/driver/` + user_id, {
+//             headers: {authorization: store().login.token}
+//         }).then((res) => {
+//             console.log("This is Get Driver Info", res);
+//             dispatch({
+//                 type: GET_DRIVER_INFORMATION,
+//                 payload: res.data
+//             });
+//         }).catch((error) => {
+//             console.log(error);
+//             dispatch(addAlert("Could not get Driver Profile."));
+//         });
 
-    }
-}
+//     }
+// }
+
 //Get Driver Socket ID from server
 export function getDriverSocketId() {
     return (dispatch, store) => {
@@ -359,8 +359,8 @@ export function postDriverLocation(){
         const data = {
                 // DriverId is always equal to User_id
                 driverId: store().login.user_id,
-                name: store().home.driverInfo.firstName + " " + store().home.driverInfo.lastName,
-                phoneNumber: store().home.driverInfo.phoneNumber,
+                name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
+                phoneNumber: store().profile.driverInfo.phoneNumber,
                 coordinates: {
                     type: "Point",
                     coordinates: [store().home.region.longitude, store().home.region.latitude]
@@ -527,8 +527,8 @@ export function newSelectedDriverSocketId(){
         const selectedDriverData = {
             // DriverId is always equal to User_id
             driverId: store().login.user_id,
-            name: store().home.driverInfo.firstName + " " + store().home.driverInfo.lastName,
-            phoneNumber: store().home.driverInfo.phoneNumber,
+            name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
+            phoneNumber: store().profile.driverInfo.phoneNumber,
             coordinates: {
                 type: "Point",
                 coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
@@ -687,13 +687,13 @@ function handleGetMarkerLocation(state, action) {
     });
 }
 
-function handleGetDriverInfo(state, action) {
-    return update(state, {
-        driverInfo: {
-            $set: action.payload
-        }
-    });
-}
+// function handleGetDriverInfo(state, action) {
+//     return update(state, {
+//         driverInfo: {
+//             $set: action.payload
+//         }
+//     });
+// }
 
 function handelGetDriverSocket(state, action){
     return update(state, {
@@ -744,7 +744,7 @@ const ACTION_HANDLERS = {
     CURRENT_ROUTE: handleGetCurrentRoute,
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     DRIVER_STATUS: handleDriverStatus,
-    GET_DRIVER_INFORMATION: handleGetDriverInfo,
+    // GET_DRIVER_INFORMATION: handleGetDriverInfo,
     GET_SOCKET_ID: handelGetDriverSocket,
     POST_DRIVER_LOCATION: handlePostDriverLocation,
     DB_UPDATED_DRIVER_LOCATION: handlePostDriverLocation,

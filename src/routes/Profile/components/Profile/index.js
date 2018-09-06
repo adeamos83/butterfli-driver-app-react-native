@@ -1,15 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { View, Text, Image, ScrollView } from 'react-native';
-import { Container, Form, Item, Input, Label, Picker } from 'native-base';
+import { Field, reduxForm } from 'redux-form';
+import { Container, Form, Item, Input, Label, Picker, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { getDriverInfo } from '../../../Home/modules/home';
+import { ProfileTextInputField } from '../../../../Components/Common/'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 import styles from './ProfileContainerStyles';
 
-export const ProfileContainer =({ driverInfo, changeVehcileType,updatedDriverInfo }) => {
-	const {firstName, lastName, email, phoneNumber, profilePic} = driverInfo || {};
-	const { vehicleType } = updatedDriverInfo || {};
+let ProfileContainer =({ getDriverInfo, updateDriverProfile, canEditProfile, 
+	canEdit, driverInfo, handleSubmit, changeVehicleServiceType }) => {
+
+	const {firstName, lastName, email, phoneNumber, profilePic, serviceType} = driverInfo || {};
 
 	//Changes phone number to format telephone number
 	function formatPhoneNumber(phoneNumberString) {
@@ -19,6 +24,20 @@ export const ProfileContainer =({ driverInfo, changeVehcileType,updatedDriverInf
 	}
 
 	const formattedPhoneNum = formatPhoneNumber(phoneNumber);
+	
+	onUpdateProfile = (values) => {
+		console.log("Profile Update values", values);
+	}
+
+	onEditProfile = (values) => {
+		canEditProfile();
+		console.log("Send new updated for Profile? ", canEdit);
+		if(canEdit){
+			console.log("Profile Update values", values);
+			updateDriverProfile();
+		}
+	}
+
    return(
 		<ScrollView style={styles.container}>
 			<View style={styles.avatarHeader}>
@@ -27,50 +46,89 @@ export const ProfileContainer =({ driverInfo, changeVehcileType,updatedDriverInf
 					||
 					<Icon name="user-circle-o" style={styles.icon} />
 				}
-				
-				<Text style={{color: '#19B5FE', fontSize: 12, marginTop: 15}}>Change Profile Photo</Text>
+				<View style={styles.editRow}>
+					<Text style={{color: '#19B5FE', fontSize: 12, marginTop: 15}}>Change Profile Photo</Text>
+					<Button bordered light small style={styles.editBtn} onPress={handleSubmit(this.onEditProfile)}>
+						<Text>{canEdit? "Done" : "Edit"}</Text>
+					</Button>
+				</View>
 			</View>
 			<View style={{flex: 2}}>
 				<Form>
 					<Item inlineLabel>
 						<Label>First Name</Label>
-						<Input defaultValue={firstName}/>
+							<Field
+								name="firstName"
+								component={ProfileTextInputField}
+								editable={canEdit}
+								placeholder="firstName"
+								placeholderTextColor="rgba(255,255,255,0.7)"
+								returnKeyType="next"
+							/>
 					</Item>
 					<Item inlineLabel>
 						<Label>Last Name</Label>
-						<Input defaultValue={lastName}/>
+						<Field
+							name="lastName"
+							component={ProfileTextInputField}
+							editable={canEdit}
+							placeholder="lastName"
+							placeholderTextColor="rgba(255,255,255,0.7)"
+							returnKeyType="next"
+						/>
 					</Item>
 					<Item inlineLabel>
 						<Label>Email</Label>
-						<Input defaultValue={email}/>
+						<Field
+							name="email"
+							component={ProfileTextInputField}
+							editable={canEdit}
+							placeholder="Email"
+							placeholderTextColor="rgba(255,255,255,0.7)"
+							returnKeyType="next"
+						/>
 					</Item>
 					<Item inlineLabel>
 						<Label>Phone</Label>
-						<Input defaultValue={formattedPhoneNum}/>
+						<Field
+							name="phoneNumber"
+							component={ProfileTextInputField}
+							editable={canEdit}
+							placeholder="Phone"
+							placeholderTextColor="rgba(255,255,255,0.7)"
+							returnKeyType="next"
+						/>
 					</Item>
 					<Item inlineLabel>
 						<Label>Company</Label>
-						<Input defaultValue="SMS Transportation"/>
+						<Field
+							name="company.name"
+							component={ProfileTextInputField}
+							editable={canEdit}
+							placeholder="Company"
+							placeholderTextColor="rgba(255,255,255,0.7)"
+							returnKeyType="next"
+						/>
 					</Item>
 					<Item inlineLabel picker last>
-						<Label>Vehicle Type</Label>
+						<Label>Service Type</Label>
 						<Picker
 							mode="dropdown"
 							iosIcon={<Icon name="angle-down" />}
 							style={{ width: undefined }}
-							placeholder="Select vehicle type"
+							placeholder="Select service type"
 							placeholderStyle={{ color: "#bfc6ea" }}
 							placeholderIconColor="#007aff"
-							selectedValue={vehicleType}
-							onValueChange={changeVehcileType.bind(this)}
+							selectedValue={serviceType}
+							onValueChange={changeVehicleServiceType.bind(this)}
+							enabled={canEdit}
 						>
 							<Picker.Item label="Wheelchair" value="wheelchair" />
 							<Picker.Item label="Gurney" value="gurney" />
 							<Picker.Item label="Ambulatory" value="ambulatory" />
 							<Picker.Item label="General" value="general" />
 						</Picker>
-            	</Item>
-
+					</Item>
 				 </Form>
 				 {/* 
 					<View style={{flex: 1}}>
@@ -101,4 +159,28 @@ export const ProfileContainer =({ driverInfo, changeVehcileType,updatedDriverInf
    )
 }
 
-export default ProfileContainer; 
+var validate = (formProps) => {
+   var errors = {};
+   // if(!formProps.email){
+   //    errors.email = "Please enter an email."
+   // }
+   // if(!formProps.password){
+   //    errors.password = "Please enter a password."
+   // }
+   return errors;
+}
+
+// Decorate with reduxForm(). It will read the initialValues prop provided by connect()
+ProfileContainer = reduxForm({
+  form: 'profile' // a unique identifier for this form
+})(ProfileContainer)
+
+// You have to connect() to any reducers that you wish to connect to yourself
+ProfileContainer = connect(
+	state => ({
+	  initialValues: state.profile.driverInfo // pull initial values from account reducer
+	}),
+	{ load: getDriverInfo } // bind account loading action creator
+ )(ProfileContainer)
+
+export default ProfileContainer
