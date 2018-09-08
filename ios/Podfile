@@ -40,6 +40,10 @@ target 'ButterFliDriverApp' do
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'react-native-spinkit', :path => '../node_modules/react-native-spinkit'
 
+  pod 'RNBackgroundGeolocation', :path => '../node_modules/react-native-background-geolocation'
+
+  pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'
+
 end
 
 post_install do |installer|

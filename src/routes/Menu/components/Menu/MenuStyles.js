@@ -7,11 +7,12 @@ const styles = StyleSheet.create({
         opacity: 5
     },
     driverPic: {
-        borderColor: "#ffffff",
-        borderWidth: 1,
-        height: 150,
-        width: 150,
-        borderRadius: 75,
+        // borderColor: "#ffffff",
+        // borderWidth: 1,
+        marginBottom: 10,
+        height: 80,
+        width: 80,
+        borderRadius: 40,
         alignItems: "center",
         justifyContent: "center",
         shadowColor: "#000",
@@ -22,6 +23,17 @@ const styles = StyleSheet.create({
             width: 0
         }
     },
+    avatarView: {
+        flex: 1, 
+        backgroundColor: '#BE90D4', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        paddingLeft: 10
+    },
+    avatarText: {
+        color: 'white',
+        fontWeight: 'bold'
+    }
 })
 
 export default styles;

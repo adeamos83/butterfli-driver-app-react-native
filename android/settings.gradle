@@ -1,4 +1,10 @@
 rootProject.name = 'ButterFliDriverApp'
+include ':react-native-background-fetch'
+project(':react-native-background-fetch').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-background-fetch/android')
+include ':react-native-background-geolocation'
+project(':react-native-background-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-background-geolocation/android')
+include ':react-native-push-notification'
+project(':react-native-push-notification').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-push-notification/android')
 include ':react-native-spinkit'
 project(':react-native-spinkit').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-spinkit/android')
 include ':react-native-vector-icons'

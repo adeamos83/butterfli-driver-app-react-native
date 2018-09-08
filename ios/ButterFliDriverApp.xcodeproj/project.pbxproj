@@ -13,8 +13,16 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* ButterFliDriverAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ButterFliDriverAppTests.m */; };
+		021DED032143093D0079DE9C /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 021DED022143093D0079DE9C /* libRCTPushNotification.a */; };
 		025B6FD4212E19B600BEDB2C /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		0270F96520E571C8007A22BC /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0270F96220E571A9007A22BC /* libRNSpinkit.a */; };
+		02A2DD952143423800EB9DC4 /* libRNBackgroundGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A2DD94214341D900EB9DC4 /* libRNBackgroundGeolocation.a */; };
+		02A2DD962143424000EB9DC4 /* libRNBackgroundFetch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A2DD8E214341C300EB9DC4 /* libRNBackgroundFetch.a */; };
+		02A2DD98214342AC00EB9DC4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A2DD97214342AC00EB9DC4 /* libsqlite3.tbd */; };
+		02A2DD9A214342BD00EB9DC4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A2DD99214342BD00EB9DC4 /* libz.tbd */; };
+		02A2DD9C214343A000EB9DC4 /* TSLocationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A2DD9B214343A000EB9DC4 /* TSLocationManager.framework */; };
+		02A2DD9E214343FD00EB9DC4 /* libCocoaLumberjack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A2DD8021433F7E00EB9DC4 /* libCocoaLumberjack.a */; };
+		02A2DDA02143441C00EB9DC4 /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A2DD9F2143441C00EB9DC4 /* TSBackgroundFetch.framework */; };
 		0903CD0F0376493CA42716D7 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2628FCBF356F4072A64BE229 /* Entypo.ttf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -51,6 +59,7 @@
 		CA80C852F6904B599B699EB5 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 411097906FFB4969807C833E /* Octicons.ttf */; };
 		CD5748EDFD2F4CB6A552F412 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE33DC0169334E93B5F2D56A /* MaterialCommunityIcons.ttf */; };
 		DF7AEFB561D247F19F5FD729 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EEDE1257AFFB415AA6104EDB /* MaterialIcons.ttf */; };
+		E217DAC8F4704A7E8A3262A1 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A47B08E69F854648A547B7FF /* RNBackgroundFetch+AppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +118,41 @@
 			proxyType = 2;
 			remoteGlobalIDString = 641194871EC9FD4A00D4FC03;
 			remoteInfo = "RNSpinkit-tvOS";
+		};
+		02A2DD7F21433F7E00EB9DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5A8369C221E74D5697537C16 /* Lumberjack.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 18F3BFD71A81E06E00692297;
+			remoteInfo = "CocoaLumberjack-iOS-Static";
+		};
+		02A2DD8521433F7E00EB9DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 021DECF9214308B40079DE9C /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTPushNotification;
+		};
+		02A2DD8721433F7E00EB9DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 021DECF9214308B40079DE9C /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
+			remoteInfo = "RCTPushNotification-tvOS";
+		};
+		02A2DD8D214341C300EB9DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02A2DD89214341C200EB9DC4 /* RNBackgroundFetch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 835318541D52293F005738CD;
+			remoteInfo = RNBackgroundFetch;
+		};
+		02A2DD93214341D900EB9DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02A2DD8F214341D900EB9DC4 /* RNBackgroundGeolocation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 83FF5F851AFD0D2B0016A13E;
+			remoteInfo = RNBackgroundGeolocation;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -353,7 +397,15 @@
 		00E356EE1AD99517003FC87E /* ButterFliDriverAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ButterFliDriverAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ButterFliDriverAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ButterFliDriverAppTests.m; sourceTree = "<group>"; };
+		021DECF9214308B40079DE9C /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		021DED022143093D0079DE9C /* libRCTPushNotification.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRCTPushNotification.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0270F95C20E571A9007A22BC /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
+		02A2DD89214341C200EB9DC4 /* RNBackgroundFetch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBackgroundFetch.xcodeproj; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch.xcodeproj"; sourceTree = "<group>"; };
+		02A2DD8F214341D900EB9DC4 /* RNBackgroundGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBackgroundGeolocation.xcodeproj; path = "../node_modules/react-native-background-geolocation/ios/RNBackgroundGeolocation.xcodeproj"; sourceTree = "<group>"; };
+		02A2DD97214342AC00EB9DC4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		02A2DD99214342BD00EB9DC4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		02A2DD9B214343A000EB9DC4 /* TSLocationManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TSLocationManager.framework; path = "../node_modules/react-native-background-geolocation/ios/RNBackgroundGeolocation/TSLocationManager.framework"; sourceTree = "<group>"; };
+		02A2DD9F2143441C00EB9DC4 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ButterFliDriverApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ButterFliDriverApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -364,6 +416,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ButterFliDriverApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ButterFliDriverApp/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		22E4876D28E74C4FAF7696E5 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = SDKROOT; };
 		2628FCBF356F4072A64BE229 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		2892163941F94AC18D0C46DB /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		28D1B9734FC046A6BCB0DBAC /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -375,11 +428,15 @@
 		411097906FFB4969807C833E /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		42402D491CBB9D4FBD275BA5 /* Pods-ButterFliDriverApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ButterFliDriverApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ButterFliDriverApp/Pods-ButterFliDriverApp.debug.xcconfig"; sourceTree = "<group>"; };
 		571A3EEB5D494409B1D4F60B /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		589A06302D494993995D5147 /* TSLocationManager.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = TSLocationManager.framework; path = "../node_modules/react-native-background-geolocation/ios/RNBackgroundGeolocation/TSLocationManager.framework"; sourceTree = SDKROOT; };
+		5A8369C221E74D5697537C16 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = "../node_modules/cocoa-lumberjack/CocoaLumberjack/Lumberjack.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6A752AF5649C41D9AAFA1A74 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		86FDE2BD67520018982E9264 /* Pods-ButterFliDriverApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ButterFliDriverApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-ButterFliDriverApp/Pods-ButterFliDriverApp.release.xcconfig"; sourceTree = "<group>"; };
+		937DE43CF6C848E8BC56EF0A /* libCocoaLumberjack.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCocoaLumberjack.a; sourceTree = "<group>"; };
+		A47B08E69F854648A547B7FF /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B4D8977F84AD4824973C882D /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		D02E1DA6BABBFE0D7FFEBE3F /* libPods-ButterFliDriverApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ButterFliDriverApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -400,10 +457,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02A2DDA02143441C00EB9DC4 /* TSBackgroundFetch.framework in Frameworks */,
+				02A2DD9E214343FD00EB9DC4 /* libCocoaLumberjack.a in Frameworks */,
+				02A2DD9C214343A000EB9DC4 /* TSLocationManager.framework in Frameworks */,
+				02A2DD9A214342BD00EB9DC4 /* libz.tbd in Frameworks */,
+				02A2DD98214342AC00EB9DC4 /* libsqlite3.tbd in Frameworks */,
 				0270F96520E571C8007A22BC /* libRNSpinkit.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				025B6FD4212E19B600BEDB2C /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
+				02A2DD952143423800EB9DC4 /* libRNBackgroundGeolocation.a in Frameworks */,
+				02A2DD962143424000EB9DC4 /* libRNBackgroundFetch.a in Frameworks */,
+				021DED032143093D0079DE9C /* libRCTPushNotification.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
@@ -511,6 +576,47 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		02A2DD5421433F7D00EB9DC4 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				937DE43CF6C848E8BC56EF0A /* libCocoaLumberjack.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		02A2DD7C21433F7E00EB9DC4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02A2DD8021433F7E00EB9DC4 /* libCocoaLumberjack.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		02A2DD8121433F7E00EB9DC4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02A2DD8621433F7E00EB9DC4 /* libRCTPushNotification.a */,
+				02A2DD8821433F7E00EB9DC4 /* libRCTPushNotification-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		02A2DD8A214341C200EB9DC4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02A2DD8E214341C300EB9DC4 /* libRNBackgroundFetch.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		02A2DD90214341D900EB9DC4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02A2DD94214341D900EB9DC4 /* libRNBackgroundGeolocation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		0CC1A6DA7E2A4E3A8797BC27 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -559,6 +665,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				A47B08E69F854648A547B7FF /* RNBackgroundFetch+AppDelegate.m */,
 			);
 			name = ButterFliDriverApp;
 			sourceTree = "<group>";
@@ -589,8 +696,15 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				02A2DD9F2143441C00EB9DC4 /* TSBackgroundFetch.framework */,
+				02A2DD9B214343A000EB9DC4 /* TSLocationManager.framework */,
+				02A2DD99214342BD00EB9DC4 /* libz.tbd */,
+				02A2DD97214342AC00EB9DC4 /* libsqlite3.tbd */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				D02E1DA6BABBFE0D7FFEBE3F /* libPods-ButterFliDriverApp.a */,
+				021DED022143093D0079DE9C /* libRCTPushNotification.a */,
+				589A06302D494993995D5147 /* TSLocationManager.framework */,
+				22E4876D28E74C4FAF7696E5 /* TSBackgroundFetch.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -616,6 +730,9 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				02A2DD8F214341D900EB9DC4 /* RNBackgroundGeolocation.xcodeproj */,
+				02A2DD89214341C200EB9DC4 /* RNBackgroundFetch.xcodeproj */,
+				021DECF9214308B40079DE9C /* RCTPushNotification.xcodeproj */,
 				0270F95C20E571A9007A22BC /* RNSpinkit.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -629,6 +746,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
+				5A8369C221E74D5697537C16 /* Lumberjack.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -652,6 +770,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				9683B569FAF71FE5E243DB57 /* Pods */,
 				0CC1A6DA7E2A4E3A8797BC27 /* Resources */,
+				02A2DD5421433F7D00EB9DC4 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -770,7 +889,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 940;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -779,6 +898,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 495KZYZDN4;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = true;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -803,6 +927,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 02A2DD7C21433F7E00EB9DC4 /* Products */;
+					ProjectRef = 5A8369C221E74D5697537C16 /* Lumberjack.xcodeproj */;
+				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -832,6 +960,10 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
+					ProductGroup = 02A2DD8121433F7E00EB9DC4 /* Products */;
+					ProjectRef = 021DECF9214308B40079DE9C /* RCTPushNotification.xcodeproj */;
+				},
+				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
@@ -850,6 +982,14 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 02A2DD8A214341C200EB9DC4 /* Products */;
+					ProjectRef = 02A2DD89214341C200EB9DC4 /* RNBackgroundFetch.xcodeproj */;
+				},
+				{
+					ProductGroup = 02A2DD90214341D900EB9DC4 /* Products */;
+					ProjectRef = 02A2DD8F214341D900EB9DC4 /* RNBackgroundGeolocation.xcodeproj */;
 				},
 				{
 					ProductGroup = 0270F95D20E571A9007A22BC /* Products */;
@@ -914,6 +1054,41 @@
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
 			remoteRef = 0270F96320E571A9007A22BC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		02A2DD8021433F7E00EB9DC4 /* libCocoaLumberjack.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCocoaLumberjack.a;
+			remoteRef = 02A2DD7F21433F7E00EB9DC4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		02A2DD8621433F7E00EB9DC4 /* libRCTPushNotification.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTPushNotification.a;
+			remoteRef = 02A2DD8521433F7E00EB9DC4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		02A2DD8821433F7E00EB9DC4 /* libRCTPushNotification-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTPushNotification-tvOS.a";
+			remoteRef = 02A2DD8721433F7E00EB9DC4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		02A2DD8E214341C300EB9DC4 /* libRNBackgroundFetch.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBackgroundFetch.a;
+			remoteRef = 02A2DD8D214341C300EB9DC4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		02A2DD94214341D900EB9DC4 /* libRNBackgroundGeolocation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBackgroundGeolocation.a;
+			remoteRef = 02A2DD93214341D900EB9DC4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1291,6 +1466,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				E217DAC8F4704A7E8A3262A1 /* RNBackgroundFetch+AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1343,13 +1519,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/cocoa-lumberjack/CocoaLumberjack/**",
+				);
 				INFOPLIST_FILE = ButterFliDriverAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1365,9 +1553,21 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/cocoa-lumberjack/CocoaLumberjack/**",
+				);
 				INFOPLIST_FILE = ButterFliDriverAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1386,6 +1586,30 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 495KZYZDN4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-geolocation/ios/**",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-geolocation/ios/**",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-geolocation/ios/**",
+					"/**",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/Google-Maps-iOS-Utils\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleMaps\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-google-maps\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-maps\"",
+					"\"${PODS_ROOT}/Headers/Public/yoga\"",
+					"${SRCROOT}/.../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj/**",
+					"$(SRCROOT)/../node_modules/cocoa-lumberjack/CocoaLumberjack/**",
+				);
 				INFOPLIST_FILE = ButterFliDriverApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1407,6 +1631,30 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 495KZYZDN4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-geolocation/ios/**",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-geolocation/ios/**",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-geolocation/ios/**",
+					"/**",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/Google-Maps-iOS-Utils\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleMaps\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-google-maps\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-maps\"",
+					"\"${PODS_ROOT}/Headers/Public/yoga\"",
+					"${SRCROOT}/.../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj/**",
+					"$(SRCROOT)/../node_modules/cocoa-lumberjack/CocoaLumberjack/**",
+				);
 				INFOPLIST_FILE = ButterFliDriverApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1432,9 +1680,21 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/cocoa-lumberjack/CocoaLumberjack/**",
+				);
 				INFOPLIST_FILE = "ButterFliDriverApp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1458,9 +1718,21 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/cocoa-lumberjack/CocoaLumberjack/**",
+				);
 				INFOPLIST_FILE = "ButterFliDriverApp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1483,9 +1755,21 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/cocoa-lumberjack/CocoaLumberjack/**",
+				);
 				INFOPLIST_FILE = "ButterFliDriverApp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1508,9 +1792,21 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/cocoa-lumberjack/CocoaLumberjack/**",
+				);
 				INFOPLIST_FILE = "ButterFliDriverApp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",

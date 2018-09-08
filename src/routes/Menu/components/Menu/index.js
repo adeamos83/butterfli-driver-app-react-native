@@ -7,8 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './MenuStyles';
 
 export const MenuContainer =({ unAuthUser, driverStatus, getDriverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute, cancelBookingRequest }) => {
-   const { profilePic } = driverInfo || {};
-
+   const { profilePic, serviceType } = driverInfo || {};
+   // const capServiceType = driverInfo.serviceType[0].toUpperCase() + driverInfo.serviceType.slice(1);
    onlogOut = () => {
       console.log("logging out")
       unAuthUser();
@@ -46,11 +46,18 @@ export const MenuContainer =({ unAuthUser, driverStatus, getDriverStatus, authUs
 
    return(
       <View style={{flex: 1}}>
-         <View style={{flex: 1, backgroundColor: '#BE90D4', justifyContent: 'center', alignItems: 'center'}}>
+         <View style={styles.avatarView}>
          { profilePic && 
             <Image resizemode="container" style={styles.driverPic} source={{uri:profilePic}} />
             ||
             <Icon name="user-circle-o" style={styles.icon} />
+         }
+         { driverInfo &&
+            <View>
+               <Text style={styles.avatarText}>{driverInfo.firstName + " " + driverInfo.lastName}</Text>
+               <Text style={styles.avatarText}>{driverInfo.company.name}</Text>
+               <Text style={styles.avatarText}>{"Service Type: " + serviceType[0].toUpperCase() + serviceType.slice(1)}</Text>
+            </View>
          }
          </View>
          <View style={{flex: 2}}>

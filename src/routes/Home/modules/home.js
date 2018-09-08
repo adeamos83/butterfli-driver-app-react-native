@@ -133,7 +133,8 @@ export function getDriverStatus(driverStatus){
                     coordinates: [store().home.region.longitude, store().home.region.latitude]
                 },
                 socketId: store().home.driverSocketId,
-                driverStatus: driverStatus
+                driverStatus: driverStatus,
+                serviceType: store().profile.driverInfo.serviceType
         };
         console.log(payload);
 
@@ -166,11 +167,12 @@ export function rejectBookingRequest(){
         console.log("Before Filter");
         console.log(nearByDrivers);
         let nextDrivers = nearByDrivers.filter((nearBy) => {
+            console.log("Near by scoket id: ", nearBy.socketId, "Store socket id: ", store().home.driverSocketId);
             return nearBy.socketId !== store().home.driverSocketId
         });
         
         if(nextDrivers.length == 0){
-            nextDrivers = [null];
+            nextDrivers = [];
         }
 
         console.log("These are the near by drivers", nextDrivers);
@@ -366,7 +368,8 @@ export function postDriverLocation(){
                     coordinates: [store().home.region.longitude, store().home.region.latitude]
                 },
                 socketId: store().home.driverSocketId,
-                driverStatus: store().home.driverStatus
+                driverStatus: store().home.driverStatus,
+                serviceType: store().profile.driverInfo.serviceType
         };
 
         return axios.post(`${API_URL}/api/driverLocation`, {data}, {
@@ -488,14 +491,15 @@ export function acceptRideRequest(){
         const selectedDriverData = {
             // DriverId is always equal to User_id
             driverId: store().login.user_id,
-            name: store().home.driverInfo.firstName + " " + store().home.driverInfo.lastName,
-            phoneNumber: store().home.driverInfo.phoneNumber,
+            name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
+            phoneNumber: store().profile.driverInfo.phoneNumber,
             coordinates: {
                 type: "Point",
                 coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
             },
             socketId: store().home.driverSocketId,
-            driverStatus: store().home.driverStatus
+            driverStatus: store().home.driverStatus,
+            serviceType: store().profile.serviceType
         };
 
         const data = {
@@ -534,7 +538,8 @@ export function newSelectedDriverSocketId(){
                 coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
             },
             socketId: store().home.driverSocketId,
-            driverStatus: store().home.driverStatus
+            driverStatus: store().home.driverStatus,
+            serviceType: store().profile.serviceType
         };
 
         const data = {

@@ -137,6 +137,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-background-fetch')
+    compile project(':react-native-background-geolocation')
+    compile project(':react-native-push-notification')
     compile project(':react-native-spinkit')
     compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])

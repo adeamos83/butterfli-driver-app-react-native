@@ -19,11 +19,6 @@ export const NewBooking = ({bookingDetails, acceptRideRequest, openMapsRoute, re
         rejectBookingRequest();
         Actions.home({type: "replace"});
     }
-
-    setTimeout(function(){
-        rejectBookingRequest();
-        Actions.home({type: "replace"});
-    }, 15000)
     
     return (
         <View style={styles.newBookingContainer}>

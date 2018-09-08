@@ -35,7 +35,13 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Butterfli needs your location to find near by ride requests</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Butterfli needs your location to find near by ride requests</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Butterfli needs your location to find near by ride requests</string>
+	<key>NSMotionUsageDescription</key>
 	<string>Butterfli needs your location to find near by ride requests</string>
 	<key>UIAppFonts</key>
 	<array>
@@ -45,6 +51,12 @@
 		<string>MaterialIcons.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>fetch</string>
+		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
