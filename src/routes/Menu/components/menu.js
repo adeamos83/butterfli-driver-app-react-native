@@ -6,11 +6,11 @@ import { Actions } from 'react-native-router-flux';
 //Component Imports
 import MenuContainer from './Menu'
 
-//Image Imports
-const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
-const carMarker = require("../../../Assets/img/carMarker.png");
 
 class Menu extends React.Component {
+   componentDidMount(){
+      this.props.getDriverInfo();
+   }
 
    navToHomePage = () => {
       //Takes user to the HomePage route
@@ -31,6 +31,9 @@ class Menu extends React.Component {
                driverStatus={this.props.driverStatus}
                cancelBookingRequest={this.props.cancelBookingRequest}
                getDriverStatus={this.props.getDriverStatus}
+               newBookingAlerted={this.props.newBookingAlerted}
+               pickUpArrivingAlerted={this.props.pickUpArrivingAlerted}
+               dropOffArrivingAlerted={this.props.dropOffArrivingAlerted}
             />
          </View>
       </Container>

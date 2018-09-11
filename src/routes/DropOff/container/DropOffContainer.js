@@ -8,6 +8,7 @@ import { getDriverStatus,
         openMapsRoute,
         watchingDriverLocation,
         updateDriverLocationDetails,
+        BookingRequestCompleted,
         newSelectedDriverSocketId } from '../../Home/modules/home';
 
 import { getCurrentLocation,
@@ -45,7 +46,8 @@ const mapActionCreators = {
     getDistanceFrom,
     getDropOffRoute,
     updateDriverLocationDetails,
-    newSelectedDriverSocketId
+    newSelectedDriverSocketId,
+    BookingRequestCompleted
 };
 
 export default connect(mapStateToProps, mapActionCreators)(DropOff)

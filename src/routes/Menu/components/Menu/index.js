@@ -6,9 +6,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './MenuStyles';
 
-export const MenuContainer =({ unAuthUser, driverStatus, getDriverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute, cancelBookingRequest }) => {
-   const { profilePic, serviceType } = driverInfo || {};
-   // const capServiceType = driverInfo.serviceType[0].toUpperCase() + driverInfo.serviceType.slice(1);
+export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAlerted, driverStatus, dropOffArrivingAlerted,
+   getDriverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute, cancelBookingRequest }) => {
+   const { profilePic, serviceType, firstName, lastName } = driverInfo || "";
+   const { name } = driverInfo.company || "";
+   
+   // const capServiceType = serviceType[0].toUpperCase() + serviceType.slice(1) || "";
+   Capitalize= (str) => { 
+      if(str){
+         return str[0].toUpperCase() + str.slice(1) || "";
+      }
+   }
+
    onlogOut = () => {
       console.log("logging out")
       unAuthUser();
@@ -17,6 +26,9 @@ export const MenuContainer =({ unAuthUser, driverStatus, getDriverStatus, authUs
 
    onCancelTrip = () => {
       cancelBookingRequest();
+      newBookingAlerted(false);
+      pickUpArrivingAlerted(false);
+      dropOffArrivingAlerted(false);
       getDriverStatus("available");
       Actions.home({type: "replace"});
    }
@@ -54,9 +66,9 @@ export const MenuContainer =({ unAuthUser, driverStatus, getDriverStatus, authUs
          }
          { driverInfo &&
             <View>
-               <Text style={styles.avatarText}>{driverInfo.firstName + " " + driverInfo.lastName}</Text>
-               <Text style={styles.avatarText}>{driverInfo.company.name}</Text>
-               <Text style={styles.avatarText}>{"Service Type: " + serviceType[0].toUpperCase() + serviceType.slice(1)}</Text>
+               <Text style={styles.avatarText}>{firstName + " " + lastName}</Text>
+               <Text style={styles.avatarText}>{name}</Text>
+               <Text style={styles.avatarText}>{"Service Type: " + this.Capitalize(serviceType)}</Text>
             </View>
          }
          </View>

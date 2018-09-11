@@ -15,6 +15,7 @@ import { addAlert } from '../../Alert/modules/alerts';
 const { DRIVER_CONNECTING,
         CURRENT_ROUTE,
         GET_CURRENT_LOCATION, 
+        NEW_BOOKING_ALERT,
         DRIVER_STATUS,
         // GET_DRIVER_INFORMATION,
         POST_DRIVER_LOCATION,
@@ -25,6 +26,7 @@ const { DRIVER_CONNECTING,
         UPDATE_BOOKING_DETAILS,
         REJECT_BOOKING_REQUEST,
         CANCEL_BOOKING_REQUEST,
+        BOOKING_REQUEST_COMPLETED,
         SELECTED_DRIVERS,
         APP_STATE,
         UPDATE_DRIVER_LOCATION_DETAILS
@@ -32,7 +34,7 @@ const { DRIVER_CONNECTING,
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.0181;
+const LATITUDE_DELTA = 0.01 ;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
 //-------------------------------
@@ -42,6 +44,7 @@ const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 const initialState = {
     driverConnecting: false,
     region: {},
+    newBookingAlert: false,
     watchDriverLocation: {},
     inputData: {},
     driverStatus: "notAvailable",
@@ -64,6 +67,15 @@ export function getAppState(payload) {
     }
 }
 
+// Keep track if driver has been alerted of new booking
+export function newBookingAlerted(payload){
+    return(dispatch, store) => {
+        dispatch({
+            type: NEW_BOOKING_ALERT,
+            payload: payload
+        })
+    }
+}
 
 //Get current route
 export function getCurrentRoute(){
@@ -228,6 +240,14 @@ export function cancelBookingRequest(){
             console.log("This is an error from the server", error);
             console.log("This is a response from the server", res)
         });
+    }
+}
+
+export function bookingRequestCompleted(){
+    return(dispatch) => {
+        dispatch({
+            type: BOOKING_REQUEST_COMPLETED
+        })
     }
 }
 
@@ -578,6 +598,15 @@ function handelGetAppState(state, action){
         }
     })
 }
+
+function handleNewBookingAlert(state, action){
+    return update(state, {
+        newBookingAlert: {
+            $set: action.payload
+        }
+    })
+}
+
 function handleGetCurrentRoute(state,action){
     console.log("Current Scene from Action Handlers ", action.payload)
     return update(state, {
@@ -762,9 +791,11 @@ const ACTION_HANDLERS = {
     UPDATED_DB_BOOKING_DETAILS: handleDBBookingDetailsUpdated,
     REJECT_BOOKING_REQUEST: handleRejectedBookingRequest,
     CANCEL_BOOKING_REQUEST: handleRejectedBookingRequest,
+    BOOKING_REQUEST_COMPLETED: handleRejectedBookingRequest,
     SELECTED_DRIVERS: handelAcceptRideRequest,
     APP_STATE: handelGetAppState,
-    UPDATE_DRIVER_LOCATION_DETAILS: handleUpdateDriverLocationDetails
+    UPDATE_DRIVER_LOCATION_DETAILS: handleUpdateDriverLocationDetails,
+    NEW_BOOKING_ALERT: handleNewBookingAlert
 }
 
 

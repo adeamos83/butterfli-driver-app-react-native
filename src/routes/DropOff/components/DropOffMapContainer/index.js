@@ -50,7 +50,7 @@ export const DropOffMapContainer = ({
                 ref={ref => { this.map = ref; }}
                 provider={MapView.PROVIDER_GOOGLE}
                 style={styles.map}
-                initialRegion={dropOffRegion}
+                region={dropOffRegion}
                 showsUserLocation={true}
                 showsMyLocationButton={true}
             >

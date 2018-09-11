@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 import Menu from '../components/menu';
 
 import { unAuthUser } from '../../Login/modules/login';
-import { getDriverStatus,cancelBookingRequest } from '../../Home/modules/home';
+import { getDriverStatus,cancelBookingRequest, newBookingAlerted } from '../../Home/modules/home';
+import { getDriverInfo } from '../../Profile/modules/profile';
+import { pickUpArrivingAlerted } from '../../PickUp/modules/pickUp';
+import { dropOffArrivingAlerted } from '../../DropOff/modules/dropOff';
 import { authUser, 
         } from '../modules/menu';
 
@@ -18,7 +21,11 @@ const mapActionCreators = {
    authUser,
    unAuthUser,
    cancelBookingRequest,
-   getDriverStatus
+   getDriverStatus,
+   getDriverInfo,
+   newBookingAlerted,
+   pickUpArrivingAlerted,
+   dropOffArrivingAlerted
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Menu)

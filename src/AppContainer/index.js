@@ -15,8 +15,12 @@ import { Provider } from 'react-redux';
 
 import configureStore from '../store/createStore';
 const { store, persistor } = configureStore();
-import { unAuthUser } from '../routes/Login/modules/login'
-import { getAppState } from '../routes/Home/modules/home';
+import { addAlert } from '../routes/Alert/modules/alerts';
+import { unAuthUser } from '../routes/Login/modules/login';
+import { pickUpArrivingAlerted } from '../routes/PickUp/modules/pickUp';
+import { dropOffArrivingAlerted } from '../routes/DropOff/modules/dropOff';
+import { getAppState, newBookingAlerted, watchingDriverLocation } from '../routes/Home/modules/home';
+import { getLatLonDiffInMeters } from '../util/helper';
 
 var Spinner = require('react-native-spinkit');
 import { PushController } from '../Components/Common';
@@ -35,28 +39,31 @@ export default class AppContainer extends Component {
         //
     
         // This handler fires whenever bgGeo receives a location update.
-        BackgroundGeolocation.on('location', this.onLocation, this.onError);
+        // BackgroundGeolocation.on('location', this.onLocation, this.onError);
     
         // This handler fires when movement states changes (stationary->moving; moving->stationary)
-        BackgroundGeolocation.on('motionchange', this.onMotionChange);
+        // BackgroundGeolocation.on('motionchange', this.onMotionChange);
     
-        // This event fires when a change in motion activity is detected
-        BackgroundGeolocation.on('activitychange', this.onActivityChange);
+        // // This event fires when a change in motion activity is detected
+        // BackgroundGeolocation.on('activitychange', this.onActivityChange);
     
         // This event fires when the user toggles location-services authorization
-        BackgroundGeolocation.on('providerchange', this.onProviderChange);
+        // BackgroundGeolocation.on('providerchange', this.onProviderChange);
     
         ////
         // 2.  Execute #ready method (required)
         //
         BackgroundGeolocation.ready({
           // Geolocation Config
+          reset: true,
           desiredAccuracy: 1000,
           distanceFilter: 0,
+          preventSuspend: true,
+          heartbeatInterval: 10,
           // Activity Recognition
           stopTimeout: 5,
           // Application config
-          debug: true, // <-- enable this hear sounds for background-geolocation life-cycle.
+          debug: false, // <-- enable this hear sounds for background-geolocation life-cycle.
           logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
           stopOnTerminate: false,   // <-- Allow the background-service to continue tracking when user closes the app.
           startOnBoot: true,        // <-- Auto start tracking when device is powered-up.
@@ -87,37 +94,96 @@ export default class AppContainer extends Component {
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
         console.log("This is the component did mount App ");
+        console.log("This is the current App State: ", this.state.appState);
+
+        // take some action right before Rehydrate
+        // JWT token has expired User need to login
+        var dateNow = new Date();
+        if (store.getState().login.expDate < (dateNow.getTime() / 1000)){
+            console.log("JWT token has expired User need to login");
+            store.dispatch(unAuthUser());
+            Actions.login({type: "replace"});
+            
+        }
+
+        // This event fires when a change in motion activity is detected
+        // BackgroundGeolocation.on('activitychange', this.onActivityChange);   
         
+        BackgroundGeolocation.on('heartbeat', function(params) {
+            var lastKnownLocation = params.location;
+            console.log('- heartbeat: ', lastKnownLocation);
+            // Or you could request a new location
+            
+            if(store.getState().home.bookingDetails && !store.getState().home.newBookingAlert && (store.getState().home.driverStatus == "available")){
+                PushNotifications.localNotification({
+                    message: "You have a new ride request"
+                });
+                store.dispatch(newBookingAlerted(true));
+            }
+
+            if(store.getState().home.appState !== "active"){
+                BackgroundGeolocation.getCurrentPosition(function(location) {
+                    console.log('- current position: ', location);
+                    console.log("Here is the curent state of the app: ", store.getState().home.appState);
+                    // console.log("Alert status: ", store.getState().pickUp.pickUpArrivingAlert);
+
+                    store.dispatch(watchingDriverLocation(location))
+
+                    if(store.getState().home.bookingDetails){
+                        const distFrom = getLatLonDiffInMeters(location.coords.latitude, location.coords.longitude,
+                        store.getState().home.bookingDetails.pickUp.latitude, store.getState().home.bookingDetails.pickUp.longitude);
+
+                        const dropDistFrom = getLatLonDiffInMeters(location.coords.latitude, location.coords.longitude,
+                        store.getState().home.bookingDetails.dropOff.latitude, store.getState().home.bookingDetails.dropOff.longitude);
+
+                        if(distFrom < 100 && !store.getState().pickUp.pickUpArrivingAlert){
+                            PushNotifications.localNotification({
+                                message: "Arriving to passenger's pickup location in 3 minutes"
+                            }); 
+                            store.dispatch(pickUpArrivingAlerted(true))
+                        }
+
+                        if(dropDistFrom < 100 && !store.getState().dropOff.dropOffArrivingAlert){
+                            PushNotifications.localNotification({
+                                message: "Arriving to passenger's pickup location in 3 minutes"
+                            }); 
+                            store.dispatch(dropOffArrivingAlerted(true))
+                        }
+
+                        console.log("Here is the distance from Driver to pick up: ", distFrom);
+                    }
+                });
+            }
+        });
     }
     
     componentWillUnmount() {
+        console.log("Componenet is unmounting");
         AppState.removeEventListener('change', this._handleAppStateChange);
         BackgroundGeolocation.removeListeners();
-        console.log("Componenet is unmounting")
-        
+        store.dispatch(pickUpArrivingAlerted(false));
+        store.dispatch(dropOffArrivingAlerted(false));
+        store.dispatch(newBookingAlerted(false));
     }
 
-    onLocation(location) {
-        console.log('- [event] location: ', location);
-        
-        if(this.state.appState === 'background'){
-            PushNotifications.localNotification({
-                message: location,
-            });
-        }
-    }
-    onError(error) {
-        console.warn('- [event] location error ', error);
-    }
-    onActivityChange(activity) {
-        console.log('- [event] activitychange: ', activity);  // eg: 'on_foot', 'still', 'in_vehicle'
-    }
-    onProviderChange(provider) {
-        console.log('- [event] providerchange: ', provider);    
-    }
-    onMotionChange(location) {
-        console.log('- [event] motionchange: ', location.isMoving, location);
-    }
+    // onLocation(location) {
+    //     console.log('- [event] location: ', location);
+    // }
+
+    // onError(error) {
+    //     console.warn('- [event] location error ', error);
+    // }
+
+    // onActivityChange(activity) {
+    //     console.log('- [event] activitychange: ', activity);  // eg: 'on_foot', 'still', 'in_vehicle'
+    // }
+    
+    // onProviderChange(provider) {
+    //     console.log('- [event] providerchange: ', provider);    
+    // }
+    // onMotionChange(location) {
+    //     console.log('- [event] motionchange: ', location.isMoving, location);
+    // }
 
     _handleAppStateChange = (nextAppState) => {
         console.log("This is the Next App State: ", nextAppState);
@@ -127,13 +193,13 @@ export default class AppContainer extends Component {
         this.setState({appState: nextAppState});
         store.dispatch(getAppState(nextAppState));
 
-        if(this.state.appState === 'background'){
-            let date = new Date(Date.now() + (6 * 1000));
-            PushNotifications.localNotificationSchedule({
-                message: "My notification message",
-                date: date, 
-            });
-        }
+        // if(this.state.appState === 'background'){
+        //     let date = new Date(Date.now() + (6 * 1000));
+        //     PushNotifications.localNotificationSchedule({
+        //         message: "My notification message",
+        //         date: date, 
+        //     });
+        // }
     }
 
     onBeforeLift = () => {

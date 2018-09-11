@@ -17,6 +17,7 @@ const {
         // MARKER_LOCATION,
         // NEAR_DRIVER_ALERTED,
         GET_DISTANCE_FROM,
+        PICKUP_ARRIVING_ALERTED,
         GET_PICKUP_ROUTE
         } = constants;
 
@@ -24,7 +25,7 @@ const { width, height } = Dimensions.get("window");
 
 const ASPECT_RATIO = width / height;
 
-const LATITUDE_DELTA = 0.0181;
+const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
 
@@ -35,6 +36,7 @@ const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 const initialState = {
     region: {},
     inputData: {},
+    pickUpArrivingAlert: false,
     nearDriverAlerted: false,
     // distanceFrom: {}
 };
@@ -179,8 +181,18 @@ const initialState = {
 //     }
 // }
 
-// Get Distance from Driver to pickUp or dropOff Location
 
+// Keep track of the arrive alert status
+export function pickUpArrivingAlerted(payload){
+    return(dispatch, store) => {
+        dispatch({
+            type: PICKUP_ARRIVING_ALERTED,
+            payload: payload
+        })
+    }
+}
+
+// Get Distance from Driver to pickUp or dropOff Location
 export function getDistanceFrom(instance) {
     return(dispatch, store) => {
         if(store().home.watchDriverLocation){
@@ -357,6 +369,14 @@ function handleGetPickUpRoutes(state, action) {
     })
 }
 
+function handlePickUpArrivingAlerted(state, action) {
+    return update(state, {
+        pickUpArrivingAlert: {
+            $set:action.payload
+        }
+    })
+}
+
 // function handleInRouteTo(state, action){
 //     return update(state, {
 //         bookingDetails: {
@@ -384,7 +404,8 @@ const ACTION_HANDLERS = {
     // NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
     GET_DISTANCE_FROM: handleGetDistanceFrom,
     // UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
-    GET_PICKUP_ROUTE: handleGetPickUpRoutes
+    GET_PICKUP_ROUTE: handleGetPickUpRoutes,
+    PICKUP_ARRIVING_ALERTED: handlePickUpArrivingAlerted
 }
 
 

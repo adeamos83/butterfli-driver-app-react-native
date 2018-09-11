@@ -41,7 +41,7 @@ export const PickUpMapContainer = ({
                 ref={ref => { this.map = ref; }}
                 provider={MapView.PROVIDER_GOOGLE}
                 style={styles.map}
-                initialRegion={region}
+                region={region}
                 showsUserLocation={true}
                 showsMyLocationButton={true}
             >

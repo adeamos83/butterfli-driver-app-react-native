@@ -14,13 +14,16 @@ export const MapContainer = ({
 
     const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
     
+    // Zoom calculation for map
+    // console.log(Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2))
+
     return(
         <View style={styles.container}>
             <MapView
                 ref={ref => { this.map = ref; }}
                 provider={MapView.PROVIDER_GOOGLE}
                 style={styles.map}
-                initialRegion={region}
+                region={region}
                 showsUserLocation={true}
                 showsMyLocationButton={true}
             >

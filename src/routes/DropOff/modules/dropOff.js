@@ -17,12 +17,13 @@ const { GET_CURRENT_LOCATION,
         // MARKER_LOCATION,
         // NEAR_DRIVER_ALERTED,
         GET_DISTANCE_FROM,
+        DROPOFF_ARRIVING_ALERTED,
         GET_DROP_OFF_ROUTE
         } = constants;
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.0181;
+const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
 
@@ -33,7 +34,8 @@ const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 const initialState = {
     region: {},
     inputData: {},
-    nearDriverAlerted: false
+    nearDriverAlerted: false,
+    dropOffArrivingAlert: false,
 
 };
 
@@ -54,6 +56,16 @@ export function getCurrentLocation() {
             (error) => console.log(error.message),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
+    }
+}
+
+// Keep track of the arrive alert status
+export function dropOffArrivingAlerted(payload){
+    return(dispatch, store) => {
+        dispatch({
+            type: DROPOFF_ARRIVING_ALERTED,
+            payload: payload
+        })
     }
 }
 
@@ -296,6 +308,14 @@ function handleGetCurrentLocation(state, action) {
     });
 }
 
+function handleDropOffArrivingAlerted(state, action) {
+    return update(state, {
+        dropOffArrivingAlert: {
+            $set:action.payload
+        }
+    })
+}
+
 // function handleDriverStatus(state, action){
 //     return update(state, {
 //         driverStatus: {
@@ -381,7 +401,8 @@ const ACTION_HANDLERS = {
     // NEAR_DRIVER_ALERTED: handleNearDriverAlerted,
     GET_DISTANCE_FROM: handleGetDistanceFrom,
     // UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
-    GET_DROP_OFF_ROUTE: handleGetDropOffRoutes
+    GET_DROP_OFF_ROUTE: handleGetDropOffRoutes,
+    DROPOFF_ARRIVING_ALERTED: handleDropOffArrivingAlerted
 }
 
 

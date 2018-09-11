@@ -3,8 +3,6 @@ import { View, Text } from 'react-native';
 import { Container } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
-
-
 import PickUpMapContainer from './PickUpMapContainer';
 import HeaderComponent from '../../../Components/HeaderComponent';
 import NavHeaderComponent from '../../../Components/NavHeaderComponent';

@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Container } from 'native-base';
 import { connect } from 'react-redux'
+import BackgroundGeolocation from "react-native-background-geolocation";
 
 
 
@@ -27,6 +28,13 @@ class Home extends React.Component {
             (error) => console.log(error.message),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
         );
+
+        // BackgroundGeolocation.on('heartbeat', this.heartTest);
+    }
+
+    heartTest = (location) => {
+        console.log("This heartbeat is from the home route");
+        console.log('- [event] location: ', location); 
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -41,6 +49,7 @@ class Home extends React.Component {
 
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchId);
+        BackgroundGeolocation.un('heartbeat', this.heartTest);
     } 
 
     connectDriver = () => {

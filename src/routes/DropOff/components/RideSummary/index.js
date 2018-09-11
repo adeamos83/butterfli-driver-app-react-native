@@ -3,11 +3,9 @@ import { Text, Image } from 'react-native';
 import { View, Button } from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-
 import styles from "./RideSummaryStyles";
 
-export const RideSummary = ({ driverInfo, bookingDetails, navToHomePage}) => {
+export const RideSummary = ({ driverInfo, bookingDetails, bookingRequestCompleted, navToHomePage}) => {
     const { pickUp, dropOff, tripDistance} = bookingDetails || {};
     const { profilePic } = driverInfo || "";
     const { vehicle } = driverInfo || {};
@@ -15,6 +13,7 @@ export const RideSummary = ({ driverInfo, bookingDetails, navToHomePage}) => {
     // This function navigates the user back to the app home screen
     rideSummaryNav = () => {
         navToHomePage();
+        bookingRequestCompleted();
     }
 
     return (

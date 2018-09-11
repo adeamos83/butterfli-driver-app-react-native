@@ -119,6 +119,7 @@ class DropOff extends React.Component {
             <RideSumarry
                 bookingDetails={this.props.bookingDetails}
                 navToHomePage={this.navToHomePage}
+                bookingRequestCompleted={this.props.bookingRequestCompleted}
             />
         }
         </Container>
