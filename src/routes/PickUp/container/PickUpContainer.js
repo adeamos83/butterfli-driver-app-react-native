@@ -16,6 +16,7 @@ import {
         // getMarkerLocation,
         // getNearDriverAlerted,
         getDistanceFrom,
+        getPickUpDistance,
         getPickUpRoute,
         pickUpArrivingAlerted
         } from '../modules/pickUp';
@@ -36,7 +37,8 @@ const mapStateToProps = (state) => ({
     distanceFrom: state.pickUp.distanceFrom || {},
     pickUpRoutes: state.pickUp.pickUpRoutes || {},
     appState: state.home.appState,
-    pickUpArrivingAlert: state.pickUp.pickUpArrivingAlert
+    pickUpArrivingAlert: state.pickUp.pickUpArrivingAlert,
+    pickUpDistance: state.pickUp.pickUpDistance
 });
 
 const mapActionCreators = {
@@ -47,6 +49,7 @@ const mapActionCreators = {
     getDriverStatus,
     getMarkerLocation,
     pickUpArrivingAlerted,
+    getPickUpDistance,
     // getNearDriverAlerted,
     getDistanceFrom,
     updateBookingDetails,

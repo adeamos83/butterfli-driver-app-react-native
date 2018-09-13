@@ -38,9 +38,10 @@ export const LoginContainer =({addAlert,
    }
 
    onSignUp = (values) => {
-      isSigningUp(true) 
-      signupUser(values.email, values.password); 
-      needsToCreateProfile(true); 
+      // isSigningUp(true) 
+      // // signupUser(values.email, values.password); 
+      // needsToCreateProfile(true);
+      Actions.createProfile({type: "replace"})
    }
 
    return (
@@ -85,7 +86,7 @@ export const LoginContainer =({addAlert,
                <Text style={styles.btnText}>Sign In</Text>
             }
             </Button>
-            <Button  style={styles.signup} onPress={handleSubmit(this.onSignUp)}>
+            <Button  style={styles.signup} onPress={this.onSignUp}>
             { signingUp &&
                <Spinner size="small"/>
                ||

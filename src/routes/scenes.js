@@ -12,7 +12,7 @@ import AlertContainer from './Alert/container/AlertContainer'
 import Menu from '../routes/Menu/container/MenuContainer';
 import HeaderComponent from '../Components/HeaderComponent';
 import CreateProfile from './Login/components/CreateProfile/';
-import CreateVehicleProfile from './Login/components/CreateProfile/vehicle';
+import CreateVehicleProfile from './Login/components/VehicleProfile';
 import ProfileContainer from './Profile/container/ProfileContainer';
 
 import RideSummary from './DropOff/components/RideSummary';

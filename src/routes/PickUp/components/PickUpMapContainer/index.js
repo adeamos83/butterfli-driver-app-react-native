@@ -11,6 +11,7 @@ export const PickUpMapContainer = ({
                             bookingDetails,
                             updateWatchDriverLocation,
                             watchDriverLocation,
+                            getPickUpDistance,
                             routes,
                             getDistanceFrom,
                             pickUpRoutes
@@ -30,6 +31,7 @@ export const PickUpMapContainer = ({
 
     carMoving = (event) =>{
         getMarkerLocation(event);
+        getPickUpDistance();
         setTimeout(function(){
             getDistanceFrom();
         }, 5000)

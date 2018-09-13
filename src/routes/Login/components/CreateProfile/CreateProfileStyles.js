@@ -48,10 +48,11 @@ const styles = {
    },
    signinBtn:{
       width:width * 0.85,
-	   justifyContent: "center",
+	   justifyContent: "space-between",
 		backgroundColor: "#BE90D4",
       alignItems: "center",
       borderRadius:3,
+      paddingHorizontal: 15
 		// borderWidth: 1,
 		// padding: 10,
 		// margin: 10,

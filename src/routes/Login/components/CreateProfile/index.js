@@ -6,11 +6,12 @@ import { Actions } from 'react-native-router-flux';
 import styles from './CreateProfileStyles';
 import TextField from '../TextField/TextField';
 import { TextInputField } from '../../../../Components/Common';
-import CreateVehicleProfile from './vehicle';
+import CreateVehicleProfile from '../VehicleProfile';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export const CreateProfile =({addAlert, user_id, createProfile, createUserProfile, createCarProfile,
-   gotoCarProfile, navToCarPage, isSigningUp, newUserProfile, signingUp,handleSubmit, fields: {firstName, lastName, phonenumber}}) => {
+   gotoCarProfile, navToCarPage, isSigningUp, newUserProfile, signingUp,handleSubmit, fields: {firstName, lastName, email, companyCode, phoneNumber}}) => {
    
    onCreateProfile = (values) => {
    createUserProfile(values)
@@ -23,7 +24,7 @@ export const CreateProfile =({addAlert, user_id, createProfile, createUserProfil
 
    return (
       <KeyboardAvoidingView behavior="padding"  keyboardVerticalOffset={Platform.select({ios: 0, android: 25})} style={styles.container}>
-      { (navToCarPage == false) && 
+      { (true) && 
          <ScrollView>
             <View style={styles.titleContainer}>
                <Image style={styles.logo} source={require('../../../../Assets/img/ButterFLi-logo-header.png')}/>
@@ -43,7 +44,6 @@ export const CreateProfile =({addAlert, user_id, createProfile, createUserProfil
                      this.lastName.getRenderedComponent().refs.lastName.focus()
                   }}
                />
-               
             </View>
             <View style={styles.field}>
                <Field
@@ -57,19 +57,51 @@ export const CreateProfile =({addAlert, user_id, createProfile, createUserProfil
                   validate={this.renderError}
                   returnKeyType="next"
                   onEnter={() => { 
-                     this.phonenumber.getRenderedComponent().refs.phonenumber.focus()
+                     this.email.getRenderedComponent().refs.email.focus()
                   }}
                />
             </View>
             <View style={styles.field}>
                <Field
-                  {...phonenumber}
+                  {...email}
                   withRef
-                  refField='phonenumber'
-                  ref={(c) => this.phonenumber = c}
+                  refField='email'
+                  ref={(c) => this.email = c}
+                  name="email"
+                  component={TextInputField}
+                  placeholder="Email"
+                  validate={this.renderError}
+                  returnKeyType="next"
+                  onEnter={() => { 
+                     this.phoneNumber.getRenderedComponent().refs.phoneNumber.focus()
+                  }}
+               />
+            </View>
+            <View style={styles.field}>
+               <Field
+                  {...phoneNumber}
+                  withRef
+                  refField='phoneNumber'
+                  ref={(c) => this.phoneNumber = c}
                   name="phonenumber"
                   component={TextInputField}
                   placeholder="Phone Number"
+                  validate={this.renderError}
+                  returnKeyType="next"
+                  onEnter={() => { 
+                     this.companyCode.getRenderedComponent().refs.companyCode.focus()
+                  }}
+               />
+            </View>
+            <View style={styles.field}>
+               <Field
+                  {...companyCode}
+                  withRef
+                  refField='companyCode'
+                  ref={(c) => this.companyCode = c}
+                  name="companyCode"
+                  component={TextInputField}
+                  placeholder="Company Code"
                   validate={this.renderError}
                   returnKeyType="next"
                />
@@ -77,6 +109,10 @@ export const CreateProfile =({addAlert, user_id, createProfile, createUserProfil
             <View style={styles.buttonView}>
                <Button style={styles.signinBtn} onPress={handleSubmit(this.onCreateProfile)}>
                   <Text style={styles.btnText}>Next</Text>
+                
+                     <Icon size={25} name="long-arrow-right" style={{color: "white", justifyContent: 'flex-end', paddingRight: 10}}/> 
+                
+                  
                </Button>
                {/* 
                   <Button  style={styles.signup}>
@@ -116,6 +152,6 @@ var validate = (formProps) => {
 
 module.exports = reduxForm({
    form: 'createProfile',
-   fields: ['firstName', 'lastName', 'phonenumber'],
+   fields: ['firstName', 'lastName', 'email', 'phoneNumber', 'companyCode'],
    validate: validate
 }, null, null)(CreateProfile);

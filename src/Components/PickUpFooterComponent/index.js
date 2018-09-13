@@ -3,9 +3,9 @@ import { Text, View } from 'react-native';
 import { Footer, FooterTab, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './PickUpFooterComponentStyles';
+import { getLatLonDiffInMeters } from '../../util/helper';
 
-
-export const PickUpFooterComponent = ({ bookingDetails, distanceFrom, getDriverStatus, pickUpPassenger, updateBookingDetails }) => {
+export const PickUpFooterComponent = ({ bookingDetails, pickUpDistance, distanceFrom, getDriverStatus, pickUpPassenger, updateBookingDetails }) => {
     const { firstName } = bookingDetails || "";
     const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
     pickUpConfrim = () => {
@@ -15,7 +15,7 @@ export const PickUpFooterComponent = ({ bookingDetails, distanceFrom, getDriverS
     }
     return (
         <View>
-            { (distance.value < 480) &&
+            { (pickUpDistance < 300) &&
                 <View style={styles.footerContainer}>
                     return (
                         <View style={styles.buttonContainer}>

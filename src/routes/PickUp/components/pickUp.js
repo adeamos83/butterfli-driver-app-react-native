@@ -10,21 +10,21 @@ import UserFooterComponent from '../../../Components/UserFooterComponent';
 import ArrivingFooter from '../../../Components/ArrvingFooterComponent';
 import PickUpFooterComponent from '../../../Components/PickUpFooterComponent';
 
-const buttefliLogo = require("../../../Assets/img/butterfli_name_logo.png");
 const carMarker = require("../../../Assets/img/carMarker.png");
+import { getLatLonDiffInMeters } from '../../../util/helper';
 
 class PickUp extends React.Component {
 
     componentDidMount(){
-        // this.props.getCurrentLocation();
-        this.props.getDistanceFrom("intial");
+        this.props.getDistanceFrom();
         this.props.getPickUpRoute();
-        // this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentRoute(Actions.currentScene);
 
         this.watchId = navigator.geolocation.watchPosition(
             (position) => {
                 this.props.watchingDriverLocation(position)
+                this.props.getDistanceFrom();
+                this.props.getPickUpDistance();
             },
             (error) => console.log(error.message),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
@@ -40,14 +40,28 @@ class PickUp extends React.Component {
             // this.props.postDriverLocation();
         }
 
+        // Get distance pick up location
+        // const distFrom = getLatLonDiffInMeters(this.props.watchDriverLocation.coords.latitude, this.props.watchDriverLocation.coords.longitude,
+        // this.props.bookingDetails.pickUp.latitude, this.props.bookingDetails.pickUp.longitude);
+        
         // Changes rideRequestStatus to "arriving"
-        if(prevProps.distanceFrom.rows && this.props.distanceFrom.rows){
-        const { duration } = this.props.distanceFrom.rows[0].elements[0] || "";
-        const prevDuration = prevProps.distanceFrom.rows[0].elements[0] || "";
-            if(prevDuration.duration.value > 300 && duration.value < 300){
-                this.props.updateBookingDetails("rideRequestStatus", "arriving");
-            }
-        } 
+        if(this.props.pickUpDistance < 300 && prevProps.bookingDetails.rideRequestStatus !== "arriving"){
+            console.log("This is the distance to should be less than 300ft pick up: ",distFrom);
+            this.props.updateBookingDetails("rideRequestStatus", "arriving");
+        }
+
+        // Changes rideRequestStatus to "arriving"
+        // if(prevProps.distanceFrom.rows && this.props.distanceFrom.rows){
+        // const { duration } = this.props.distanceFrom.rows[0].elements[0] || "";
+        // const prevDuration = prevProps.distanceFrom.rows[0].elements[0] || "";
+        //     // if(prevDuration.duration.value > 300 && duration.value < 300){
+        //     //     this.props.updateBookingDetails("rideRequestStatus", "arriving");
+        //     // }
+        //     if(distFrom < 300 && prevProps.bookingDetails.rideRequestStatus !== "arriving"){
+        //         console.log("This is the distance to should be less than 300ft pick up: ",distFrom);
+        //         this.props.updateBookingDetails("rideRequestStatus", "arriving");
+        //     }
+        // } 
     }
 
     componentWillUnmount() {
@@ -84,6 +98,7 @@ class PickUp extends React.Component {
                     getDistanceFrom={this.props.getDistanceFrom}
                     pickUpRoutes={this.props.pickUpRoutes}
                     watchDriverLocation={this.props.watchDriverLocation}
+                    getPickUpDistance={this.props.getPickUpDistance}
                     />
                 }
             </View>
@@ -93,13 +108,14 @@ class PickUp extends React.Component {
                     distanceFrom={this.props.distanceFrom}
                 />
             }
-            { (this.props.distanceFrom.rows && this.props.bookingDetails.rideRequestStatus == "arriving") &&
+            { this.props.pickUpDistance < 300 &&
                 <PickUpFooterComponent 
                     distanceFrom={this.props.distanceFrom}
                     getDriverStatus={this.props.getDriverStatus}
                     pickUpPassenger={this.pickUpPassenger}
                     updateBookingDetails={this.props.updateBookingDetails}
                     bookingDetails={this.props.bookingDetails}
+                    pickUpDistance={this.props.pickUpDistance}
                 />
             } 
             { this.props.distanceFrom.rows &&

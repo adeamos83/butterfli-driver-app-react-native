@@ -127,7 +127,7 @@ export default class AppContainer extends Component {
                     console.log("Here is the curent state of the app: ", store.getState().home.appState);
                     // console.log("Alert status: ", store.getState().pickUp.pickUpArrivingAlert);
 
-                    store.dispatch(watchingDriverLocation(location))
+                    // store.dispatch(watchingDriverLocation(location))
 
                     if(store.getState().home.bookingDetails){
                         const distFrom = getLatLonDiffInMeters(location.coords.latitude, location.coords.longitude,

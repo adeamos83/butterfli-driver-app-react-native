@@ -21,7 +21,7 @@
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-
+  
   [GMSServices provideAPIKey:@"AIzaSyDYndj5Gfh1rp5VUFHHu6gnN4vy2GQ0hvo"]; // add this line for the api key obtained from Google Console
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"ButterFliDriverApp"

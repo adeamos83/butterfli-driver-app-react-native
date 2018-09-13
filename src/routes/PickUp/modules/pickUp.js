@@ -5,6 +5,7 @@ import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY } from '../../../api';
 
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
+import { getLatLonDiffInMeters } from '../../../util/helper';
 //-------------------------------
 // Constants
 //-------------------------------
@@ -18,7 +19,8 @@ const {
         // NEAR_DRIVER_ALERTED,
         GET_DISTANCE_FROM,
         PICKUP_ARRIVING_ALERTED,
-        GET_PICKUP_ROUTE
+        GET_PICKUP_ROUTE,
+        DISTANCE_FROM_PICKUP
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -46,6 +48,18 @@ const initialState = {
 //-------------------------------
 // Action
 //-------------------------------
+
+export function getPickUpDistance(){
+    return(dispatch, store) => {
+        const distFrom = getLatLonDiffInMeters(store().home.watchDriverLocation.coords.latitude, store().home.watchDriverLocation.coords.longitude,
+        store().home.bookingDetails.pickUp.latitude, store().home.bookingDetails.pickUp.longitude);
+
+        dispatch({
+            type: DISTANCE_FROM_PICKUP,
+            payload: distFrom
+        });
+    }
+}
 // export function getCurrentLocation() {
 //     return(dispatch) => {
 //         navigator.geolocation.getCurrentPosition(
@@ -394,6 +408,14 @@ function handleGetDistanceFrom(state, action){
     });
 }
 
+function handlepickUpDistance(state, action){
+    return update(state, {
+        pickUpDistance: {
+            $set: action.payload
+        }
+    });
+}
+
 const ACTION_HANDLERS = {
     // GET_CURRENT_LOCATION: handleGetCurrentLocation,
     // DRIVER_STATUS: handleDriverStatus,
@@ -405,7 +427,8 @@ const ACTION_HANDLERS = {
     GET_DISTANCE_FROM: handleGetDistanceFrom,
     // UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
     GET_PICKUP_ROUTE: handleGetPickUpRoutes,
-    PICKUP_ARRIVING_ALERTED: handlePickUpArrivingAlerted
+    PICKUP_ARRIVING_ALERTED: handlePickUpArrivingAlerted,
+    DISTANCE_FROM_PICKUP: handlepickUpDistance
 }
 
 

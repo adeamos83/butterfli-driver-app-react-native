@@ -18,7 +18,8 @@ const { GET_CURRENT_LOCATION,
         // NEAR_DRIVER_ALERTED,
         GET_DISTANCE_FROM,
         DROPOFF_ARRIVING_ALERTED,
-        GET_DROP_OFF_ROUTE
+        GET_DROP_OFF_ROUTE,
+        DISTANCE_FROM_DROPOFF
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -44,6 +45,19 @@ const initialState = {
 //-------------------------------
 // Action
 //-------------------------------
+
+export function getDropOffDistance(){
+    return(dispatch, store) => {
+        const distFrom = getLatLonDiffInMeters(store().home.watchDriverLocation.coords.latitude, store().home.watchDriverLocation.coords.longitude,
+        store().home.bookingDetails.dropOff.latitude, store().home.bookingDetails.dropOff.longitude);
+
+        dispatch({
+            type: DISTANCE_FROM_DROPOFF,
+            payload: distFrom
+        });
+    }
+}
+
 export function getCurrentLocation() {
     return(dispatch) => {
         navigator.geolocation.getCurrentPosition(
@@ -391,6 +405,14 @@ function handleGetDistanceFrom(state, action){
     });
 }
 
+function handleDropOffDistance(state, action){
+    return update(state, {
+        dropOffDistance: {
+            $set: action.payload
+        }
+    });
+}
+
 const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     // DRIVER_STATUS: handleDriverStatus,
@@ -402,7 +424,8 @@ const ACTION_HANDLERS = {
     GET_DISTANCE_FROM: handleGetDistanceFrom,
     // UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
     GET_DROP_OFF_ROUTE: handleGetDropOffRoutes,
-    DROPOFF_ARRIVING_ALERTED: handleDropOffArrivingAlerted
+    DROPOFF_ARRIVING_ALERTED: handleDropOffArrivingAlerted,
+    DISTANCE_FROM_DROPOFF: handleDropOffDistance
 }
 
 

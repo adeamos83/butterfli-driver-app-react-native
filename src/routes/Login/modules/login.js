@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import uuid from 'uuid';
 import axios from 'axios';
 
-import {SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE_URL} from '../../../api';
+import {SIGNIN_URL, DRIVER_SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE_URL} from '../../../api';
 import {addAlert} from '../../Alert/modules/alerts';
 import { disconnectSocketIO, updateBookingDetails } from '../../Home/modules/home';
 
@@ -33,7 +33,7 @@ const initialState = {
     alerts:[],
     needsProfile: false,
     inputData: {},
-    gotoCarPage: false,
+    navToCarPage: false,
     loggingIn: false,
     signingUp: false
 };
@@ -76,7 +76,8 @@ export function getInputData(payload) {
 // Handle Post Request to login user
 export function loginUser(email, password){
    return(dispatch) => {
-       return axios.post(SIGNIN_URL, {email, password}).then((response) => {
+       return axios.post(DRIVER_SIGNIN_URL, {email, password}).then((response) => {
+           console.log("Here is the response from login: ", response);
             var {user_id, token, isProfileCreated, expDate} = response.data;
             var userDetails = {
                 user_id: user_id,
@@ -94,6 +95,22 @@ export function loginUser(email, password){
        }).catch((error) => {
         dispatch(isLoggingIn(false));
         dispatch(addAlert("Could not log in."));
+        if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+    console.log(error.config);
        });
    }
 }
@@ -102,6 +119,7 @@ export function loginUser(email, password){
 export function signupUser(email, password){
     return(dispatch) => {
         return axios.post(SIGNUP_URL, {email, password}).then((response) => {
+            console.log("this is the response", response);
              var {user_id, token, expDate} = response.data;
              var userDetails = {
                 user_id: user_id,
