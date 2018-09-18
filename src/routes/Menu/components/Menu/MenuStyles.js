@@ -26,13 +26,29 @@ const styles = StyleSheet.create({
     avatarView: {
         flex: 1, 
         backgroundColor: '#BE90D4', 
-        justifyContent: 'center', 
+        justifyContent: 'flex-start', 
         alignItems: 'center',
-        paddingLeft: 10
+        paddingTop: 15,
+        paddingLeft: 10,
+        paddingBottom: 0, 
+        flexDirection: 'row',
+    },
+    avatarTextHeader: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
+        paddingVertical: 0,
+        marginVertical: 0,
+        // borderColor: 'red',
+        // borderWidth: 1
     },
     avatarText: {
-        color: 'white',
-        fontWeight: 'bold'
+        color: '#ecf0f1',
+        fontSize: 12,
+        paddingVertical: 0,
+        marginVertical: 0,
+        // borderColor: 'red',
+        // borderWidth: 1
     }
 })
 

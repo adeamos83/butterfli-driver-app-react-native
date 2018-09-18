@@ -21,16 +21,17 @@ class DropOff extends React.Component {
         // Get distance from driver to dropOff location
         this.props.getDistanceFrom();
         this.props.getDropOffRoute();
-        // this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentRoute(Actions.currentScene);
 
-        this.watchId = navigator.geolocation.watchPosition(
-            (position) => {
-                this.props.watchingDriverLocation(position)
-            },
-            (error) => console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
-        );
+        // this.watchId = navigator.geolocation.watchPosition(
+        //     (position) => {
+        //         this.props.watchingDriverLocation(position)
+        //         this.props.getDropOffDistance();
+        //         this.props.getDistanceFrom();
+        //     },
+        //     (error) => console.log(error.message),
+        //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+        // );
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -41,13 +42,9 @@ class DropOff extends React.Component {
         }
 
         // Changes rideRequestStatus to "arriving"
-        if(prevProps.distanceFrom.rows && this.props.distanceFrom.rows){
-            const { duration } = this.props.distanceFrom.rows[0].elements[0] || "";
-            const prevDuration = prevProps.distanceFrom.rows[0].elements[0] || "";
-                if(prevDuration.duration.value > 300 && duration.value < 300){
-                    this.props.updateBookingDetails("rideRequestStatus", "unloading");
-                }
-            } 
+        if((this.props.dropOffDistance > 300 && this.props.dropOffDistance < 480) && prevProps.bookingDetails.rideRequestStatus !== "unloading"){
+            this.props.updateBookingDetails("rideRequestStatus", "unloading");
+        }
     }
 
     componentWillUnmount() {
@@ -89,15 +86,17 @@ class DropOff extends React.Component {
                         routes={this.props.routes}
                         getDistanceFrom={this.props.getDistanceFrom}
                         dropOffRoutes={this.props.dropOffRoutes}
+                        getDropOffDistance={this.props.getDropOffDistance}
                         />
                     }
                 </View>
-                { (this.props.distanceFrom.rows && this.props.bookingDetails.rideRequestStatus == "unloading") && 
+                { this.props.dropOffDistance < 300 && 
                     <DropOffFooterComponent 
                         distanceFrom={this.props.distanceFrom}
                         getDriverStatus={this.props.getDriverStatus}
                         navToHomePage={this.navToHomePage}
                         updateBookingDetails={this.props.updateBookingDetails}
+                        dropOffDistance={this.props.dropOffDistance}
                     />
                 }
                 { this.props.distanceFrom.rows && 
@@ -105,6 +104,7 @@ class DropOff extends React.Component {
                         bookingDetails={this.props.bookingDetails} 
                         distanceFrom={this.props.distanceFrom}
                         driverStatus={this.props.driverStatus}
+                        dropOffDistance={this.props.dropOffDistance} 
                     />
                 }
                 { this.props.distanceFrom.rows &&

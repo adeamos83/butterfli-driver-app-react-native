@@ -260,6 +260,10 @@ export function getPassengerRoute(){
                 // this.route1 = this.getCoordinates(json);
             }).catch(e => {
               console.warn(e)
+              	if (error.response.status === 401) {
+                	dispatch(unAuthUser());
+                	Actions.login({type: 'replace'})
+            	}
             })
         }
     }    

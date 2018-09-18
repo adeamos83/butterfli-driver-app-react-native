@@ -296,6 +296,10 @@ export function getPickUpRoute(){
                 // this.route1 = this.getCoordinates(json);
             }).catch(e => {
               console.warn(e)
+              	if (error.response.status === 401) {
+                	dispatch(unAuthUser());
+                	Actions.login({type: 'replace'})
+            	}
             })
         }
     }    
@@ -416,6 +420,14 @@ function handlepickUpDistance(state, action){
     });
 }
 
+function handleBookingComplete(state, action){
+    return update(state, {
+        pickUpDistance: {
+            $set: undefined
+        }
+    }); 
+}
+
 const ACTION_HANDLERS = {
     // GET_CURRENT_LOCATION: handleGetCurrentLocation,
     // DRIVER_STATUS: handleDriverStatus,
@@ -428,7 +440,8 @@ const ACTION_HANDLERS = {
     // UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
     GET_PICKUP_ROUTE: handleGetPickUpRoutes,
     PICKUP_ARRIVING_ALERTED: handlePickUpArrivingAlerted,
-    DISTANCE_FROM_PICKUP: handlepickUpDistance
+    DISTANCE_FROM_PICKUP: handlepickUpDistance,
+    BOOKING_REQUEST_COMPLETED: handleBookingComplete,
 }
 
 

@@ -14,6 +14,7 @@ import { getDriverStatus,
 import { getCurrentLocation,
         // getNearDriverAlerted,
         getDistanceFrom,
+        getDropOffDistance,
         getDropOffRoute
         } from '../modules/dropOff';
 
@@ -31,7 +32,8 @@ const mapStateToProps = (state) => ({
     // nearDriverAlerted: state.home.nearDriverAlerted, 
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
     distanceFrom: state.dropOff.distanceFrom || {},
-    dropOffRoutes: state.dropOff.dropOffRoutes || {}
+    dropOffRoutes: state.dropOff.dropOffRoutes || {},
+    dropOffDistance: state.dropOff.dropOffDistance
 });
 
 const mapActionCreators = {
@@ -45,6 +47,7 @@ const mapActionCreators = {
     // getNearDriverAlerted,
     getDistanceFrom,
     getDropOffRoute,
+    getDropOffDistance,
     updateDriverLocationDetails,
     newSelectedDriverSocketId,
     bookingRequestCompleted

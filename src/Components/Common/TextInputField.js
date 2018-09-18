@@ -5,7 +5,7 @@ class TextInputField extends React.Component {
     
    
     render() {
-        const { getInputData,  refField, onEnter, inputData, input: { value, onChange}, ...field } = this.props;
+        const { getInputData,  capitalize, refField, onEnter, inputData, input: { value, onChange}, ...field } = this.props;
         
         handleInput = (key, val) => {
             getInputData({
@@ -19,13 +19,13 @@ class TextInputField extends React.Component {
                 {...field}
                 ref = {refField}
                 style={[styles.textInput]}
-                autoCapitalize="none"
+                autoCapitalize={capitalize}
                 autoCorrect={false}
                 onChangeText={(value) => onChange(value)} 
                 value={value} underlineColorAndroid="transparent" selectTextOnFocus={true} {...this.props}
                 onSubmitEditing={onEnter}
             />
-            {field.meta.touched && field.meta.error &&
+            {(field.meta.touched && field.meta.error) &&
                 <Text style={styles.formError}>{field.meta.error}</Text>
             }
             </View>
@@ -34,17 +34,17 @@ class TextInputField extends React.Component {
 }
 
 const styles = {
-    field: {
-       borderRadius: 5,
-       padding: 5,
-       paddingLeft: 8,
-       margin: 7,
-       marginTop: 0,
-       backgroundColor: 'white'
-    },
+    // field: {
+    //    borderRadius: 5,
+    //    padding: 5,
+    //    paddingLeft: 8,
+    //    margin: 7,
+    //    marginTop: 0,
+    //    backgroundColor: 'white'
+    // },
     textInput: {
-       height: 26,
-       color: 'black'
+       height: 50,
+       color: 'black',
     },
     formError: {
        color: 'red'

@@ -20,15 +20,15 @@ class PickUp extends React.Component {
         this.props.getPickUpRoute();
         this.props.getCurrentRoute(Actions.currentScene);
 
-        this.watchId = navigator.geolocation.watchPosition(
-            (position) => {
-                this.props.watchingDriverLocation(position)
-                this.props.getDistanceFrom();
-                this.props.getPickUpDistance();
-            },
-            (error) => console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
-        );
+        // this.watchId = navigator.geolocation.watchPosition(
+        //     (position) => {
+        //         this.props.watchingDriverLocation(position)
+        //         this.props.getDistanceFrom();
+        //         this.props.getPickUpDistance();
+        //     },
+        //     (error) => console.log(error.message),
+        //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+        // );
     }
     
     componentDidUpdate(prevProps, prevState)  {
@@ -45,8 +45,7 @@ class PickUp extends React.Component {
         // this.props.bookingDetails.pickUp.latitude, this.props.bookingDetails.pickUp.longitude);
         
         // Changes rideRequestStatus to "arriving"
-        if(this.props.pickUpDistance < 300 && prevProps.bookingDetails.rideRequestStatus !== "arriving"){
-            console.log("This is the distance to should be less than 300ft pick up: ",distFrom);
+        if((this.props.pickUpDistance > 300 && this.props.pickUpDistance < 480) && prevProps.bookingDetails.rideRequestStatus !== "arriving"){
             this.props.updateBookingDetails("rideRequestStatus", "arriving");
         }
 
@@ -106,6 +105,8 @@ class PickUp extends React.Component {
                 <ArrivingFooter 
                     bookingDetails={this.props.bookingDetails} 
                     distanceFrom={this.props.distanceFrom}
+                    pickUpDistance={this.props.pickUpDistance}
+                    dropOffDistance={this.props.pickUpDistance}
                 />
             }
             { this.props.pickUpDistance < 300 &&

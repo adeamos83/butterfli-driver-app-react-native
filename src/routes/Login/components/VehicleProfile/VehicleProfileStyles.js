@@ -3,12 +3,19 @@ const { width } = Dimensions.get("window");
 const styles = {
    container: {
 		 flex: 1,
-		 justifyContent: "center",
-    //    justifyContent: "flex-start",
-    //    alignItems: "stretch",
-       padding: 0,
+		//  justifyContent: "center",
+    	//    justifyContent: "flex-start",
+    	//    alignItems: "stretch",
+       padding: 20,
        backgroundColor: '#FFF'
    },
+   outerContainer: {
+    // padding: 10,
+    marginTop: 20,
+    // flexGrow: 2.5,
+    justifyContent: "center",
+    flex: 1
+    },
    titleContainer: {
    	// padding: 10,
    	flexGrow: 2.5,
@@ -39,13 +46,11 @@ const styles = {
       width:width * 0.88,
 		paddingVertical: 20,
   },
-  signup:{
-      width:width * 0.9,
+  cancel:{
+    width:width * 0.4,
       justifyContent: "center",
       alignItems: "center",
-      borderRadius:7,
-      borderWidth: 1,
-      borderColor:"#fff",
+      borderRadius:3,
    },
    signinBtn:{
       width:width * 0.85,
@@ -61,12 +66,12 @@ const styles = {
   	sumbitBtnView: {
 		flex: 1, 
 		flexDirection: 'row', 
-		justifyContent: 'space-around',
-		width:width * 0.88,
-		paddingVertical: 20,
+		justifyContent: 'space-between',
+        paddingVertical: 20,
+        paddingHorizontal: 10
 	},
   	submitBtn:{
-		width:width * 0.85,
+		width:width * 0.4,
 		justifyContent: "center",
 		backgroundColor: "#BE90D4",
 		alignItems: "center",

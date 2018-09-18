@@ -41,7 +41,8 @@ export const LoginContainer =({addAlert,
       // isSigningUp(true) 
       // // signupUser(values.email, values.password); 
       // needsToCreateProfile(true);
-      Actions.createProfile({type: "replace"})
+      // Actions.createProfile({type: "replace"})
+      Actions.register({type: "replace"})
    }
 
    return (

@@ -22,7 +22,7 @@ export const persistConfig = {
     key: 'root',
     storage: storage,
     stateReconciler: autoMergeLevel2,
-    blacklist: ['alerts']
+    blacklist: ['alerts', 'form']
 }
 
 const persistedReducer = persistReducer(persistConfig,  makeRootReducer())

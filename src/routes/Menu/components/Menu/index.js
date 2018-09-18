@@ -59,24 +59,28 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
    return(
       <View style={{flex: 1}}>
          <View style={styles.avatarView}>
-         { profilePic && 
-            <Image resizemode="container" style={styles.driverPic} source={{uri:profilePic}} />
-            ||
-            <Icon name="user-circle-o" style={styles.icon} />
-         }
+         <View style={{paddingRight: 15}}>  
+            { profilePic && 
+               <Image resizemode="container" style={styles.driverPic} source={{uri:profilePic}} />
+               ||
+               <Icon name="user-circle-o" style={styles.icon} />
+            }
+         </View>
          { driverInfo &&
             <View>
-               <Text style={styles.avatarText}>{firstName + " " + lastName}</Text>
-               <Text style={styles.avatarText}>{name}</Text>
-               <Text style={styles.avatarText}>{"Service Type: " + this.Capitalize(serviceType)}</Text>
+               <Text style={styles.avatarTextHeader}>{firstName + " " + lastName}</Text>
+               
+                  <Text style={styles.avatarText}>SMS Transportation</Text>
+                  <Text style={styles.avatarText}>{"Service: " + this.Capitalize(serviceType)}</Text>
+            
             </View>
          }
          </View>
-         <View style={{flex: 2}}>
+         <View style={{flex: 4}}>
             <Content>
                <List>
                   <ListItem onPress={this.startTrip}>
-                     <Text style={{fontSize: 16}}>{(driverStatus == "notAvailable" || driverStatus == "available")? "Start Trip" : "Back to Trip"}</Text>
+                     <Text style={{fontSize: 16}}>{(driverStatus == "notAvailable" || driverStatus == "available")? "Home" : "Back to Trip"}</Text>
                   </ListItem>
                   { (driverStatus !== "notAvailable" && driverStatus !== "available") && 
                      <ListItem onPress={this.onCancelTrip}>

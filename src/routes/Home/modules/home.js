@@ -8,6 +8,7 @@ import request from '../../../util/request';
 import io from "socket.io-client/dist/socket.io";
 
 import { addAlert } from '../../Alert/modules/alerts';
+import { unAuthUser } from '../../Login/modules/login';
 
 //-------------------------------
 // Constants
@@ -57,6 +58,27 @@ const initialState = {
 //-------------------------------
 // Action
 //-------------------------------
+
+export function checkStatus(response){
+    console.log("This is status: ", response.status);
+    console.log("This is config: ", response.config);
+    console.log("This is data: ", response.data);
+    console.log("This is response: ", response.response);
+    
+
+    if (response.status >= 200 && response.status < 300) {
+        return response;
+      }
+    
+      if (response.response.status === 401) {
+        unAuthUser();
+        Actions.login({type: 'replace'})
+      }
+    
+      const error = new Error(response.statusText);
+      error.response = response;
+      throw error;
+}
 
 export function getAppState(payload) {
     return ( dispatch, store ) => {
@@ -167,6 +189,10 @@ export function getDriverStatus(driverStatus){
             dispatch(isDriverConnecting(false)); 
         }).catch((error) => {
             console.log(error);
+            if (error.response.status === 401) {
+                dispatch(unAuthUser());
+                Actions.login({type: 'replace'})
+            }
         })
     }
 }
@@ -394,13 +420,18 @@ export function postDriverLocation(){
 
         return axios.post(`${API_URL}/api/driverLocation`, {data}, {
             headers: {authorization: store().login.token}
-        }).then((res) => {
+        })
+        .then((res) => {
             dispatch({
                 type: POST_DRIVER_LOCATION,
                 payload: res.data
             });
         }).catch((error) => {
             console.log(error); 
+            if (error.response.status === 401) {
+                dispatch(unAuthUser());
+                Actions.login({type: 'replace'})
+            }
         })
 
     }
@@ -426,6 +457,10 @@ export function updateBookingDetails(key, instance){
             });
         }).catch((error) => {
             console.log(error);
+            if (error.response.status === 401) {
+                dispatch(unAuthUser());
+                Actions.login({type: 'replace'})
+            }
         })
 
     }
@@ -449,6 +484,10 @@ export function updateDriverLocationDetails(key, instance){
             });
         }).catch((error) => {
             console.log(error);
+            if (error.response.status === 401) {
+                dispatch(unAuthUser());
+                Actions.login({type: 'replace'})
+            }
         })
     }
 }
@@ -541,6 +580,10 @@ export function acceptRideRequest(){
             Actions.rideRequest({type: "replace"});
         }).catch((error) => {
             console.log(error);
+            if (error.response.status === 401) {
+                dispatch(unAuthUser());
+                Actions.login({type: 'replace'})
+            }
         })
     }
 }
@@ -581,6 +624,10 @@ export function newSelectedDriverSocketId(){
                 });
             }).catch((error) => {
                 console.log(error);
+                if (error.response.status === 401) {
+                    dispatch(unAuthUser());
+                    Actions.login({type: 'replace'})
+                }
             })
         }
         
@@ -750,6 +797,9 @@ function handleGetNewBooking(state, action) {
         return update(state, {
             bookingDetails: {
                 $set: action.payload
+            },
+            newBookingAlert: {
+                $set: false
             }
         });
 }

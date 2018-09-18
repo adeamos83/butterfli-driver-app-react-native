@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { View, Text, Image, ScrollView } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
-import { Container, Form, Item, Input, Label, Picker, Button } from 'native-base';
+import { Container, Header, Form, Item, Input, Label, Picker, Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { getDriverInfo } from '../../../Home/modules/home';
 import { ProfileTextInputField } from '../../../../Components/Common/'
@@ -40,6 +40,7 @@ let ProfileContainer =({ getDriverInfo, updateDriverProfile, canEditProfile,
 
    return(
 		<ScrollView style={styles.container}>
+			<Header/>
 			<View style={styles.avatarHeader}>
 				{ profilePic && 
 					<Image resizemode="container" style={styles.driverPic} source={{uri:profilePic}} />

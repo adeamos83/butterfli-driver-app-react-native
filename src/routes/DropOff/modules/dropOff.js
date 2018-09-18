@@ -4,7 +4,7 @@ import { Dimensions, Platform, Linking } from 'react-native';
 import request from '../../../util/request';
 
 import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY} from '../../../api';
-
+import { getLatLonDiffInMeters } from '../../../util/helper'
 const polyline = require('@mapbox/polyline');
 //-------------------------------
 // Constants
@@ -19,7 +19,7 @@ const { GET_CURRENT_LOCATION,
         GET_DISTANCE_FROM,
         DROPOFF_ARRIVING_ALERTED,
         GET_DROP_OFF_ROUTE,
-        DISTANCE_FROM_DROPOFF
+        DISTANCE_FROM_DROPOFF,
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -292,6 +292,10 @@ export function getDropOffRoute(){
                 // this.route1 = this.getCoordinates(json);
             }).catch(e => {
               console.warn(e)
+              	if (error.response.status === 401) {
+                	dispatch(unAuthUser());
+                	Actions.login({type: 'replace'})
+            	}
             })
         }
     }    
@@ -413,6 +417,14 @@ function handleDropOffDistance(state, action){
     });
 }
 
+function handleBookingComplete(state, action){
+    return update(state, {
+        dropOffDistance: {
+            $set: undefined
+        }
+    }); 
+}
+
 const ACTION_HANDLERS = {
     GET_CURRENT_LOCATION: handleGetCurrentLocation,
     // DRIVER_STATUS: handleDriverStatus,
@@ -425,7 +437,8 @@ const ACTION_HANDLERS = {
     // UPDATE_BOOKING_DETAILS: handleUpdateBookingDetails,
     GET_DROP_OFF_ROUTE: handleGetDropOffRoutes,
     DROPOFF_ARRIVING_ALERTED: handleDropOffArrivingAlerted,
-    DISTANCE_FROM_DROPOFF: handleDropOffDistance
+    DISTANCE_FROM_DROPOFF: handleDropOffDistance,
+    BOOKING_REQUEST_COMPLETED: handleBookingComplete,
 }
 
 

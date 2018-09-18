@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './DropOffFooterComponentStyles';
 
 
-export const DropOffFooterComponent = ({ distanceFrom, getDriverStatus, navToHomePage, updateBookingDetails }) => {
+export const DropOffFooterComponent = ({ dropOffDistance, distanceFrom, getDriverStatus, navToHomePage, updateBookingDetails }) => {
 
     const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
     dropOffConfrim = () => {
@@ -15,7 +15,7 @@ export const DropOffFooterComponent = ({ distanceFrom, getDriverStatus, navToHom
     }
     return (
         <View>
-            { (distance.value < 480) &&
+            { (dropOffDistance < 480) &&
                 <View style={styles.footerContainer}>
                     return (
                         <View style={styles.buttonContainer}>

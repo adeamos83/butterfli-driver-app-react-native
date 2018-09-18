@@ -58,7 +58,12 @@ export function getDriverInfo() {
             });
         }).catch((error) => {
             console.log(error);
-            dispatch(addAlert("Could not get Driver Profile."));
+            if (error.response.status === 401) {
+               dispatch(unAuthUser());
+               Actions.login({type: 'replace'})
+            } else {
+               dispatch(addAlert("Could not get Driver Profile."));
+            }
         });
 
     }
@@ -109,7 +114,11 @@ export function updateDriverProfile(){
         }).catch((error) => {
             // dispatch(addAlert("Could not update Driver Profile."));
             // dispatch(isSigningUp(false));
-            console.log(error)
+				console.log(error)
+				if (error.response.status === 401) {
+					dispatch(unAuthUser());
+					Actions.login({type: 'replace'})
+			  	}
         });
     }
  }
@@ -129,8 +138,13 @@ export function getRideHistory(){
                  payload: rideHistory
              });
         }).catch((error) => {  
-            console.log(error); 
-            dispatch(addAlert("Could not get Ride History."));
+				console.log(error); 
+				if (error.response.status === 401) {
+					dispatch(unAuthUser());
+					Actions.login({type: 'replace'})
+			  	} else {
+					dispatch(addAlert("Could not get Ride History."));
+			  	}
         });
     }
 }

@@ -5,14 +5,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './ArrvingFooterComponentStyles.js';
 
 
-export const ArrivingFooter = ({ navToPickUp, bookingDetails, distanceFrom }) => {
+export const ArrivingFooter = ({ navToPickUp, dropOffDistance, bookingDetails, distanceFrom }) => {
       const { rideRequestStatus } = bookingDetails || {};
       const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
       const alertArrival = true; 
     return ( 
             <View>
                {
-                  (distance.value > 480 && distance.value < 720) &&
+                  (dropOffDistance > 300 && dropOffDistance < 480) &&
             
                   <View style={styles.headerContainer} iosBarStyle="light-content">
                      <View style={styles.innerContainer}>

@@ -11,6 +11,7 @@ export const DropOffMapContainer = ({
                             bookingDetails,
                             updateWatchDriverLocation,
                             watchDriverLocation,
+                            getDropOffDistance,
                             getDistanceFrom,
                             dropOffRoutes
                             }) => {
@@ -39,6 +40,7 @@ export const DropOffMapContainer = ({
 
     carMoving = (event) =>{
         getMarkerLocation(event);
+        getDropOffDistance();
         setTimeout(function(){
             getDistanceFrom();
         }, 5000)

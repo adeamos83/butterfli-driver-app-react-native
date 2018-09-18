@@ -14,7 +14,8 @@ import { authUser,
             createUserProfile,
             gotoCarProfile,
             isLoggingIn,
-            isSigningUp
+            isSigningUp,
+            clearCreateProfile
         } from '../modules/login';
 
 const mapStateToProps = (state) => ({
@@ -47,7 +48,8 @@ const mapActionCreators = {
    createCarProfile,
    gotoCarProfile,
    isLoggingIn,
-   isSigningUp
+   isSigningUp,
+   clearCreateProfile
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Login)

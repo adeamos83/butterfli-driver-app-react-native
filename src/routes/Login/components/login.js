@@ -21,10 +21,13 @@ class Login extends React.Component {
       }  
    }
 
+   componentDidMount() {
+      this.props.clearCreateProfile();
+   }
+
    render() {
       return(
       <Container>
-      { (this.props.needsProfile == false || !this.props.user_id) &&
          <View style={{flex:1}}>
                <LoginContainer 
                   user_id={this.props.user_id}
@@ -41,23 +44,6 @@ class Login extends React.Component {
                   signingUp={this.props.signingUp}
                />
          </View>
-            ||
-            (this.props.needsProfile == true && this.props.user_id ) &&
-               <CreateProfile 
-                  user_id={this.props.user_id}
-                  addAlert={this.props.addAlert}
-                  signupUser={this.props.signupUser}
-                  createProfile={this.props.createProfile}
-                  createCarProfile={this.props.createCarProfile}
-                  gotoCarProfile={this.props.gotoCarProfile}
-                  navToCarPage={this.props.navToCarPage}
-                  createUserProfile={this.props.createUserProfile}
-                  isSigningUp={this.props.isSigningUp}
-                  signingUp={this.props.signingUp}
-                  newUserProfile={this.props.newUserProfile}
-               />
-         }
-         
       </Container>
       );
       

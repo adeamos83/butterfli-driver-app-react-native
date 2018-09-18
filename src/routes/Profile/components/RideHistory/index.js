@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { View, Image, ScrollView } from 'react-native';
 import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import styles from './RideHistoryStyles';
 
 import { getCurrentRoute } from '../../../Home/modules/home';
 import { getRideHistory } from '../../modules/profile';
@@ -19,10 +20,14 @@ class RideHistoryContainer extends React.Component {
 		console.log("this is the ride history", rideHistory);
 		return (
 			<Container>
-					<View style={{borderBottomWidth: 2, borderColor: '#ECECEC', marginBottom: 20, alignItems: "center"}}>
-						<Text style={{fontSize: 16, fontWeight: "700", marginTop: 20, marginBottom: 15}}>Ride History</Text>
-					</View>
-					<Content>
+				<Header />
+					{/*
+						<View style={{borderBottomWidth: 2, borderColor: '#ECECEC', marginBottom: 20, alignItems: "center"}}>
+							<Text style={{fontSize: 16, fontWeight: "700", marginTop: 20, marginBottom: 15}}>Ride History</Text>
+						</View>
+					*/}
+					
+					<Content style={{paddingTop: 10}}>
 						<List 
 						dataArray={rideHistory} 
 						renderRow={(item) =>

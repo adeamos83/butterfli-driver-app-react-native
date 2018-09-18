@@ -22,7 +22,8 @@ const { AUTH_USER,
         NAV_TO_CAR_PROFILE,
         IS_LOGGING_IN,
         IS_SIGNING_UP,
-        USER_PROFILE_CREATED
+        USER_PROFILE_CREATED,
+        CLEAR_PROFILE
         } = constants;
 
 //-------------------------------
@@ -116,17 +117,25 @@ export function loginUser(email, password){
 }
 
 // Handle Post Request to create a User account and profile
-export function signupUser(email, password){
-    return(dispatch) => {
-        return axios.post(SIGNUP_URL, {email, password}).then((response) => {
+export function signupUser(){
+    return(dispatch, store) => {
+        let userProfile= {
+            ...store().login.userProfile,
+            vehicle: {
+                ...store().login.vehicleProfile
+            }
+        }
+        console.log("This is the  user profile", userProfile);
+        return axios.post(SIGNUP_URL, userProfile).then((response) => {
             console.log("this is the response", response);
-             var {user_id, token, expDate} = response.data;
+             var {user_id, token, email, expDate} = response.data;
              var userDetails = {
                 user_id: user_id,
                 email: email,
                 token: token,
-                expDate: expDate
+                expDate: expDate,
             }
+            console.log("This is the user detaials", userDetails);
              dispatch({
                  type: AUTH_USER,
                  payload: userDetails
@@ -134,9 +143,15 @@ export function signupUser(email, password){
              setTimeout(function(){
                 dispatch(isSigningUp(false));
              }, 3000)
+             Actions.home({type: "replace"})
         }).catch((error) => {
-         dispatch(addAlert("Could not sign up."));
-         setTimeout(function(){
+            console.log(error.response)
+                if (error.response.status === 422) {
+                    dispatch(addAlert(error.response.data.error));
+                } else {
+                    dispatch(addAlert("Could not sign up."));
+                }
+         	setTimeout(function(){
             dispatch(isSigningUp(false));
          }, 3000)
         });
@@ -174,7 +189,17 @@ export function needsToCreateProfile(payload){
             payload: payload
         });
     }
- }
+}
+
+export function clearCreateProfile(payload){
+    return(dispatch) => {
+        dispatch({
+            type: CLEAR_PROFILE,
+            payload: payload
+        });
+    }
+}
+
 
 // Gathers needed information to send post request to create profile
 export function createProfile(){
@@ -221,11 +246,11 @@ export function createProfile(){
 
  export function createUserProfile(payload){
     console.log("this is from the User Profile", payload);
-    return(dispatch, store) => {
+    return(dispatch) => {
         dispatch({
             type:CREATE_USER_PROFILE,
             payload: payload
-        })
+        });
     }
  } 
 
@@ -344,6 +369,17 @@ function handleNavToCarPage(state, action){
     });
 }
 
+function handleClearProfile(state, action){
+    return update(state, {
+        userProfile: {
+            $set: undefined
+        },
+        navToCarPage: {
+            $set: false
+        }
+    });
+}
+
  
 const ACTION_HANDLERS = {
     GET_INPUT: handleGetInputData,
@@ -355,7 +391,8 @@ const ACTION_HANDLERS = {
     NAV_TO_CAR_PROFILE: handleNavToCarPage,
     IS_LOGGING_IN: handleIsLoggingIn,
     IS_SIGNING_UP: handleIsSigningUp,
-    USER_PROFILE_CREATED: handleGetNewUserProfile
+    USER_PROFILE_CREATED: handleGetNewUserProfile,
+    CLEAR_PROFILE: handleClearProfile
 }
 
 

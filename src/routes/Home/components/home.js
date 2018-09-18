@@ -60,7 +60,10 @@ class Home extends React.Component {
         if(this.props.driverStatus == "notAvailable"){
             this.props.getDriverSocketId(true);
             setTimeout(function(){
+                console.log("This is user id from timeout ", rk.props.user_id);
+                if(rk.props.user_id){
                 rk.props.getDriverStatus("available");
+                }
             }, 5000)
         }
 

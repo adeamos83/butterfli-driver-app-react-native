@@ -15,7 +15,7 @@ export const TextField = ({ input: { value, onChange}, ...field } ) => {
                value={value} underlineColorAndroid="transparent" selectTextOnFocus={true} {...this.props}
                onSubmitEditing={() => this.passwordInput.focus()}
             />
-            {field.meta.touched && field.meta.error &&
+            {(field.meta.touched && field.meta.error) &&
                 <Text style={styles.formError}>{field.meta.error}</Text>
             }
          </View>

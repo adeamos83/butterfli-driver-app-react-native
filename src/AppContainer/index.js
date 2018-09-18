@@ -96,6 +96,7 @@ export default class AppContainer extends Component {
         console.log("This is the component did mount App ");
         console.log("This is the current App State: ", this.state.appState);
 
+        console.log("Expiration date for user", store.getState().login.expDate);
         // take some action right before Rehydrate
         // JWT token has expired User need to login
         var dateNow = new Date();
@@ -166,6 +167,10 @@ export default class AppContainer extends Component {
         store.dispatch(newBookingAlerted(false));
     }
 
+    componentWillUpdate() {
+        console.log("Root App is update");
+    }
+
     // onLocation(location) {
     //     console.log('- [event] location: ', location);
     // }
@@ -205,6 +210,7 @@ export default class AppContainer extends Component {
     onBeforeLift = () => {
         // take some action right before Rehydrate
         // JWT token has expired User need to login
+        console.log("Expiration date for user", store.getState().login.expDate);
         var dateNow = new Date();
         if (store.getState().login.expDate < (dateNow.getTime() / 1000)){
             console.log("JWT token has expired User need to login");
@@ -229,7 +235,7 @@ export default class AppContainer extends Component {
                 <PersistGate persistor={persistor} onBeforeLift={this.onBeforeLift} loading={this.renderLoading()} >
                     <View style={{flex: 1}}>
                         
-                        <Router scenes={scenes} />
+                        <Router scenes={scenes}/>
                         <AlertContainer />
                         <PushController />
                     </View>
