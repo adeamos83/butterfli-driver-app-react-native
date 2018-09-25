@@ -9,6 +9,7 @@ import axios from 'axios';
 import {SIGNIN_URL, DRIVER_SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE_URL} from '../../../api';
 import {addAlert} from '../../Alert/modules/alerts';
 import { disconnectSocketIO, updateBookingDetails } from '../../Home/modules/home';
+import { isVehiclesLoading } from '../../Profile/modules/profile';
 
 //-------------------------------
 // Constants
@@ -23,7 +24,8 @@ const { AUTH_USER,
         IS_LOGGING_IN,
         IS_SIGNING_UP,
         USER_PROFILE_CREATED,
-        CLEAR_PROFILE
+        CLEAR_PROFILE,
+        VEHICLE_GARAGE
         } = constants;
 
 //-------------------------------
@@ -92,10 +94,12 @@ export function loginUser(email, password){
             });
             dispatch(isLoggingIn(false));
             dispatch(needsToCreateProfile(isProfileCreated));
-            Actions.home({type: "replace"})
+            Actions.vehicleSelect({type: "replace"})
        }).catch((error) => {
         dispatch(isLoggingIn(false));
-        dispatch(addAlert("Could not log in."));
+        Actions.error_modal({data: "Could not log in. Please check username/password"})
+        // dispatch(addAlert("Could not log in"));
+
         if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
@@ -147,9 +151,12 @@ export function signupUser(){
         }).catch((error) => {
             console.log(error.response)
                 if (error.response.status === 422) {
-                    dispatch(addAlert(error.response.data.error));
+                    // dispatch(addAlert(error.response.data.error));
+                    Actions.error_modal({data: error.response.data.error})
+
                 } else {
-                    dispatch(addAlert("Could not sign up."));
+                    // dispatch(addAlert("Could not sign up."));
+                    Actions.error_modal({data: "Could not sign up. Please check information and try again."})
                 }
          	setTimeout(function(){
             dispatch(isSigningUp(false));
@@ -219,7 +226,8 @@ export function createProfile(){
         }).then((response) => {
              var details = response.data;
              console.log(details);
-             dispatch(addAlert("User Profile Created"));
+            //  dispatch(addAlert("User Profile Created"));
+             Actions.error_modal({data: "Your user profile has been created."})
              dispatch({
                  type: USER_PROFILE_CREATED,
                  payload: details
@@ -228,7 +236,8 @@ export function createProfile(){
              dispatch(isSigningUp(false));
 
         }).catch((error) => {
-            dispatch(addAlert("Could not create User Profile."));
+            // dispatch(addAlert("Could not create User Profile."));
+            Actions.error_modal({data: "Could not create your user profile. Please check information and try again."})
             dispatch(isSigningUp(false));
         });
     }
@@ -259,6 +268,36 @@ export function createProfile(){
         dispatch({
             type: NAV_TO_CAR_PROFILE,
             payload: payload
+        });
+    }
+}
+
+
+export function getVehicleGarage(){
+    return(dispatch, store) => {
+        const companyId = store().profile.driverInfo.company._id
+        const vehicleGarageUrl = API_URL + "/transportationproviders/detail/" +  companyId;
+        console.log(vehicleGarageUrl);
+        return axios.get(vehicleGarageUrl, {
+            headers: {authorization: store().login.token}
+        }).then((response) => {
+             var vehicleGarage = response.data.vehicles;
+             console.log(vehicleGarage);
+             dispatch({
+                 type: VEHICLE_GARAGE,
+                 payload: vehicleGarage
+             });
+             dispatch(isVehiclesLoading(false));
+        }).catch((error) => {  
+				console.log(error); 
+				if (error.response.status === 401) {
+					dispatch(unAuthUser());
+					Actions.login({type: 'replace'})
+			  	} else {
+                    // dispatch(addAlert("Could not get Vehicles."));
+                    Actions.error_modal({data: "Could not get retreive vehicles from server. Please wait a few minutes and try again."})
+
+			  	}
         });
     }
 }
@@ -380,6 +419,13 @@ function handleClearProfile(state, action){
     });
 }
 
+function handleGetVehicleGarage(state, action ) {
+    return update(state, {
+        vehicleGarage: {
+            $set: action.payload
+        }
+    })
+}
  
 const ACTION_HANDLERS = {
     GET_INPUT: handleGetInputData,
@@ -392,7 +438,8 @@ const ACTION_HANDLERS = {
     IS_LOGGING_IN: handleIsLoggingIn,
     IS_SIGNING_UP: handleIsSigningUp,
     USER_PROFILE_CREATED: handleGetNewUserProfile,
-    CLEAR_PROFILE: handleClearProfile
+    CLEAR_PROFILE: handleClearProfile,
+    VEHICLE_GARAGE: handleGetVehicleGarage
 }
 
 

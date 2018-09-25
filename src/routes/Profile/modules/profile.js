@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
-import { API_URL } from '../../../api';
+import { API_URL, UPDATE_PROFILE_URL } from '../../../api';
 import axios from 'axios';
 
 import { addAlert } from '../../Alert/modules/alerts';
@@ -15,7 +15,10 @@ const {
     EDITTING_PROFILE,
     USER_PROFILE_UPDATED,
     DRIVER_RIDE_HISTORY,
-    UPDATE_VEHICLE_TYPE       
+    UPDATE_VEHICLE_TYPE,
+    SELECT_VEHICLE_INFO,
+    EDITTING_VEHICLE_PROFILE,
+    IS_VEHICLES_LOADING
     } = constants;
 
 
@@ -24,7 +27,9 @@ const {
 //-------------------------------
 
 const initialState = {
-    canEdit: false
+    canEdit: false,
+    canEditVehicle: false,
+    vehicleLoading: true
 };
 
 
@@ -95,7 +100,8 @@ export function changeVehicleServiceType(value){
 export function updateDriverProfile(){
     return(dispatch, store) => {
         var details = {
-            ...store().profile.driverInfo
+            ...store().profile.driverInfo,
+            vehicle: store().profile.selectedVehicle._id
         }
         console.log(details);
         update_Profile_Url = API_URL + "/api/driver/" + store().login.user_id;
@@ -149,6 +155,69 @@ export function getRideHistory(){
     }
 }
 
+export function getSelectedVehicle(payload){
+    console.log("this is from the Car Profile", payload);
+    return(dispatch, store) => {
+        dispatch({
+            type:SELECT_VEHICLE_INFO,
+            payload: payload
+        })
+    }
+}
+
+// Gathers needed information to send post request to create profile
+export function updateVehicleProfile(){
+    return(dispatch, store) => {
+        var details = {
+            ...store().profile.driverInfo,
+            vehicle: store().profile.selectedVehicle._id
+        }
+        console.log("from create profile redux function", details);
+        vehicleUpdateUrl = UPDATE_PROFILE_URL + "/" + store().profile.driverInfo._id
+        return axios.put(vehicleUpdateUrl, details, {
+            headers: {authorization: store().login.token}
+        }).then((response) => {
+             var details = response.data;
+             console.log(details);
+             dispatch({
+                 type: USER_PROFILE_UPDATED,
+                 payload: details
+             });
+             dispatch({
+                type:EDITTING_VEHICLE_PROFILE,
+                payload: !store().profile.canEditVehicle
+            })
+        }).catch((error) => {
+            if (error.response.status === 401) {
+               dispatch(unAuthUser());
+               Actions.login({type: 'replace'})
+            } else {
+					dispatch(addAlert("Could not create User Profile."));
+            }
+        });
+    }
+ }
+
+ export function canEditVehicleProfile() {
+    return(dispatch, store) => {
+        dispatch({
+            type:EDITTING_VEHICLE_PROFILE,
+            payload: !store().profile.canEditVehicle
+        })
+    }
+}
+
+// Used for the loading spinner when loading vehicles 
+export function isVehiclesLoading(payload){
+    return (dispatch) => {
+        dispatch({
+            type: IS_VEHICLES_LOADING, 
+            payload: payload
+        })
+    }
+}
+
+
 //-------------------------------
 // Action Handlers
 //-------------------------------
@@ -163,6 +232,14 @@ function handleGetDriverInfo(state, action) {
 function handleCanEditProfile(state, action ) {
     return update(state, {
         canEdit: {
+            $set: action.payload
+        }
+    })
+}
+
+function handleCanEditVehicleProfile(state, action ) {
+    return update(state, {
+        canEditVehicle: {
             $set: action.payload
         }
     })
@@ -184,6 +261,22 @@ function handleGetRideHistory(state, action ) {
         }
     })
 }
+ 
+ function handleSelectVehicle(state, action){
+    return update(state, {
+        selectedVehicle: {
+            $set: action.payload
+        }
+    });
+}
+
+function handleIsVehiclesLoading(state, action ) {
+    return update(state, {
+        vehicleLoading: {
+            $set: action.payload
+        }
+    })
+}
 
 
 const ACTION_HANDLERS = {
@@ -191,7 +284,10 @@ const ACTION_HANDLERS = {
     EDITTING_PROFILE: handleCanEditProfile,
     USER_PROFILE_UPDATED: handleGetDriverInfo,
     UPDATE_VEHICLE_TYPE: handleChangeServiceType,
-    DRIVER_RIDE_HISTORY: handleGetRideHistory
+    DRIVER_RIDE_HISTORY: handleGetRideHistory,
+    SELECT_VEHICLE_INFO: handleSelectVehicle,
+    EDITTING_VEHICLE_PROFILE: handleCanEditVehicleProfile,
+    IS_VEHICLES_LOADING: handleIsVehiclesLoading
 }
 
 

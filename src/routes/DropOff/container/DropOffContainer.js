@@ -33,7 +33,8 @@ const mapStateToProps = (state) => ({
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
     distanceFrom: state.dropOff.distanceFrom || {},
     dropOffRoutes: state.dropOff.dropOffRoutes || {},
-    dropOffDistance: state.dropOff.dropOffDistance
+    dropOffDistance: state.dropOff.dropOffDistance,
+    currentRoute: state.home.currentRoute
 });
 
 const mapActionCreators = {

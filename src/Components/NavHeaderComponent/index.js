@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './NavHeaderComponentStyles';
 
 
-export const NavHeaderComponent = ({ navToPickUp, bookingDetails, driverStatus }) => {
+export const NavHeaderComponent = ({ navToPickUp, bookingDetails, currentRoute, driverStatus }) => {
     const { pickUp, dropOff } = bookingDetails || {};
 
     return (
@@ -14,13 +14,16 @@ export const NavHeaderComponent = ({ navToPickUp, bookingDetails, driverStatus }
                 <View style={styles.innerContainer}>
                     <View style={styles.navIconContainer}>
                         <Button transparent dark style={styles.iconButton} onPress={navToPickUp}>
-                            <Icon size={25} name="navigation" style={{color: "#663399"}}/> 
-                            <Text style={styles.navText}>NAVIGATE</Text>
+                            <Icon size={20} name="navigation" style={{color: "white"}}/> 
+                            <Text style={styles.navText}>Navigate</Text>
                         </Button>
                     </View>
                     <View style={styles.navTextContainer}>
-                        { pickUp && 
-                            <Text style={styles.navText}>{ (driverStatus == "pickUp") ? pickUp.address : dropOff.address }</Text>
+                        { (currentRoute == "_rideRequest") && 
+                            <Text adjustsFontSizeToFit={true} style={styles.navTextOverview}>Trip Overview</Text>
+                            ||
+                            (pickUp) && 
+                            <Text adjustsFontSizeToFit={true} style={styles.navText}>{ (driverStatus == "pickUp") ? "Pick up at " + pickUp.address.split(/,(.+)/)[0] : "Drop off at " + dropOff.address.split(/,(.+)/)[0] }</Text>
                         }
                     </View>
                 </View>

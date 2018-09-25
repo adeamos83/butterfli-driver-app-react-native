@@ -3,38 +3,50 @@ var width = Dimensions.get("window").width; //full width
 
 const styles = ({
     headerContainer:{
-        backgroundColor: "white",
+        backgroundColor: "#2d3436",
         justifyContent: "center",
         paddingLeft:15,
         paddingRight:15,
-        height: 70,
+        height: 50,
+        width: width * 0.85,
+        position: "absolute",
+        top: 70,
+        left:40,
     },
     subText: {
-        fontSize: 8
+        fontSize: 8,
+        color: "white"
     },
     innerContainer: {
-        width: width * 0.95,
+        flex: 1,
         flexDirection: "row",
         alignItems: "center",
         flex: 1
     },
     navTextContainer: {
         flex: 2,
-        height: 50,
-        paddingLeft:15,
-        paddingRight:15,
-        justifyContent: "flex-end"
+        height: 40,
+        paddingLeft:10,
+        paddingRight:10,
+        justifyContent: "flex-end",
     },
     iconButton: {
         flex:1,
         flexDirection: "column",
         justifyContent: "flex-end",
         alignItems: "center",
-        marginBottom: 5
+        marginBottom: 0
     },
     navText: {
         fontSize: 14,
-        color:"black",
+        color:"white",
+        fontWeight: "bold",
+    },
+    navTextOverview: {
+        fontSize: 14,
+        color:"white",
+        fontWeight: "bold",
+        textAlign: "center"
     },
     btnText: {
         fontSize: 15
@@ -42,7 +54,8 @@ const styles = ({
     navIconContainer: {
         paddingRight: 10,
         borderRightWidth: 1,
-        borderRightColor: '#F5F5F5'
+        borderRightColor: '#212121',
+        justifyContent: "flex-end",
     }
 
 })

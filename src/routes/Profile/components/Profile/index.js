@@ -103,33 +103,35 @@ let ProfileContainer =({ getDriverInfo, updateDriverProfile, canEditProfile,
 					<Item inlineLabel>
 						<Label>Company</Label>
 						<Field
-							name="company.name"
+							name="companyName"
 							component={ProfileTextInputField}
-							editable={canEdit}
+							editable={false}
 							placeholder="Company"
 							placeholderTextColor="rgba(255,255,255,0.7)"
 							returnKeyType="next"
 						/>
 					</Item>
-					<Item inlineLabel picker last>
-						<Label>Service Type</Label>
-						<Picker
-							mode="dropdown"
-							iosIcon={<Icon name="angle-down" />}
-							style={{ width: undefined }}
-							placeholder="Select service type"
-							placeholderStyle={{ color: "#bfc6ea" }}
-							placeholderIconColor="#007aff"
-							selectedValue={serviceType}
-							onValueChange={changeVehicleServiceType.bind(this)}
-							enabled={canEdit}
-						>
-							<Picker.Item label="Wheelchair" value="wheelchair" />
-							<Picker.Item label="Gurney" value="gurney" />
-							<Picker.Item label="Ambulatory" value="ambulatory" />
-							<Picker.Item label="General" value="general" />
-						</Picker>
-					</Item>
+					{/*
+						<Item inlineLabel picker last>
+							<Label>Service Type</Label>
+							<Picker
+								mode="dropdown"
+								iosIcon={<Icon name="angle-down" />}
+								style={{ width: undefined }}
+								placeholder="Select service type"
+								placeholderStyle={{ color: "#bfc6ea" }}
+								placeholderIconColor="#007aff"
+								selectedValue={serviceType}
+								onValueChange={changeVehicleServiceType.bind(this)}
+								enabled={canEdit}
+							>
+								<Picker.Item label="Wheelchair" value="wheelchair" />
+								<Picker.Item label="Gurney" value="gurney" />
+								<Picker.Item label="Ambulatory" value="ambulatory" />
+								<Picker.Item label="General" value="general" />
+							</Picker>
+						</Item>
+					*/}
 				 </Form>
 				 {/* 
 					<View style={{flex: 1}}>

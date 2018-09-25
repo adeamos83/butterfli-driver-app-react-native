@@ -38,7 +38,8 @@ const mapStateToProps = (state) => ({
     pickUpRoutes: state.pickUp.pickUpRoutes || {},
     appState: state.home.appState,
     pickUpArrivingAlert: state.pickUp.pickUpArrivingAlert,
-    pickUpDistance: state.pickUp.pickUpDistance
+    pickUpDistance: state.pickUp.pickUpDistance,
+    currentRoute: state.home.currentRoute
 });
 
 const mapActionCreators = {

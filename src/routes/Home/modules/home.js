@@ -159,19 +159,21 @@ export function getDriverStatus(driverStatus){
         const id = store().home.driverLocation._id;
         const payload = {
                 // DriverId is always equal to User_id
-                driverId: store().login.user_id,
-                name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
-                phoneNumber: store().profile.driverInfo.phoneNumber,
-                coordinates: {
-                    type: "Point",
-                    coordinates: [store().home.region.longitude, store().home.region.latitude]
-                },
-                socketId: store().home.driverSocketId,
+                // driverId: store().login.user_id,
+                // driver: store().login.user_id, 
+                // name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
+                // phoneNumber: store().profile.driverInfo.phoneNumber,
+                // coordinates: {
+                //     type: "Point",
+                //     coordinates: [store().home.region.longitude, store().home.region.latitude]
+                // },
+                // socketId: store().home.driverSocketId,
+                ...store().home.driverLocation,
                 driverStatus: driverStatus,
-                serviceType: store().profile.driverInfo.serviceType
+                // vehicle: store().profile.selectedVehicle._id,
+                // serviceType: store().profile.driverInfo.serviceType
         };
-        console.log(payload);
-
+        
         //Updates local redux state with Driver Status
         dispatch({
             type: DRIVER_STATUS,
@@ -407,6 +409,7 @@ export function postDriverLocation(){
         const data = {
                 // DriverId is always equal to User_id
                 driverId: store().login.user_id,
+                driver: store().login.user_id,
                 name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
                 phoneNumber: store().profile.driverInfo.phoneNumber,
                 coordinates: {
@@ -415,9 +418,11 @@ export function postDriverLocation(){
                 },
                 socketId: store().home.driverSocketId,
                 driverStatus: store().home.driverStatus,
+                vehicle: store().profile.selectedVehicle._id,
                 serviceType: store().profile.driverInfo.serviceType
         };
 
+        console.log("Driver location that is going to be posted: ", data);
         return axios.post(`${API_URL}/api/driverLocation`, {data}, {
             headers: {authorization: store().login.token}
         })
@@ -443,6 +448,7 @@ export function updateBookingDetails(key, instance){
         const data = {
             ...store().home.bookingDetails,
             [key]: instance,
+            selectedDriver: store().home.driverLocation._id 
         };
        
         const bookingID = store().home.bookingDetails._id;
@@ -547,24 +553,24 @@ export function openMapsRoute(payload){
 // Updated booking detail the Selected Drivers information and updates RideRequestStatus to accpeted
 export function acceptRideRequest(){
     return(dispatch, store) => {
-        const selectedDriverData = {
-            // DriverId is always equal to User_id
-            driverId: store().login.user_id,
-            name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
-            phoneNumber: store().profile.driverInfo.phoneNumber,
-            coordinates: {
-                type: "Point",
-                coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
-            },
-            socketId: store().home.driverSocketId,
-            driverStatus: store().home.driverStatus,
-            serviceType: store().profile.serviceType
-        };
+        // const selectedDriverData = {
+        //     // DriverId is always equal to User_id
+        //     driverId: store().login.user_id,
+        //     name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
+        //     phoneNumber: store().profile.driverInfo.phoneNumber,
+        //     coordinates: {
+        //         type: "Point",
+        //         coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
+        //     },
+        //     socketId: store().home.driverSocketId,
+        //     driverStatus: store().home.driverStatus,
+        //     serviceType: store().profile.serviceType
+        // };
 
         const data = {
             ...store().home.bookingDetails,
             rideRequestStatus: "accepted",
-            selectedDriver: selectedDriverData,
+            selectedDriver: store().home.driverLocation._id,
         };
 
         const bookingID = store().home.bookingDetails._id
@@ -591,23 +597,23 @@ export function acceptRideRequest(){
 // This will update the near drivers socket Id
 export function newSelectedDriverSocketId(){
     return(dispatch, store) => {
-        const selectedDriverData = {
-            // DriverId is always equal to User_id
-            driverId: store().login.user_id,
-            name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
-            phoneNumber: store().profile.driverInfo.phoneNumber,
-            coordinates: {
-                type: "Point",
-                coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
-            },
-            socketId: store().home.driverSocketId,
-            driverStatus: store().home.driverStatus,
-            serviceType: store().profile.serviceType
-        };
+        // const selectedDriverData = {
+        //     // DriverId is always equal to User_id
+        //     driverId: store().login.user_id,
+        //     name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
+        //     phoneNumber: store().profile.driverInfo.phoneNumber,
+        //     coordinates: {
+        //         type: "Point",
+        //         coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
+        //     },
+        //     socketId: store().home.driverSocketId,
+        //     driverStatus: store().home.driverStatus,
+        //     serviceType: store().profile.serviceType
+        // };
 
         const data = {
             ...store().home.bookingDetails,
-            selectedDriver: selectedDriverData,
+            selectedDriver: store().home.driverLocation._id,
         };
         
         // Checks make sure there is an acutal booking in driver state

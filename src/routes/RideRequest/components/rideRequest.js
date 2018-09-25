@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Container } from 'native-base';
+import { Container, Header } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
 
@@ -61,15 +61,9 @@ class RideRequest extends React.Component {
     render() {
         return(
         <Container>
-            <View style={{flex:1}}>
+x            <View style={{flex:1}}>
                 {/* <HeaderComponent logo={buttefliLogo}/> */}
-                { this.props.bookingDetails && 
-                    <NavHeaderComponent 
-                    navToPickUp={() => this.navToPickUp()}
-                    bookingDetails={this.props.bookingDetails}
-                    driverStatus={this.props.driverStatus}
-                    />
-                }
+               
                 {this.props.region.latitude &&
                     <RideRequestMapContainer region={this.props.region} 
                         carMarker={carMarker}
@@ -78,6 +72,14 @@ class RideRequest extends React.Component {
                         updateWatchDriverLocation={this.props.updateWatchDriverLocation}
                         watchDriverLocation={this.props.watchDriverLocation}
                         routes={this.props.routes}
+                    />
+                }
+                { this.props.bookingDetails && 
+                    <NavHeaderComponent 
+                    navToPickUp={() => this.navToPickUp()}
+                    bookingDetails={this.props.bookingDetails}
+                    driverStatus={this.props.driverStatus}
+                    currentRoute={this.props.currentRoute}
                     />
                 }
             </View>

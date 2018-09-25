@@ -83,7 +83,7 @@ class Home extends React.Component {
             { (rideRequestStatus !== "request") &&
                 <View style={{flex:1}}>
                     {/* <HeaderComponent logo={buttefliLogo}/> */}
-                    {this.props.region.latitude &&
+                    {(this.props.region.latitude && this.props.watchDriverLocation.coords) &&
                         <MapContainer region={this.props.region} 
                         getInputData={this.props.getInputData}
                         carMarker={carMarker}

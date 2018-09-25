@@ -81,11 +81,7 @@ class PickUp extends React.Component {
         <Container>
             <View style={{flex:1}}>
                 {/* <HeaderComponent logo={buttefliLogo}/> */}
-                <NavHeaderComponent 
-                    navToPickUp={() => this.navToPickUp()}
-                    bookingDetails={this.props.bookingDetails}
-                    driverStatus={this.props.driverStatus}
-                />
+                
                 {this.props.region.latitude &&
                     <PickUpMapContainer region={this.props.region} 
                     carMarker={carMarker}
@@ -100,6 +96,12 @@ class PickUp extends React.Component {
                     getPickUpDistance={this.props.getPickUpDistance}
                     />
                 }
+                <NavHeaderComponent 
+                    navToPickUp={() => this.navToPickUp()}
+                    bookingDetails={this.props.bookingDetails}
+                    driverStatus={this.props.driverStatus}
+                    currentRoute={this.props.currentRoute}
+                />
             </View>
             { this.props.distanceFrom.rows && 
                 <ArrivingFooter 

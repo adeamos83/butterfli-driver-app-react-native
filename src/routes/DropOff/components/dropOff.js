@@ -70,11 +70,7 @@ class DropOff extends React.Component {
             <View style={{flex:1}}>
                 <View style={{flex:1}}>
                     {/* <HeaderComponent logo={buttefliLogo}/> */}
-                    <NavHeaderComponent 
-                        navToPickUp={() => this.navToPickUp()}
-                        bookingDetails={this.props.bookingDetails}
-                        driverStatus={this.props.driverStatus}
-                    />
+                    
                     {this.props.region.latitude &&
                         <DropOffMapContainer region={this.props.region} 
                         carMarker={carMarker}
@@ -89,6 +85,12 @@ class DropOff extends React.Component {
                         getDropOffDistance={this.props.getDropOffDistance}
                         />
                     }
+                    <NavHeaderComponent 
+                        navToPickUp={() => this.navToPickUp()}
+                        bookingDetails={this.props.bookingDetails}
+                        driverStatus={this.props.driverStatus}
+                        currentRoute={this.props.currentRoute}
+                    />
                 </View>
                 { this.props.dropOffDistance < 300 && 
                     <DropOffFooterComponent 

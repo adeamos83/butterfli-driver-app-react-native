@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { Actions, ActionConst, Scene, Drawer, Stack, Modal, Overlay } from 'react-native-router-flux';
+import { Actions, ActionConst, Scene, Drawer, Stack, Modal, Overlay, Lightbox } from 'react-native-router-flux';
 import LoginContainer from './Login/container/LoginContainer';
 import HomeContainer from './Home/container/HomeContainer';
 import RideRequestContainer from './RideRequest/container/RideRequestContainer';
@@ -15,11 +15,13 @@ import HeaderComponent from '../Components/HeaderComponent';
 import CreateProfile from './Login/components/CreateProfile/';
 import CreateVehicleProfile from './Login/components/VehicleProfile';
 import ProfileContainer from './Profile/container/ProfileContainer';
-
+import SelectVehicleContainer from './Login/components/SelectVehicle';
 import RideSummary from './DropOff/components/RideSummary';
 import RideHistoryContainer from './Profile/components/RideHistory';
 
-
+import ErrorModal from '../Components/Modal/ErrorModal';
+import CustomNavBar from '../Components/Common/CustomNavBar';
+import ErrorLightbox from '../Components/LightBox/ErrorLightbox';
 
 const MenuIcon = () => {
     return(
@@ -37,9 +39,13 @@ const styles = StyleSheet.create({
     backButtonStyle: {
       paddingLeft: 10,
     }
-  });
+});
+
 
 const scenes = Actions.create(
+	<Modal key="modal" hideNavBar>
+	<Lightbox key="lightbox">
+
     <Scene key='root' hideNavBar>
         <Scene key="login" component={LoginContainer} initial title="login"/>
         <Scene key="createProfile" component={CreateProfile}   title="Create Profile"/>
@@ -70,15 +76,20 @@ const scenes = Actions.create(
             }}
         >
             <Scene key="home" component={HomeContainer}/>
-            <Scene key="rideRequest" component={RideRequestContainer}/>
+            <Scene key="rideRequest"  component={RideRequestContainer}/>
             <Scene key="pickUp" component={PickUpContainer}/>
             <Scene key="dropOff" component={DropOffContainer}/>
             <Scene key="profile" component={ProfileContainer}  title="Profile"/>
+            <Scene key="vehicleSelect" component={SelectVehicleContainer}  title="Select Vehicle"/>
             <Scene key="rideHistory" component={RideHistoryContainer} title="Ride History"/>
             <Scene key="rideSummary" component={RideSummary}    title="Ride Summary"/>
-        </Drawer>
+		  </Drawer>
+		  <Scene key="error" component={ErrorModal} />
         <Scene key="alert" component={AlertContainer} title="alert"/>
-    </Scene>
+	 </Scene>
+	 <Scene key="error_modal" component={ErrorLightbox} />
+	 </Lightbox>
+	 </Modal>
 );
 
 export default scenes;

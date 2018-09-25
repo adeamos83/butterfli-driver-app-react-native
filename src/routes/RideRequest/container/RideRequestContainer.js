@@ -26,7 +26,8 @@ const mapStateToProps = (state) => ({
     driverStatus: state.home.driverStatus ,
     updateWatchDriverLocation: state.home.updateWatchDriverLocation || {},
     routes: state.rideRequest.routes || {},
-    totalTripDistance: state.rideRequest.totalTripDistance || {}
+    totalTripDistance: state.rideRequest.totalTripDistance || {},
+    currentRoute: state.home.currentRoute
 });
 
 const mapActionCreators = {

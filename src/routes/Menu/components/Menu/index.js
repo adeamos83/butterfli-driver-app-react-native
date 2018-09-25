@@ -3,13 +3,15 @@ import { View, Text, Image } from 'react-native';
 import { Container, Content, List, ListItem } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import styles from './MenuStyles';
+
+const menuLogo = require('../../../../Assets/img/Menu-Drawer-Logo-76x76.png');
 
 export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAlerted, driverStatus, dropOffArrivingAlerted,
    getDriverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute, cancelBookingRequest }) => {
-   const { profilePic, serviceType, firstName, lastName } = driverInfo || "";
-   const { name } = driverInfo.company || "";
+   const { profilePic, firstName, lastName, companyName, vehicle } = driverInfo || "";
+   const { serviceType } = vehicle || "";
+
    
    // const capServiceType = serviceType[0].toUpperCase() + serviceType.slice(1) || "";
    Capitalize= (str) => { 
@@ -61,16 +63,16 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
          <View style={styles.avatarView}>
          <View style={{paddingRight: 15}}>  
             { profilePic && 
-               <Image resizemode="container" style={styles.driverPic} source={{uri:profilePic}} />
+               <Image resizemode="container" style={styles.driverPic} source={{uri: profilePic}} />
                ||
-               <Icon name="user-circle-o" style={styles.icon} />
+               <Image resizemode="container" style={styles.logo} source={menuLogo} />
             }
          </View>
          { driverInfo &&
             <View>
                <Text style={styles.avatarTextHeader}>{firstName + " " + lastName}</Text>
                
-                  <Text style={styles.avatarText}>SMS Transportation</Text>
+                  <Text style={styles.avatarText}>{companyName}</Text>
                   <Text style={styles.avatarText}>{"Service: " + this.Capitalize(serviceType)}</Text>
             
             </View>
@@ -89,6 +91,9 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
                   }
                   <ListItem onPress={() => Actions.profile({type: 'replace'})}>
                      <Text style={{fontSize: 16}}>Profile</Text>
+                  </ListItem>
+                  <ListItem onPress={() => Actions.vehicleSelect({type: 'replace'})}>
+                     <Text style={{fontSize: 16}}>Vehicle</Text>
                   </ListItem>
                   <ListItem onPress={() => Actions.rideHistory({type: 'replace'})}>
                      <Text style={{fontSize: 16}}>Ride History</Text>

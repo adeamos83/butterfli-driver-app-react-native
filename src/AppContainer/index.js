@@ -111,8 +111,8 @@ export default class AppContainer extends Component {
         // BackgroundGeolocation.on('activitychange', this.onActivityChange);   
         
         BackgroundGeolocation.on('heartbeat', function(params) {
-            var lastKnownLocation = params.location;
-            console.log('- heartbeat: ', lastKnownLocation);
+            // var lastKnownLocation = params.location;
+            // console.log('- heartbeat: ', lastKnownLocation);
             // Or you could request a new location
             
             if(store.getState().home.bookingDetails && !store.getState().home.newBookingAlert && (store.getState().home.driverStatus == "available")){
@@ -167,28 +167,6 @@ export default class AppContainer extends Component {
         store.dispatch(newBookingAlerted(false));
     }
 
-    componentWillUpdate() {
-        console.log("Root App is update");
-    }
-
-    // onLocation(location) {
-    //     console.log('- [event] location: ', location);
-    // }
-
-    // onError(error) {
-    //     console.warn('- [event] location error ', error);
-    // }
-
-    // onActivityChange(activity) {
-    //     console.log('- [event] activitychange: ', activity);  // eg: 'on_foot', 'still', 'in_vehicle'
-    // }
-    
-    // onProviderChange(provider) {
-    //     console.log('- [event] providerchange: ', provider);    
-    // }
-    // onMotionChange(location) {
-    //     console.log('- [event] motionchange: ', location.isMoving, location);
-    // }
 
     _handleAppStateChange = (nextAppState) => {
         console.log("This is the Next App State: ", nextAppState);

@@ -16,7 +16,8 @@ const mapStateToProps = (state) => ({
    rideHistory: state.profile.rideHistory || {},
    bookingDetails: state.home.bookDetails || {},
    updatedDriverInfo: state.profile.updatedDriverInfo || {},
-   canEdit: state.profile.canEdit
+   canEdit: state.profile.canEdit,
+   currentRoute: state.home.currentRoute
 });
 
 const mapActionCreators = {
