@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions} from "react-native";
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.create({
    container: {
       flex: 1,
@@ -121,6 +121,12 @@ const styles = StyleSheet.create({
     field: {
         justifyContent: "center",
 
+    },
+    noHistoryContainer: {
+        flex:1,
+        height: height*0.88,
+        justifyContent: 'center', 
+        alignItems: 'center',
     }
 })
 

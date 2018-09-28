@@ -224,7 +224,9 @@ export function getDistanceFrom() {
                     type: GET_DISTANCE_FROM,
                     payload: res.body
                 })
-                console.log("This is the error: ", error);
+                if(error){
+                    console.log("This is the error: ", error);
+                }
             })
         }
     }

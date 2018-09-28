@@ -148,7 +148,8 @@ class CreateProfile extends React.Component  {
 							component={TextInputField}
 							placeholder="Company Code"
 							validate={this.renderError}
-							returnKeyType="next"
+							returnKeyType="go"
+							onEnter={handleSubmit(this.onCreateProfile)}
 						/>
 					</View>
 					<View style={styles.buttonView}>
@@ -200,9 +201,9 @@ var validate = (formProps) => {
 	if(!formProps.password){
       errors.password = "Password is required."
 	}
-	// if(!formProps.companyCode){
-   //    errors.companyCode = "Company Code is required."
-   // }
+	if(!formProps.companyCode){
+      errors.companyCode = "Company Code is required."
+   }
    return errors;
 }
 

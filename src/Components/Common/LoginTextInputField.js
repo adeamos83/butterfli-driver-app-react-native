@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput } from 'react-native';
 
-class ProfileTextInputField extends React.Component {
+class LoginTextInputField extends React.Component {
     
    
     render() {
@@ -43,14 +43,13 @@ const styles = {
        backgroundColor: 'white'
     },
     textInput: {
-       height: 50,
-       color: 'black',
-       textAlign: 'left',
-       fontSize: 17
+       height: 40,
+       color: 'white',
+       fontSize: 18
     },
     formError: {
        color: 'red'
     }
  }
 
-export { ProfileTextInputField };
+export { LoginTextInputField };

@@ -23,7 +23,7 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
    onlogOut = () => {
       console.log("logging out")
       unAuthUser();
-      Actions.login({type: "reset", loggingOut: true});
+      Actions.login({type: "replace"});
    }
 
    onCancelTrip = () => {
@@ -61,22 +61,22 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
    return(
       <View style={{flex: 1}}>
          <View style={styles.avatarView}>
-         <View style={{paddingRight: 15}}>  
-            { profilePic && 
-               <Image resizemode="container" style={styles.driverPic} source={{uri: profilePic}} />
-               ||
-               <Image resizemode="container" style={styles.logo} source={menuLogo} />
-            }
-         </View>
-         { driverInfo &&
-            <View>
-               <Text style={styles.avatarTextHeader}>{firstName + " " + lastName}</Text>
-               
-                  <Text style={styles.avatarText}>{companyName}</Text>
-                  <Text style={styles.avatarText}>{"Service: " + this.Capitalize(serviceType)}</Text>
-            
+            <View style={{paddingRight: 15}}>  
+                  { profilePic && 
+                  <Image resizemode="container" style={styles.driverPic} source={{uri: profilePic}} />
+                  ||
+                  <Image resizemode="container" style={styles.logo} source={menuLogo} />
+                  }
             </View>
-         }
+            { driverInfo &&
+                  <View>
+                  <Text style={styles.avatarTextHeader}>{firstName + " " + lastName}</Text>
+                  
+                        <Text style={styles.avatarText}>{companyName}</Text>
+                        <Text style={styles.avatarText}>{"Service: " + this.Capitalize(serviceType)}</Text>
+                  
+                  </View>
+            }
          </View>
          <View style={{flex: 4}}>
             <Content>

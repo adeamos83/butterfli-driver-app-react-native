@@ -28,35 +28,41 @@ class RideHistoryContainer extends React.Component {
 					*/}
 					
 					<Content style={{paddingTop: 10}}>
-						<List 
-						dataArray={rideHistory} 
-						renderRow={(item) =>
-							<ListItem avatar style={{paddingBottom: 10}}>
-							<Left>
-								{ item.profilePic &&
-									<Thumbnail source={{ uri: item.profilePic }} />
-									||
-									<Icon name="user-circle-o" style={{ color: "#fff", fontSize: 50, opacity: 5}} />
-								}
-							</Left>
-							<Body>
-								<Text>{item.firstName + " " + item.lastName}</Text>
-								{ item.tripDistance[0] &&
-									<Text note>
-										{item.tripDistance[0].totalMiles + "mi"}
-										<View style={{paddingHorizontal: 5}}>
-											<Icon name="circle" style={{ color: "#ccc", fontSize: 8, opacity: 5}} />
-										</View>
-										{item.tripDistance[0].totalTime + "m"}
-									</Text>
-								}
-							</Body> 
-							<Right>
-								<Text note>8/27/18 3:43 PM</Text>
-							</Right>
-							</ListItem>
+					{rideHistory &&
+							<List 
+							dataArray={rideHistory} 
+							renderRow={(item) =>
+								<ListItem avatar style={{paddingBottom: 10}}>
+								<Left>
+									{ item.profilePic &&
+										<Thumbnail source={{ uri: item.profilePic }} />
+										||
+										<Icon name="user-circle-o" style={{ color: "#fff", fontSize: 30, opacity: 5}} />
+									}
+								</Left>
+								<Body>
+									<Text>{item.firstName + " " + item.lastName}</Text>
+									{ item.tripDistance[0] &&
+										<Text note>
+											{item.tripDistance[0].totalMiles + "mi"}
+											<View style={{paddingHorizontal: 5}}>
+												<Icon name="circle" style={{ color: "#ccc", fontSize: 8, opacity: 5}} />
+											</View>
+											{item.tripDistance[0].totalTime + "m"}
+										</Text>
+									}
+								</Body> 
+								<Right>
+									<Text note>8/27/18 3:43 PM</Text>
+								</Right>
+								</ListItem>
+							}
+							/>
+							||
+							<View style={styles.noHistoryContainer}>
+								<Text> No Ride History</Text>
+							</View>
 						}
-						/>
 					</Content>
 			</Container>
 		);

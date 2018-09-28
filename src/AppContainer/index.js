@@ -131,22 +131,29 @@ export default class AppContainer extends Component {
                     // store.dispatch(watchingDriverLocation(location))
 
                     if(store.getState().home.bookingDetails){
+                        //Background Gelocation Get Current Position
                         const distFrom = getLatLonDiffInMeters(location.coords.latitude, location.coords.longitude,
                         store.getState().home.bookingDetails.pickUp.latitude, store.getState().home.bookingDetails.pickUp.longitude);
 
                         const dropDistFrom = getLatLonDiffInMeters(location.coords.latitude, location.coords.longitude,
                         store.getState().home.bookingDetails.dropOff.latitude, store.getState().home.bookingDetails.dropOff.longitude);
 
-                        if(distFrom < 100 && !store.getState().pickUp.pickUpArrivingAlert){
+                        if(store.getState().pickUp.pickUpDistance < 100 && !store.getState().pickUp.pickUpArrivingAlert){
+                            var pickUpTime = store.getState().pickUp.distanceFrom.rows[0].elements[0].duration.value
+                            var totalTime = (pickUpTime) / 60;
+
                             PushNotifications.localNotification({
-                                message: "Arriving to passenger's pickup location in 3 minutes"
+                                message: "Arriving to passenger's pickup location in " + Math.round(totalTime) + " minutes"
                             }); 
                             store.dispatch(pickUpArrivingAlerted(true))
                         }
 
-                        if(dropDistFrom < 100 && !store.getState().dropOff.dropOffArrivingAlert){
+                        if(store.getState().dropOff.dropOffDistance < 100 && !store.getState().dropOff.dropOffArrivingAlert){
+                            var dropOffTime = store.getState().dropOff.distanceFrom.rows[0].elements[0].duration.value;
+                            var totalTime = (dropOffTime) / 60;
+                        
                             PushNotifications.localNotification({
-                                message: "Arriving to passenger's pickup location in 3 minutes"
+                                message: "Arriving to passenger's drop off location in " + Math.round(totalTime) + " minutes"
                             }); 
                             store.dispatch(dropOffArrivingAlerted(true))
                         }

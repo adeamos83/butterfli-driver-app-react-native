@@ -20,15 +20,18 @@ class PickUp extends React.Component {
         this.props.getPickUpRoute();
         this.props.getCurrentRoute(Actions.currentScene);
 
-        // this.watchId = navigator.geolocation.watchPosition(
-        //     (position) => {
-        //         this.props.watchingDriverLocation(position)
-        //         this.props.getDistanceFrom();
-        //         this.props.getPickUpDistance();
-        //     },
-        //     (error) => console.log(error.message),
-        //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
-        // );
+        //Must remove on launch of beta
+        this.props.getPickUpDistance();
+
+        this.watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                this.props.watchingDriverLocation(position)
+                this.props.getDistanceFrom();
+                this.props.getPickUpDistance();
+            },
+            (error) => console.log(error.message),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+        );
     }
     
     componentDidUpdate(prevProps, prevState)  {

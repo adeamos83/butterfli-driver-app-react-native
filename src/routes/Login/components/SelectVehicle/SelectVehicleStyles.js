@@ -153,6 +153,12 @@ const styles = {
         alignItems: 'center', alignSelf: 'center', 
         flexDirection: 'column',
         height: height*.7
+    },
+    noHistoryContainer: {
+        flex:1,
+        height: height*0.88,
+        justifyContent: 'center', 
+        alignItems: 'center',
     }
 }
 

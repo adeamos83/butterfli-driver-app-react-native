@@ -11,7 +11,7 @@ const styles = ({
         width: width * 0.85,
         position: "absolute",
         top: 70,
-        left:40,
+        left:45,
     },
     subText: {
         fontSize: 8,

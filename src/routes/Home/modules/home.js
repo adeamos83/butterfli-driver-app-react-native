@@ -581,7 +581,7 @@ export function acceptRideRequest(){
             console.log("This Accept Ride Request", res);
             dispatch({
                 type: SELECTED_DRIVERS,
-                payload: res.data
+                payload: res.data.selectedDriver
             });
             Actions.rideRequest({type: "replace"});
         }).catch((error) => {

@@ -11,7 +11,7 @@ const styles = {
    titleContainer: {
     //   padding: 10,
       alignItems: 'center',
-      flexGrow: 2.5,
+      flexGrow: 1,
       justifyContent: 'center'
    },
    title: {
@@ -31,24 +31,30 @@ const styles = {
    },
    buttonView: {
       flex: 1, 
-      flexDirection: 'row', 
-      justifyContent: 'space-around',
-      width:width * 0.9,
-      paddingTop: 20
+    //   flexDirection: 'column', 
+    //   justifyContent: 'center',
+        // alignItems: 'center',
+      alignSelf: 'center',
+    //   width:width * 0.9,
+    //   paddingTop: 20,
   },
   signup:{
-      width:width * 0.3,
+      width:width * 0.85,
       justifyContent: "center",
       alignItems: "center",
+      height: 50,
     //   borderRadius:7,
     //   borderWidth: 1,
     //   borderColor:"#fff",
+    marginVertical: 5,
     backgroundColor: '#8E44AD'
    },
    signinBtn:{
-      width:width * 0.3,
+      width:width * 0.85,
+      height: 50,
       justifyContent: "center",
       alignItems: "center",
+      marginVertical: 5,
     //   borderRadius:7,
     //   borderWidth: 1,
     //   borderColor:"#fff",

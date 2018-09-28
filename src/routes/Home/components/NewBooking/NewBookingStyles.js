@@ -1,11 +1,12 @@
 import { StyleSheet, Dimensions } from "react-native";
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 const styles = {
     newBookingContainer:{
         flex:1,
         backgroundColor:"#DCC6E0",
         justifyContent: "center",
-        alignItems: "center",
+        // alignItems: "center",
+        // paddingTop: 30
     },
     tabText: {
         fontSize: 12
@@ -23,29 +24,34 @@ const styles = {
         color: "white",
         fontSize:16,
         marginBottom:15,
-        marginTop:15
+        // marginTop:15
     },
     locationIcon:{
         color: "#fff",
         fontSize: 40,
-        marginTop:15
+        marginVertical:15
     },
     content:{
-        position: "absolute",
-        flex:1,
-        top: 30,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        // position: "absolute",
+        // flex:1,
+        // top: 30,
+        // left: 0,
+        // right: 0,
+        // bottom: 0,
+        // flex:1,
+        // height: height,
         justifyContent:"center",
-        alignItems:"center"
+        alignItems:"center",
+        // borderColor: 'red',
+        // borderWidth: 1,
+        // alignSelf: 'center'
     },
     pickup:{
         width:width * 0.9,
         borderRadius:7,
         height:40,
         backgroundColor:"#fff",
-        marginTop:220,
+        // marginTop:220,
         justifyContent: "center",
         alignItems: "center"
 

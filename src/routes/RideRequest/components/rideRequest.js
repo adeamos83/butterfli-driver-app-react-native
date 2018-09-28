@@ -18,7 +18,6 @@ class RideRequest extends React.Component {
     componentDidMount(){
         this.props.getCurrentLocation();
         this.props.getPassengerRoute();
-        // this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentRoute(Actions.currentScene);
         this.props.getTotalDistance();
 

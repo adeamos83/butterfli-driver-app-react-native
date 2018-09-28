@@ -97,11 +97,17 @@ export function changeVehicleServiceType(value){
     }
 }
 
-export function updateDriverProfile(){
+export function updateDriverProfile(firstName, lastName, email, phoneNumber){
     return(dispatch, store) => {
+        console.log("Here are the values from the form", arguments);
+        console.log("Here are the values from the form", ...arguments);
         var details = {
-            ...store().profile.driverInfo,
-            vehicle: store().profile.selectedVehicle._id
+            // ...store().profile.driverInfo,
+            firstName: firstName, 
+            lastName: lastName, 
+            email: email, 
+            phoneNumber: phoneNumber,
+            // vehicle: store().profile.selectedVehicle._id
         }
         console.log(details);
         update_Profile_Url = API_URL + "/api/driver/" + store().login.user_id;

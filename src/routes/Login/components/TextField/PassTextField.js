@@ -3,7 +3,7 @@ import { Text, View, TextInput } from 'react-native';
 import styles from './TextFieldStyles';
 
 
-export const PassTextField = ({ input: { value, onChange}, ...field } ) => {
+export const PassTextField = (onEnter, { input: { value, onChange}, ...field } ) => {
       return (
          <View>
             <TextInput
@@ -12,6 +12,7 @@ export const PassTextField = ({ input: { value, onChange}, ...field } ) => {
                autoCapitalize="none"
                autoCorrect={false}
                onChangeText={(value) => onChange(value)} 
+               onSubmitEditing={onEnter}
                value={value} underlineColorAndroid="transparent" selectTextOnFocus={true} {...this.props}
                ref={(input) => this.passwordInput = input}
             />

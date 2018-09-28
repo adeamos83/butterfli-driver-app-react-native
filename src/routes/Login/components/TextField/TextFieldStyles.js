@@ -10,8 +10,9 @@ const styles = {
       backgroundColor: 'white'
    },
    textInput: {
-      height: 26,
-      color: 'white'
+      height: 40,
+      color: 'white',
+      fontSize: 18
    },
    formError: {
       color: 'red'

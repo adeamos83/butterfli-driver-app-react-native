@@ -29,9 +29,6 @@ export const DropOffMapContainer = ({
         longitudeDelta: region.longitudeDelta
     }
     
-
-    console.log(dropOffRegion);
-
     fitAllMarker = () =>{
         if(this.map !==null && this.map !== undefined){
             this.map.fitToElements(true);

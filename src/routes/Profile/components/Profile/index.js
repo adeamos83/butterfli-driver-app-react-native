@@ -34,7 +34,7 @@ let ProfileContainer =({ getDriverInfo, updateDriverProfile, canEditProfile,
 		console.log("Send new updated for Profile? ", canEdit);
 		if(canEdit){
 			console.log("Profile Update values", values);
-			updateDriverProfile();
+			updateDriverProfile(values.firstName, values.lastName, values.email, values.phoneNumber);
 		}
 	}
 

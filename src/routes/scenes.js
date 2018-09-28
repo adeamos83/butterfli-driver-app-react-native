@@ -47,14 +47,19 @@ const scenes = Actions.create(
 	<Lightbox key="lightbox">
 
     <Scene key='root' hideNavBar>
-        <Scene key="login" component={LoginContainer} initial title="login"/>
+        <Scene key="login" component={LoginContainer} initial title="login" />
         <Scene key="createProfile" component={CreateProfile}   title="Create Profile"/>
         <Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Vehicle Profile"/>
+        
+        <Stack back backTitle="Back" backButtonTextStyle={styles.backButtonStyle} key="loadVehicle" duration={0} navTransparent>
+            <Scene key="loadVehicleSelect" component={SelectVehicleContainer}  title="Select Vehicle"/>
+        </Stack>
+
 
         <Stack back backTitle="Back" backButtonTextStyle={styles.backButtonStyle} key="register" duration={0} navTransparent>
             <Scene key="createProfile" component={CreateProfile}   title="Sign Up"/>
             <Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Add Vehicle"/>
-            <Scene key="login" component={LoginContainer} title="Replace" type={ActionConst.REPLACE} /> 
+            <Scene key="login" component={LoginContainer}/> 
         </Stack>
 
         <Drawer 
@@ -75,14 +80,14 @@ const scenes = Actions.create(
                 elevation: 0,
             }}
         >
-            <Scene key="home" component={HomeContainer}/>
-            <Scene key="rideRequest"  component={RideRequestContainer}/>
-            <Scene key="pickUp" component={PickUpContainer}/>
-            <Scene key="dropOff" component={DropOffContainer}/>
-            <Scene key="profile" component={ProfileContainer}  title="Profile"/>
-            <Scene key="vehicleSelect" component={SelectVehicleContainer}  title="Select Vehicle"/>
-            <Scene key="rideHistory" component={RideHistoryContainer} title="Ride History"/>
-            <Scene key="rideSummary" component={RideSummary}    title="Ride Summary"/>
+            <Scene key="home" drawerLockMode='locked-closed' gesturesEnabled={false} component={HomeContainer}/>
+            <Scene key="rideRequest"  drawerLockMode='locked-closed' gesturesEnabled={false} component={RideRequestContainer}/>
+            <Scene key="pickUp" drawerLockMode='locked-closed' gesturesEnabled={false} component={PickUpContainer}/>
+            <Scene key="dropOff" drawerLockMode='locked-closed' gesturesEnabled={false} component={DropOffContainer}/>
+            <Scene key="profile" drawerLockMode='locked-closed' gesturesEnabled={false} component={ProfileContainer}  title="Profile"/>
+            <Scene key="vehicleSelect" drawerLockMode='locked-closed' gesturesEnabled={false} component={SelectVehicleContainer}  title="Select Vehicle"/>
+            <Scene key="rideHistory" drawerLockMode='locked-closed' gesturesEnabled={false} component={RideHistoryContainer} title="Ride History"/>
+            <Scene key="rideSummary" drawerLockMode='locked-closed' gesturesEnabled={false}component={RideSummary} title="Ride Summary"/>
 		  </Drawer>
 		  <Scene key="error" component={ErrorModal} />
         <Scene key="alert" component={AlertContainer} title="alert"/>

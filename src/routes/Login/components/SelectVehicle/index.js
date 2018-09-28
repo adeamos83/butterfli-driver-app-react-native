@@ -14,12 +14,14 @@ import { getVehicleGarage } from '../../modules/login';
 
 class SelectVehicleContainer extends React.Component { 
 	componentDidMount(){
-      this.props.getCurrentRoute();
-      this.props.getDriverInfo();
-   }
+            this.props.getCurrentRoute();
+            this.props.getDriverInfo();
+      }
 
    componentDidUpdate(prevProps, prevState) {
-      if( prevProps.driverInfo.company !== this.props.driverInfo.company){
+      console.log("Testing user_id boolean", this.props.user_id);
+      if( (prevProps.driverInfo.companyName !== this.props.driverInfo.companyName) && this.props.user_id){
+            console.log("This is the vehicle container running")
          this.props.getVehicleGarage();
       }
    }
@@ -53,7 +55,7 @@ class SelectVehicleContainer extends React.Component {
                */}
                { (selectedVehicle.make && canEditVehicle) && 
                   <Content>
-                     <View style={{flex: 1, justifyContent: "center", flexDirection: 'row', paddingVertical: 10}}>
+                     <View style={{flex: 1, justifyContent: "center", flexDirection: 'row', paddingTop: 30, paddingVertical: 10}}>
                         <View style={styles.circle}>
                            <Icon name="car" style={{ color: "#fff", fontSize: 50, opacity: 5}} />
                         </View>
@@ -83,42 +85,50 @@ class SelectVehicleContainer extends React.Component {
                         </Button>
                      </View>
                   </Content>
-               
-					||
-               <Content style={{paddingTop: 10}}>
-               {!vehicleLoading && 
-						<List 
-						dataArray={vehicleGarage} 
-						renderRow={(item) =>
-							<ListItem avatar style={{paddingBottom: 10}} onPress={() => this.onListPress(item)}>
-							<Left>
-                        <Icon name="car" style={{ color: "#663399", fontSize: 50, opacity: 5}} />
-							</Left>
-							<Body>
-								<Text>{item.make + " " + item.model}</Text>
-                        <Text note>
-                           {"Plate: " + item.licensePlate}
-                           {/*
-                              <View style={{paddingHorizontal: 5}}>
-                                 <Icon name="circle" style={{ color: "#ccc", fontSize: 8, opacity: 5}} />
-                              </View>
-                              {"Vin: " + item.vinNumber}
-                           */}
-                        </Text>
-							</Body> 
-							<Right>
-								<Text note>{item.serviceType}</Text>
-							</Right>
-							</ListItem>
-						}
-                  />
+						||
+                  <Content style={{paddingTop: 10}}>
+                  { vehicleGarage && 
+                        <View>
+									{!vehicleLoading && 
+										<List 
+										dataArray={vehicleGarage} 
+										renderRow={(item) =>
+											<ListItem avatar style={{paddingBottom: 10}} onPress={() => this.onListPress(item)}>
+												<Left>
+													<Icon name="car" style={{ color: "#663399", fontSize: 50, opacity: 5}} />
+												</Left>
+												<Body>
+												<Text>{item.make + " " + item.model}</Text>
+												<Text note>
+													{"Plate: " + item.licensePlate}
+													{/*
+															<View style={{paddingHorizontal: 5}}>
+															<Icon name="circle" style={{ color: "#ccc", fontSize: 8, opacity: 5}} />
+															</View>
+															{"Vin: " + item.vinNumber}
+													*/}
+												</Text>
+												</Body> 
+												<Right>
+														<Text note>{item.serviceType}</Text>
+												</Right>
+											</ListItem>
+										}
+										/>
+										||
+										<View style={styles.spinnerStyle}>
+											<Spinner size="large" color="#663399"/>
+										</View>
+									}
+                     	</View>
                   ||
-                  <View style={styles.spinnerStyle}>
-                     <Spinner size="large" color="#663399"/>
-                  </View>
+						<View style={styles.noHistoryContainer}>
+								<Text> No Vehicles Found</Text>
+						</View>
                }
+                  
 
-               </Content>
+                  </Content>
                }
 			</Container>
 		);
@@ -127,7 +137,7 @@ class SelectVehicleContainer extends React.Component {
 
 const mapStateToProps = (state) => ({
    driverInfo: state.profile.driverInfo || {},
-   user_id: state.home.user_id,
+   user_id: state.login.user_id,
    vehicleGarage: state.login.vehicleGarage || [],
    selectedVehicle: state.profile.selectedVehicle || {},
    canEditVehicle: state.profile.canEditVehicle,

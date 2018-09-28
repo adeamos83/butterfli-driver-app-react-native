@@ -32,7 +32,8 @@ const mapStateToProps = (state) => ({
     watchDriverLocation: state.home.watchDriverLocation || {},
     driverSocketId: state.home.driverSocketId,
     driverStatus: state.home.driverStatus,
-    selectedDriver: state.home.selectedDriver || {}
+    selectedDriver: state.home.selectedDriver || {},
+    selectedVehicle: state.profile.selectedVehicle || {}
 });
 
 const mapActionCreators = {

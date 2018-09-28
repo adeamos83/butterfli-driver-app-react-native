@@ -9,13 +9,17 @@ import { getDriverStatus,
         watchingDriverLocation,
         updateDriverLocationDetails,
         bookingRequestCompleted,
-        newSelectedDriverSocketId } from '../../Home/modules/home';
+        newSelectedDriverSocketId,
+        newBookingAlerted
+     } from '../../Home/modules/home';
+import { pickUpArrivingAlerted } from '../../PickUp/modules/pickUp';
 
 import { getCurrentLocation,
         // getNearDriverAlerted,
         getDistanceFrom,
         getDropOffDistance,
-        getDropOffRoute
+        getDropOffRoute,
+        dropOffArrivingAlerted
         } from '../modules/dropOff';
 
 const mapStateToProps = (state) => ({
@@ -51,7 +55,10 @@ const mapActionCreators = {
     getDropOffDistance,
     updateDriverLocationDetails,
     newSelectedDriverSocketId,
-    bookingRequestCompleted
+    bookingRequestCompleted,
+    newBookingAlerted,
+    pickUpArrivingAlerted,
+    dropOffArrivingAlerted
 };
 
 export default connect(mapStateToProps, mapActionCreators)(DropOff)

@@ -8,7 +8,7 @@ import styles from './LoginStyles';
 import TextField from '../TextField/TextField';
 import PassTextField from '../TextField/PassTextField'
 import { TextInputField } from '../../../../Components/Common/'
-import { Spinner } from '../../../../Components/Common';
+import { Spinner, LoginTextInputField } from '../../../../Components/Common';
 
 export const LoginContainer =({addAlert, 
 										authUser, 
@@ -54,24 +54,34 @@ export const LoginContainer =({addAlert,
          <View style={styles.field}>
             <Field
                {...email}
+               withRef
+					refField='email'
+					ref={(c) => this.email = c}
                name="email"
-               component={TextField}
+               component={LoginTextInputField}
                placeholder="Email"
                placeholderTextColor="rgba(255,255,255,0.7)"
                returnKeyType="next"
                keyboardType="email-address"
-               validate={this.renderError}
+					validate={this.renderError}
+					onEnter={() => { 
+						this.password.getRenderedComponent().refs.password.focus()
+					}}
             />
          </View>
          <View style={styles.field}>
             <Field
-               {...password}
+					{...password}
+					withRef
+					refField='password'
+					ref={(c) => this.password = c}
                name="password"
-               component={PassTextField}
+               component={LoginTextInputField}
                placeholder="Password"
                placeholderTextColor="rgba(255,255,255,0.7)"
                returnKeyType="go"
                secureTextEntry
+               onEnter={handleSubmit(this.onSignIn)}
             />
          </View>
          {/* Native Input Field 

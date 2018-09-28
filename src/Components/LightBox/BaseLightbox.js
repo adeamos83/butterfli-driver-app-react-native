@@ -49,7 +49,7 @@ class BaseLightbox extends Component {
           height: 175,
           justifyContent: 'center',
           alignItems: 'center',
-			 backgroundColor: 'rgba(255,255,255,0.9)',
+			    backgroundColor: 'rgba(255,255,255,0.9)',
         }}
       >
         {children}
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
       // borderRadius:7,
       // borderWidth: 1,
       // borderColor:"#fff",
-	 backgroundColor: "#8E44AD",
+	 backgroundColor: "#9a8bfa",
 	 alignSelf: 'center'
 }
 

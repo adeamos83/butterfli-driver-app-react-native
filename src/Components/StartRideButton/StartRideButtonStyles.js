@@ -1,11 +1,11 @@
 import { Dimensions } from "react-native";
-var width = Dimensions.get("window").width; //full width
+const { height, width } = Dimensions.get("window");
 
 const styles = ({
     footerContainer:{
         backgroundColor: "white",
-        borderBottomWidth:1,
-        borderColor: "grey"
+        // borderBottomWidth:1,
+        // borderColor: "grey"
     },
     subText: {
         fontSize: 8
@@ -20,6 +20,7 @@ const styles = ({
     navButton: {
         // width: width * 0.8,
         width: width,
+        height: height *0.08,
         justifyContent: "center",
         backgroundColor: "#26A65B",
         borderRadius: 0

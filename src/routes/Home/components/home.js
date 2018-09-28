@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import BackgroundGeolocation from "react-native-background-geolocation";
 
 
+import { Actions } from 'react-native-router-flux';
 
 import MapContainer from './MapContainer';
 import Fab from './FAB';
@@ -28,8 +29,6 @@ class Home extends React.Component {
             (error) => console.log(error.message),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
         );
-
-        // BackgroundGeolocation.on('heartbeat', this.heartTest);
     }
 
     heartTest = (location) => {
@@ -37,15 +36,15 @@ class Home extends React.Component {
         console.log('- [event] location: ', location); 
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
-            console.log("Changing Socket Id")
-            if(this.props.driverStatus !== "notAvailable"){
-                this.props.newSelectedDriverSocketId();
-                this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
-            }
-        }
-    }
+	componentDidUpdate(prevProps, prevState) {
+		if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
+			console.log("Changing Socket Id")
+			if(this.props.driverStatus !== "notAvailable"){
+					this.props.newSelectedDriverSocketId();
+					this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
+			}
+		}
+	}
 
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchId);
@@ -53,27 +52,31 @@ class Home extends React.Component {
     } 
 
     connectDriver = () => {
-        this.props.isDriverConnecting(true);
-        const rk = this;
-        
-        // This enables the drivers to receives ride request from the socket.io server
-        if(this.props.driverStatus == "notAvailable"){
-            this.props.getDriverSocketId(true);
-            setTimeout(function(){
-                console.log("This is user id from timeout ", rk.props.user_id);
-                if(rk.props.user_id){
-                rk.props.getDriverStatus("available");
-                }
-            }, 5000)
-        }
+		if(Object.keys(this.props.selectedVehicle).length !== 0 && this.props.selectedVehicle.constructor === Object){
+			this.props.isDriverConnecting(true);
+			const rk = this;
+			
+			// This enables the drivers to receives ride request from the socket.io server
+			if(this.props.driverStatus == "notAvailable"){
+				this.props.getDriverSocketId(true);
+				setTimeout(function(){
+						console.log("This is user id from timeout ", rk.props.user_id);
+						if(rk.props.user_id){
+						rk.props.getDriverStatus("available");
+						}
+				}, 5000)
+			}
 
-        // This disonnects drivers from socket.io server and driver will not longer received ride requests
-        if(this.props.driverStatus !== "notAvailable"){
-            this.props.getDriverStatus("notAvailable");
-            setTimeout(function(){
-                rk.props.disconnectSocketIO();
-            }, 5000)
-        }
+			// This disonnects drivers from socket.io server and driver will not longer received ride requests
+			if(this.props.driverStatus !== "notAvailable"){
+				this.props.getDriverStatus("notAvailable");
+				setTimeout(function(){
+						rk.props.disconnectSocketIO();
+				}, 5000)
+			}
+		} else {
+			Actions.error_modal({data: "Must select a vehicle to recieve ride requests."})
+		}
     }
     
     render() {

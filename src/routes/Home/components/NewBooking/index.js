@@ -22,7 +22,9 @@ export const NewBooking = ({bookingDetails, acceptRideRequest, openMapsRoute, re
     
     return (
         <View style={styles.newBookingContainer}>
-            <Spinner style={styles.spinner} isVisible={true} size={125} type="Pulse" color="#ffffff" />
+                {/* 
+                    <Spinner style={styles.spinner} isVisible={true} size={125} type="Pulse" color="#ffffff" />
+                */}            
             <View style={styles.content}>
                 <Text style={styles.text}>You have a new Ride Request</Text>
                 <Icon style={styles.locationIcon} name="map-marker"/>

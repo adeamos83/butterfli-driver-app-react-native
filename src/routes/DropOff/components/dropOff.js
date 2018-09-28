@@ -23,15 +23,18 @@ class DropOff extends React.Component {
         this.props.getDropOffRoute();
         this.props.getCurrentRoute(Actions.currentScene);
 
-        // this.watchId = navigator.geolocation.watchPosition(
-        //     (position) => {
-        //         this.props.watchingDriverLocation(position)
-        //         this.props.getDropOffDistance();
-        //         this.props.getDistanceFrom();
-        //     },
-        //     (error) => console.log(error.message),
-        //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
-        // );
+        //Must remove for beta launch
+        this.props.getDropOffDistance();
+
+        this.watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                this.props.watchingDriverLocation(position)
+                this.props.getDropOffDistance();
+                this.props.getDistanceFrom();
+            },
+            (error) => console.log(error.message),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
+        );
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -122,6 +125,9 @@ class DropOff extends React.Component {
                 bookingDetails={this.props.bookingDetails}
                 navToHomePage={this.navToHomePage}
                 bookingRequestCompleted={this.props.bookingRequestCompleted}
+                newBookingAlerted={this.props.newBookingAlerted}
+                pickUpArrivingAlerted={this.props.pickUpArrivingAlerted}
+                dropOffArrivingAlerted={this.props.dropOffArrivingAlerted}
             />
         }
         </Container>

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 const ErrorLightbox = ({ data, children }) => (
   <Lightbox verticalPercent={0.5} horizontalPercent={0.9}>
-    <Text style={{fontSize: 16, textAlign: 'center', fontWeight: "bold", paddingBottom: 10}}>{data}</Text>
+    <Text style={{fontSize: 16, textAlign: 'center', fontWeight: "bold", paddingBottom: 10, paddingHorizontal: 10}}>{data}</Text>
   </Lightbox>
 );
 
