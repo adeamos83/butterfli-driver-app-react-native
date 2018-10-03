@@ -3,6 +3,7 @@ package com.butterflidriverapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
 import com.transistorsoft.rnbackgroundgeolocation.RNBackgroundGeolocation;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
             new RNBackgroundFetchPackage(),
             new RNBackgroundGeolocation(),
             new ReactNativePushNotificationPackage(),

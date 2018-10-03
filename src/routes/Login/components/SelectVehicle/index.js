@@ -20,7 +20,7 @@ class SelectVehicleContainer extends React.Component {
 
    componentDidUpdate(prevProps, prevState) {
       console.log("Testing user_id boolean", this.props.user_id);
-      if( (prevProps.driverInfo.companyName !== this.props.driverInfo.companyName) && this.props.user_id){
+      if( (prevProps.driverInfo.companyName) && this.props.user_id){
             console.log("This is the vehicle container running")
          this.props.getVehicleGarage();
       }

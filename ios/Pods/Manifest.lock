@@ -1,5 +1,11 @@
 PODS:
   - boost-for-react-native (1.63.0)
+  - CocoaLumberjack (3.4.2):
+    - CocoaLumberjack/Default (= 3.4.2)
+    - CocoaLumberjack/Extensions (= 3.4.2)
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Extensions (3.4.2):
+    - CocoaLumberjack/Default
   - DoubleConversion (1.1.5)
   - Folly (2016.09.26.00):
     - boost-for-react-native
@@ -34,6 +40,8 @@ PODS:
     - GoogleMaps (= 2.5.0)
     - React
   - react-native-maps (0.21.0):
+    - React
+  - react-native-spinkit (1.0.2):
     - React
   - React/Core (0.55.4):
     - yoga (= 0.55.4.React)
@@ -80,6 +88,11 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNBackgroundFetch (2.4.3):
+    - React
+  - RNBackgroundGeolocation (2.13.3):
+    - CocoaLumberjack (~> 3.0)
+    - React
   - RNVectorIcons (4.6.0):
     - React
   - yoga (0.55.4.React)
@@ -92,6 +105,7 @@ DEPENDENCIES:
   - GoogleMaps
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-spinkit (from `../node_modules/react-native-spinkit`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
@@ -105,12 +119,15 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
+  - RNBackgroundGeolocation (from `../node_modules/react-native-background-geolocation`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - boost-for-react-native
+    - CocoaLumberjack
     - Google-Maps-iOS-Utils
     - GoogleMaps
 
@@ -127,6 +144,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-spinkit:
+    :path: "../node_modules/react-native-spinkit"
+  RNBackgroundFetch:
+    :path: "../node_modules/react-native-background-fetch"
+  RNBackgroundGeolocation:
+    :path: "../node_modules/react-native-background-geolocation"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   yoga:
@@ -134,6 +157,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Folly: 211775e49d8da0ca658aebc8eab89d642935755c
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
@@ -142,9 +166,12 @@ SPEC CHECKSUMS:
   React: aa2040dbb6f317b95314968021bd2888816e03d5
   react-native-google-maps: 2cfe3b01f8422c7dae51d8764139fd70f888cfce
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
+  react-native-spinkit: c9f5826e1a0bf0da889b3795278eb96ae15c1350
+  RNBackgroundFetch: 8c4f77f83c398c659bce82af2f0a885079417b9e
+  RNBackgroundGeolocation: c9bbf69b9aa277f0b46754cc5f853bd26051a18f
   RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
   yoga: a23273df0088bf7f2bb7e5d7b00044ea57a2a54a
 
-PODFILE CHECKSUM: 49bf3f903c765c267ca6766a7a0c36e740858bfa
+PODFILE CHECKSUM: 7f1bb3822118bc16b445e0a1b8aed7b06de27e5e
 
 COCOAPODS: 1.5.3

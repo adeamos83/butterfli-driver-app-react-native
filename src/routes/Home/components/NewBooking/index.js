@@ -4,8 +4,6 @@ import { View, Button } from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Actions } from 'react-native-router-flux';
 
-var Spinner = require('react-native-spinkit');
-
 import styles from "./NewBookingStyles";
 
 export const NewBooking = ({bookingDetails, acceptRideRequest, openMapsRoute, rejectBookingRequest, getDriverStatus, cancelBooking, updateBookingDetails }) => {
@@ -21,10 +19,7 @@ export const NewBooking = ({bookingDetails, acceptRideRequest, openMapsRoute, re
     }
     
     return (
-        <View style={styles.newBookingContainer}>
-                {/* 
-                    <Spinner style={styles.spinner} isVisible={true} size={125} type="Pulse" color="#ffffff" />
-                */}            
+        <View style={styles.newBookingContainer}>          
             <View style={styles.content}>
                 <Text style={styles.text}>You have a new Ride Request</Text>
                 <Icon style={styles.locationIcon} name="map-marker"/>

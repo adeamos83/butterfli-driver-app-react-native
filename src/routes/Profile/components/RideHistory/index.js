@@ -28,7 +28,7 @@ class RideHistoryContainer extends React.Component {
 					*/}
 					
 					<Content style={{paddingTop: 10}}>
-					{rideHistory &&
+					{(rideHistory && rideHistory.length > 0) &&
 							<List 
 							dataArray={rideHistory} 
 							renderRow={(item) =>

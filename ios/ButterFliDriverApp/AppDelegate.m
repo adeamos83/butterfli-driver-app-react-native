@@ -20,7 +20,7 @@
  
   NSURL *jsCodeLocation;
 
-   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
   
   [GMSServices provideAPIKey:@"AIzaSyDYndj5Gfh1rp5VUFHHu6gnN4vy2GQ0hvo"]; // add this line for the api key obtained from Google Console
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
