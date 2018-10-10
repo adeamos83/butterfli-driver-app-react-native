@@ -9,6 +9,7 @@ import DropOffContainer from './DropOff/container/DropOffContainer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AlertContainer from './Alert/container/AlertContainer'
 
+import ForgotPasswordContainer from './Login/components/ForgotPassword';
 //Drawer Imports
 import Menu from '../routes/Menu/container/MenuContainer';
 import HeaderComponent from '../Components/HeaderComponent';
@@ -38,7 +39,15 @@ const drawerMenuIcon = () => {
 const styles = StyleSheet.create({
     backButtonStyle: {
       paddingLeft: 10,
-    }
+	 },
+	 forgotBackButton: {
+		 color: "white",
+		 paddingLeft: 10,
+	 },
+	 forgotTitle: {
+		 color: "white"
+	 }
+	 
 });
 
 
@@ -46,53 +55,57 @@ const scenes = Actions.create(
 	<Modal key="modal" hideNavBar>
 	<Lightbox key="lightbox">
 
-    <Scene key='root' hideNavBar>
-        <Scene key="login" component={LoginContainer} initial title="login" />
-        <Scene key="createProfile" component={CreateProfile}   title="Create Profile"/>
-        <Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Vehicle Profile"/>
-        
-        <Stack back backTitle="Back" backButtonTextStyle={styles.backButtonStyle} key="loadVehicle" duration={0} navTransparent>
-            <Scene key="loadVehicleSelect" component={SelectVehicleContainer}  title="Select Vehicle"/>
-        </Stack>
+		<Scene key='root' hideNavBar>
+			<Scene key="login" component={LoginContainer} initial title="login" />
+			<Scene key="createProfile" component={CreateProfile}   title="Create Profile"/>
+			<Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Vehicle Profile"/>
+			
+			<Stack back backTitle="Back" backButtonTextStyle={styles.backButtonStyle} key="loadVehicle" duration={0} navTransparent>
+				<Scene key="loadVehicleSelect" component={SelectVehicleContainer}  title="Select Vehicle"/>
+			</Stack>
 
-
-        <Stack back backTitle="Back" backButtonTextStyle={styles.backButtonStyle} key="register" duration={0} navTransparent>
-            <Scene key="createProfile" component={CreateProfile}   title="Sign Up"/>
-            <Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Add Vehicle"/>
+			<Stack back backTitle="Back" backButtonTextStyle={styles.forgotBackButton} backButtonTintColor="white" key="passwordReset" duration={0} navTransparent>
+				<Scene key="forgotPassword" component={ForgotPasswordContainer} title='Forgot Password' titleStyle={styles.forgotTitle}/>
             <Scene key="login" component={LoginContainer}/> 
-        </Stack>
+        	</Stack>
+			
+			<Stack back backTitle="Back" backButtonTextStyle={styles.backButtonStyle} key="register" duration={0} navTransparent>
+					<Scene key="createProfile" component={CreateProfile}   title="Sign Up"/>
+					<Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Add Vehicle"/>
+					<Scene key="login" component={LoginContainer}/> 
+			</Stack>
 
-        <Drawer 
-            key="drawer"
-            contentComponent={Menu}
-            drawerWidth={250}
-            drawerIcon={<Icon name="bars" size={25} color= "#000"/>}
-            drawer={true}
-            hideNavBar
-            navigationBarStyle={{
-                position: 'absolute',
-                backgroundColor: 'transparent',
-                zIndex: 100,
-                top: 0,
-                left: 0,
-                right: 0,
-                borderBottomWidth: 0,
-                elevation: 0,
-            }}
-        >
-            <Scene key="home" drawerLockMode='locked-closed' gesturesEnabled={false} component={HomeContainer}/>
-            <Scene key="rideRequest"  drawerLockMode='locked-closed' gesturesEnabled={false} component={RideRequestContainer}/>
-            <Scene key="pickUp" drawerLockMode='locked-closed' gesturesEnabled={false} component={PickUpContainer}/>
-            <Scene key="dropOff" drawerLockMode='locked-closed' gesturesEnabled={false} component={DropOffContainer}/>
-            <Scene key="profile" drawerLockMode='locked-closed' gesturesEnabled={false} component={ProfileContainer}  title="Profile"/>
-            <Scene key="vehicleSelect" drawerLockMode='locked-closed' gesturesEnabled={false} component={SelectVehicleContainer}  title="Select Vehicle"/>
-            <Scene key="rideHistory" drawerLockMode='locked-closed' gesturesEnabled={false} component={RideHistoryContainer} title="Ride History"/>
-            <Scene key="rideSummary" drawerLockMode='locked-closed' gesturesEnabled={false}component={RideSummary} title="Ride Summary"/>
-		  </Drawer>
-		  <Scene key="error" component={ErrorModal} />
-        <Scene key="alert" component={AlertContainer} title="alert"/>
-	 </Scene>
-	 <Scene key="error_modal" component={ErrorLightbox} />
+			<Drawer 
+					key="drawer"
+					contentComponent={Menu}
+					drawerWidth={250}
+					drawerIcon={<Icon name="bars" size={25} color= "#000"/>}
+					drawer={true}
+					hideNavBar
+					navigationBarStyle={{
+						position: 'absolute',
+						backgroundColor: 'transparent',
+						zIndex: 100,
+						top: 0,
+						left: 0,
+						right: 0,
+						borderBottomWidth: 0,
+						elevation: 0,
+					}}
+			>
+					<Scene key="home" drawerLockMode='locked-closed' gesturesEnabled={false} component={HomeContainer}/>
+					<Scene key="rideRequest"  drawerLockMode='locked-closed' gesturesEnabled={false} component={RideRequestContainer}/>
+					<Scene key="pickUp" drawerLockMode='locked-closed' gesturesEnabled={false} component={PickUpContainer}/>
+					<Scene key="dropOff" drawerLockMode='locked-closed' gesturesEnabled={false} component={DropOffContainer}/>
+					<Scene key="profile" drawerLockMode='locked-closed' gesturesEnabled={false} component={ProfileContainer}  title="Profile"/>
+					<Scene key="vehicleSelect" drawerLockMode='locked-closed' gesturesEnabled={false} component={SelectVehicleContainer}  title="Select Vehicle"/>
+					<Scene key="rideHistory" drawerLockMode='locked-closed' gesturesEnabled={false} component={RideHistoryContainer} title="Ride History"/>
+					<Scene key="rideSummary" drawerLockMode='locked-closed' gesturesEnabled={false}component={RideSummary} title="Ride Summary"/>
+			</Drawer>
+			<Scene key="error" component={ErrorModal} />
+			<Scene key="alert" component={AlertContainer} title="alert"/>
+		</Scene>
+		<Scene key="error_modal" component={ErrorLightbox} />
 	 </Lightbox>
 	 </Modal>
 );

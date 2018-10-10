@@ -110,6 +110,7 @@ const styles = {
     editBtn:{
         width:width * 0.25,
         borderColor: "#D9D5DC",
+        backgroundColor: "white",
         justifyContent: "center",
         padding: 0
     },

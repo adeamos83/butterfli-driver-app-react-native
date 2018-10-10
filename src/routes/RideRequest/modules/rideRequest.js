@@ -3,6 +3,7 @@ import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
 import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY } from '../../../api';
 import { updateBookingDetails } from '../../Home/modules/home'
+import { unAuthUser } from '../../Login/modules/login';
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
 //-------------------------------

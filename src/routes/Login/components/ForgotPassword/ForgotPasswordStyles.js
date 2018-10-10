@@ -43,7 +43,9 @@ const styles = {
       justifyContent: "center",
       alignItems: "center",
       height: 50,
-      marginTop: 15,
+    //   borderRadius:7,
+    //   borderWidth: 1,
+    //   borderColor:"#fff",
     marginVertical: 5,
     backgroundColor: '#8E44AD'
    },
@@ -53,16 +55,11 @@ const styles = {
       justifyContent: "center",
       alignItems: "center",
       marginVertical: 5,
+    //   borderRadius:7,
+    //   borderWidth: 1,
+    //   borderColor:"#fff",
     backgroundColor: "#663399"
   },
-  signinBtnClicked:{
-    width:width * 0.85,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 5,
-  backgroundColor: "#EEEEEE"
-},
   btnText: {
      fontSize: 20,
      color: 'white',

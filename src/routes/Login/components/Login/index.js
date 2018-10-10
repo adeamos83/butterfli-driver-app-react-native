@@ -90,13 +90,14 @@ export const LoginContainer =({addAlert,
             </View> 
          */}
          <View style={styles.buttonView}>
-            <Button info style={styles.signinBtn} onPress={handleSubmit(this.onSignIn)}>
+            <Button info style={loggingIn ? styles.signinBtnClicked : styles.signinBtn} onPress={handleSubmit(this.onSignIn)}>
             { loggingIn &&
                <Spinner size="small"/>
                ||   
                <Text style={styles.btnText}>Sign In</Text>
             }
             </Button>
+            <Text style={{color: 'white', textAlign: 'center', paddingVertical: 5}} onPress={() => Actions.passwordReset({type: "replace"})}>Forgot Password</Text>
             <Button  style={styles.signup} onPress={this.onSignUp}>
             { signingUp &&
                <Spinner size="small"/>

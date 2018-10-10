@@ -3,7 +3,7 @@ import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
 import { API_URL, UPDATE_PROFILE_URL } from '../../../api';
 import axios from 'axios';
-
+import { getVehicleGarage, unAuthUser } from '../../Login/modules/login'
 import { addAlert } from '../../Alert/modules/alerts';
 
 //-------------------------------
@@ -69,7 +69,10 @@ export function getDriverInfo() {
             } else {
                dispatch(addAlert("Could not get Driver Profile."));
             }
-        });
+        })
+        .then(function(){
+            dispatch(getVehicleGarage());
+        })
 
     }
 }

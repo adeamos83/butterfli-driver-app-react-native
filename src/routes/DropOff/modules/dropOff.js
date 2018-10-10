@@ -6,6 +6,8 @@ import request from '../../../util/request';
 import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY} from '../../../api';
 import { getLatLonDiffInMeters } from '../../../util/helper'
 const polyline = require('@mapbox/polyline');
+
+import { unAuthUser } from '../../Login/modules/login';
 //-------------------------------
 // Constants
 //-------------------------------

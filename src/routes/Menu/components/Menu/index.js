@@ -9,7 +9,8 @@ const menuLogo = require('../../../../Assets/img/Menu-Drawer-Logo-76x76.png');
 
 export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAlerted, driverStatus, dropOffArrivingAlerted,
    getDriverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute, cancelBookingRequest }) => {
-   const { profilePic, firstName, lastName, companyName, vehicle } = driverInfo || "";
+   const { profilePic, firstName, lastName, vehicle } = driverInfo || "";
+   const { company } = driverInfo || {};
    const { serviceType } = vehicle || "";
 
    
@@ -68,11 +69,11 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
                   <Image resizemode="container" style={styles.logo} source={menuLogo} />
                   }
             </View>
-            { driverInfo &&
+            { driverInfo.company &&
                   <View>
                   <Text style={styles.avatarTextHeader}>{firstName + " " + lastName}</Text>
                   
-                        <Text style={styles.avatarText}>{companyName}</Text>
+                        <Text style={styles.avatarText}>{company.company}</Text>
                         <Text style={styles.avatarText}>{"Service: " + this.Capitalize(serviceType)}</Text>
                   
                   </View>

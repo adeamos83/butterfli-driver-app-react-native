@@ -206,24 +206,24 @@ export function rejectBookingRequest(){
         const id = store().home.bookingDetails._id
         console.log("Before Filter");
         console.log(nearByDrivers);
-        let nextDrivers = nearByDrivers.filter((nearBy) => {
-            console.log("Near by scoket id: ", nearBy.socketId, "Store socket id: ", store().home.driverSocketId);
-            return nearBy.socketId !== store().home.driverSocketId
-        });
+        // let nextDrivers = nearByDrivers.filter((nearBy) => {
+        //     console.log("Near by scoket id: ", nearBy.socketId, "Store socket id: ", store().home.driverSocketId);
+        //     return nearBy.socketId !== store().home.driverSocketId
+        // });
         
-        if(nextDrivers.length == 0){
-            nextDrivers = [];
-        }
+        // if(nextDrivers.length == 0){
+        //     nextDrivers = [];
+        // }
 
-        console.log("These are the near by drivers", nextDrivers);
+        // console.log("These are the near by drivers", nextDrivers);
         const payload = {
             data: {
                 ...store().home.bookingDetails,
                 rideRequestStatus: "rejected",
-                nearByDrivers: nextDrivers, 
+                // nearByDrivers: nextDrivers, 
             }
         };
-        console.log("Near by drivers is being sent ", payload.data.nearByDrivers == undefined);
+        // console.log("Near by drivers is being sent ", payload.data.nearByDrivers == undefined);
 
         request.put(`${API_URL}/api/rejectedbookings/${id}`)
         .send(payload)
@@ -232,8 +232,8 @@ export function rejectBookingRequest(){
                 type: REJECT_BOOKING_REQUEST
             });
         });
-        console.log("After Filter");
-        console.log(nextDrivers);
+        // console.log("After Filter");
+        // console.log(nextDrivers);
     }
 }
 

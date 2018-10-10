@@ -16,15 +16,18 @@ class SelectVehicleContainer extends React.Component {
 	componentDidMount(){
             this.props.getCurrentRoute();
             this.props.getDriverInfo();
+            // if(this.props.driverInfo){
+            //    this.props.getVehicleGarage();
+            // }
       }
 
-   componentDidUpdate(prevProps, prevState) {
-      console.log("Testing user_id boolean", this.props.user_id);
-      if( (prevProps.driverInfo.companyName) && this.props.user_id){
-            console.log("This is the vehicle container running")
-         this.props.getVehicleGarage();
-      }
-   }
+   // componentDidUpdate(prevProps, prevState) {
+   //    // console.log("Testing user_id boolean", this.props.user_id);
+   //    // if( (prevProps.driverInfo.companyName) && this.props.user_id){
+   //    //       console.log("This is the vehicle container running")
+   //    //    this.props.getVehicleGarage();
+   //    // }
+   // }
    
    onListPress = (data) => {
       this.props.getSelectedVehicle(data);
@@ -61,7 +64,7 @@ class SelectVehicleContainer extends React.Component {
                         </View>
                      </View>
                      <View style={styles.editRow}>
-                        <Button bordered light small style={styles.editBtn} onPress={() => this.onEditProfile()}>
+                        <Button bordered small style={styles.editBtn} onPress={() => this.onEditProfile()}>
                            <Text style={{color: '#000'}}>Change</Text>
                         </Button>
                      </View>

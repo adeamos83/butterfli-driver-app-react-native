@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'; 
+import axios from 'axios';
 import BackgroundGeolocation from "react-native-background-geolocation";
 import { Router } from 'react-native-router-flux';
 import { PersistGate } from 'redux-persist/integration/react'
 import scenes from '../routes/scenes';
+
 import { View, AppState, ActivityIndicator, Image, Text } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Alert from '../routes/Alert/components/alerts'
@@ -24,6 +26,8 @@ import { getLatLonDiffInMeters } from '../util/helper';
 
 var Spinner = require('react-native-spinkit');
 import { PushController } from '../Components/Common';
+import { API_CHECKSTATUS_URL } from '../api'
+
 export default class AppContainer extends Component {
     constructor(props) {
         super(props);
@@ -95,6 +99,22 @@ export default class AppContainer extends Component {
         AppState.addEventListener('change', this._handleAppStateChange);
         console.log("This is the component did mount App ");
         console.log("This is the current App State: ", this.state.appState);
+       
+        this.timerId = setInterval(function(){
+            axios.get(API_CHECKSTATUS_URL)
+            .then(function(response){
+                console.log("Check Status data: ", response.data);
+                console.log("Check Status status: ", response.status);
+                if(response.status >= 200 && response.status < 300 || response.status === 304){
+                    console.log("Server connection exists!")
+                } else {
+                    Actions.error_modal({data: "Could't connect. Check your internet connection and try again."})
+                }
+            })
+            .catch(function(error){
+                Actions.error_modal({data: "Could't connect. Check your internet connection and try again."})
+            })
+        }, 60000);
 
         console.log("Expiration date for user", store.getState().login.expDate);
         // take some action right before Rehydrate
@@ -172,6 +192,8 @@ export default class AppContainer extends Component {
         store.dispatch(pickUpArrivingAlerted(false));
         store.dispatch(dropOffArrivingAlerted(false));
         store.dispatch(newBookingAlerted(false));
+
+        clearInterval(this.timerId);
     }
 
 
