@@ -8,44 +8,66 @@ import styles from './SelectVehicleStyles';
 import { Spinner } from '../../../../Components/Common';
 
 import { getCurrentRoute } from '../../../Home/modules/home'
-import { getSelectedVehicle, updateVehicleProfile, canEditVehicleProfile, getDriverInfo } from '../../../Profile/modules/profile';
+import { getSelectedVehicle, updateVehicleProfile, canEditVehicleProfile, clearVehicleProfile, getDriverInfo } from '../../../Profile/modules/profile';
 import { getVehicleGarage } from '../../modules/login';
 
 
 class SelectVehicleContainer extends React.Component { 
 	componentDidMount(){
-            this.props.getCurrentRoute();
-            this.props.getDriverInfo();
-            // if(this.props.driverInfo){
-            //    this.props.getVehicleGarage();
-            // }
+			this.props.getCurrentRoute();
+			this.props.getDriverInfo();
+			// if(this.props.driverInfo){
+			//    this.props.getVehicleGarage();
+			// }
+			if(this.props.driverInfo.vehicle){
+				this.props.getSelectedVehicle(this.props.driverInfo.vehicle);
+			}
       }
 
-   // componentDidUpdate(prevProps, prevState) {
-   //    // console.log("Testing user_id boolean", this.props.user_id);
-   //    // if( (prevProps.driverInfo.companyName) && this.props.user_id){
-   //    //       console.log("This is the vehicle container running")
-   //    //    this.props.getVehicleGarage();
-   //    // }
-   // }
+   componentDidUpdate(prevProps, prevState) {
+      // console.log("Testing user_id boolean", this.props.user_id);
+      // if( (prevProps.driverInfo.companyName) && this.props.user_id){
+      //       console.log("This is the vehicle container running")
+      //    this.props.getVehicleGarage();
+	  // }
+	  
+		if(!this.props.driverInfo.vehicle && prevProps.driverInfo.vehicle){
+			if( (prevProps.driverInfo.companyName) && this.props.user_id){
+			      console.log("This is the vehicle container running")
+			   this.props.getVehicleGarage();
+			}
+		}
+   }
    
    onListPress = (data) => {
-      this.props.getSelectedVehicle(data);
+		this.props.getSelectedVehicle(data);
+		this.props.canEditVehicleProfile();
       console.log("here is the selected data: ", data)
-      this.props.updateVehicleProfile()
+      // this.props.updateVehicleProfile()
    }
 
    onEditProfile = (values) => {
-		this.props.canEditVehicleProfile();
+		// this.props.canEditVehicleProfile();
+		if(this.props.driverInfo.vehicle){
+			this.props.clearVehicleProfile();
+		} else {
+			this.props.canEditVehicleProfile();
+		}
+		// this.props.clearVehicleProfile();
 		console.log("Send new updated for Vehicle? ", this.props.canEditVehicle);
 		// if(canEditVehicle){
 			
 		// }
 	}
 
+	onSumbit = () => {
+		this.props.updateVehicleProfile();
+	}
+
 	render() {
-		const { driverInfo, vehicleGarage, selectedVehicle, canEditVehicle, vehicleLoading  } = this.props
+		const { driverInfo, vehicleGarage, clearVehicleProfile, selectedVehicle, canEditVehicle, vehicleLoading  } = this.props
 		const { serviceType, make, model, licensePlate, vinNumber} = selectedVehicle || {}
+		const { vehicle } = driverInfo || {}
       console.log("this is the vehicle garage", vehicleGarage);
       
 		return (
@@ -56,7 +78,7 @@ class SelectVehicleContainer extends React.Component {
 							<Text style={{fontSize: 16, fontWeight: "700", marginTop: 20, marginBottom: 15}}>Ride History</Text>
 						</View>
                */}
-               { (selectedVehicle.make && canEditVehicle) && 
+               { (selectedVehicle.make || vehicle) && 
                   <Content>
                      <View style={{flex: 1, justifyContent: "center", flexDirection: 'row', paddingTop: 30, paddingVertical: 10}}>
                         <View style={styles.circle}>
@@ -83,7 +105,7 @@ class SelectVehicleContainer extends React.Component {
                         </ListItem>
                      </List>
                      <View style={styles.homeRow}>
-                        <Button success style={styles.signinBtn} onPress={() => Actions.home({type: 'replace'})}>
+                        <Button success style={styles.signinBtn} onPress={() => this.onSumbit()}>
                            <Text style={styles.btnText}>Submit</Text>
                         </Button>
                      </View>
@@ -149,10 +171,11 @@ const mapStateToProps = (state) => ({
 
 const mapActionCreators = {
 	getCurrentRoute,
-   getVehicleGarage,
-   getSelectedVehicle,
-   updateVehicleProfile,
-   canEditVehicleProfile,
-   getDriverInfo
+	getVehicleGarage,
+	getSelectedVehicle,
+	updateVehicleProfile,
+	canEditVehicleProfile,
+	getDriverInfo, 
+	clearVehicleProfile
 };
 export default connect(mapStateToProps, mapActionCreators)(SelectVehicleContainer)

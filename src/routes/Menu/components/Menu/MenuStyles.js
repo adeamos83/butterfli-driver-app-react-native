@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         paddingTop: 50,
         paddingLeft: 10,
-        paddingBottom: 15, 
+        paddingBottom: 30, 
         // flexDirection: 'row',
     },
     avatarTextHeader: {

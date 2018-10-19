@@ -103,7 +103,7 @@ let ProfileContainer =({ getDriverInfo, updateDriverProfile, canEditProfile,
 					<Item inlineLabel>
 						<Label>Company</Label>
 						<Field
-							name="companyName"
+							name="company.company"
 							component={ProfileTextInputField}
 							editable={false}
 							placeholder="Company"

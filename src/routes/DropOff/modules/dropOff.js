@@ -1,12 +1,13 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
+import axios from 'axios'
 import request from '../../../util/request';
 
 import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY} from '../../../api';
 import { getLatLonDiffInMeters } from '../../../util/helper'
 const polyline = require('@mapbox/polyline');
-
+import { otherBookingDetails } from '../../Home/modules/home'
 import { unAuthUser } from '../../Login/modules/login';
 //-------------------------------
 // Constants
@@ -226,11 +227,47 @@ export function getDistanceFrom() {
                     type: GET_DISTANCE_FROM,
                     payload: res.body
                 })
+                dispatch(updateDistanceToDropOff());
                 if(error){
                     console.log("This is the error: ", error);
                 }
             })
         }
+    }
+}
+
+// Update Booking Details 
+export function updateDistanceToDropOff(){
+    return(dispatch, store) => {
+        const data = {
+            ...store().home.bookingDetails,
+            selectedDriver: store().home.driverLocation._id,
+            distanceToDropOff: {
+                duration: store().dropOff.distanceFrom.rows[0].elements[0].duration.text,
+                distance: store().dropOff.distanceFrom.rows[0].elements[0].distance.text
+            }
+        };
+        console.log(data);
+       
+        const bookingID = store().home.bookingDetails._id;
+
+        return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
+            console.log("Sending distance to dropOff details");
+            // dispatch({
+            //     type: UPDATE_BOOKING_DETAILS,
+            //     payload: res.data
+            // });
+            dispatch(otherBookingDetails(res.data));
+        }).catch((error) => {
+            console.log(error);
+            if (error.response.status === 401) {
+                dispatch(unAuthUser());
+                Actions.login({type: 'replace'})
+            }
+        })
+
     }
 }
 

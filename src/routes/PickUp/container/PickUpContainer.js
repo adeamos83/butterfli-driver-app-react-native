@@ -16,6 +16,7 @@ import {
         // getMarkerLocation,
         // getNearDriverAlerted,
         getDistanceFrom,
+        updateDistanceToPickUp,
         getPickUpDistance,
         getPickUpRoute,
         pickUpArrivingAlerted
@@ -46,6 +47,7 @@ const mapActionCreators = {
     getCurrentLocation,
     getCurrentRoute,
     openMapsRoute,
+    updateDistanceToPickUp,
     watchingDriverLocation,
     getDriverStatus,
     getMarkerLocation,

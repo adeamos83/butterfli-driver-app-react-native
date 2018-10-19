@@ -2,13 +2,18 @@ import React from "react";
 import { Text, Image } from 'react-native';
 import { View, Button } from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import styles from "./RideSummaryStyles";
 
 export const RideSummary = ({ driverInfo, newBookingAlerted, pickUpArrivingAlerted, dropOffArrivingAlerted, bookingDetails, bookingRequestCompleted, navToHomePage}) => {
     const { pickUp, dropOff, tripDistance} = bookingDetails || {};
     const { profilePic } = driverInfo || "";
     const { vehicle } = driverInfo || {};
+    
+    todayTime = () => {
+        return new Date().toLocaleTimeString('en-US', { hour12: true, 
+            hour: "numeric", 
+            minute: "numeric"});
+    }
 
     // This function navigates the user back to the app home screen
     rideSummaryNav = () => {
@@ -31,7 +36,7 @@ export const RideSummary = ({ driverInfo, newBookingAlerted, pickUpArrivingAlert
                         <Icon name="clock-o" style={styles.clockIcon} />
                      </View>
                      <View style={{flexDirection: "column",  justifyContent: "center"}}>
-                        <Text style={styles.routeHeader}>Today at 1:30pm</Text>
+                        <Text style={styles.routeHeader}>{"Today at " + todayTime()}</Text>
                      </View>
                   </View>
                   <View style={styles.routeContainer}>

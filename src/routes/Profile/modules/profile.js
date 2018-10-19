@@ -1,7 +1,8 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
-import { API_URL, UPDATE_PROFILE_URL } from '../../../api';
+import { API_URL, UPDATE_PROFILE_URL, UPDATE_VEHICLE_URL, CLEAR_VEHICLE_URL } from '../../../api';
+import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import { getVehicleGarage, unAuthUser } from '../../Login/modules/login'
 import { addAlert } from '../../Alert/modules/alerts';
@@ -56,7 +57,6 @@ export function getDriverInfo() {
         return axios.get(`${API_URL}/api/driver/` + user_id, {
             headers: {authorization: store().login.token}
         }).then((res) => {
-            console.log("This is Get Driver Info", res);
             dispatch({
                 type: GET_DRIVER_INFORMATION,
                 payload: res.data
@@ -67,7 +67,7 @@ export function getDriverInfo() {
                dispatch(unAuthUser());
                Actions.login({type: 'replace'})
             } else {
-               dispatch(addAlert("Could not get Driver Profile."));
+            	Actions.error_modal({data: "Could not get Driver Profile."})
             }
         })
         .then(function(){
@@ -165,7 +165,6 @@ export function getRideHistory(){
 }
 
 export function getSelectedVehicle(payload){
-    console.log("this is from the Car Profile", payload);
     return(dispatch, store) => {
         dispatch({
             type:SELECT_VEHICLE_INFO,
@@ -181,21 +180,20 @@ export function updateVehicleProfile(){
             ...store().profile.driverInfo,
             vehicle: store().profile.selectedVehicle._id
         }
-        console.log("from create profile redux function", details);
-        vehicleUpdateUrl = UPDATE_PROFILE_URL + "/" + store().profile.driverInfo._id
+        vehicleUpdateUrl = UPDATE_VEHICLE_URL + "/" + store().profile.driverInfo._id;
         return axios.put(vehicleUpdateUrl, details, {
             headers: {authorization: store().login.token}
         }).then((response) => {
-             var details = response.data;
-             console.log(details);
-             dispatch({
-                 type: USER_PROFILE_UPDATED,
-                 payload: details
-             });
-             dispatch({
-                type:EDITTING_VEHICLE_PROFILE,
-                payload: !store().profile.canEditVehicle
-            })
+            var details = response.data;
+            dispatch({
+                type: USER_PROFILE_UPDATED,
+                payload: details
+            });
+            // dispatch({
+            //     type:EDITTING_VEHICLE_PROFILE,
+            //     payload: !store().profile.canEditVehicle
+            // });
+            Actions.home({type: 'replace'})
         }).catch((error) => {
             if (error.response.status === 401) {
                dispatch(unAuthUser());
@@ -206,6 +204,51 @@ export function updateVehicleProfile(){
         });
     }
  }
+
+export function clearVehicleProfile() {
+    return(dispatch, store) => {
+        var details = {
+            ...store().profile.driverInfo,
+            vehicle: {
+                ...store().profile.selectedVehicle,
+                vehicleAvailable: true
+            }
+        }
+        vehicleUpdateUrl = CLEAR_VEHICLE_URL + "/" + store().profile.driverInfo._id;
+        return axios.put(vehicleUpdateUrl, details, {
+            headers: {authorization: store().login.token}
+        }).then((response) => {
+            // var details = response.data;
+            console.log(response.data);
+            var details = {
+                ...response.data,
+                vehicle: null
+            }
+            dispatch({
+                type: USER_PROFILE_UPDATED,
+                payload: details
+            });
+
+            dispatch({
+                type:SELECT_VEHICLE_INFO,
+                payload: null
+            });
+
+            dispatch({
+                type:EDITTING_VEHICLE_PROFILE,
+                payload: !store().profile.canEditVehicle
+            });
+        }).catch((error) => {
+            if (error.response.status === 401) {
+               dispatch(unAuthUser());
+               Actions.login({type: 'replace'})
+            } else {
+				dispatch(addAlert("Could not create User Profile."));
+            }
+        });
+    }
+}
+
 
  export function canEditVehicleProfile() {
     return(dispatch, store) => {

@@ -32,6 +32,8 @@ class PickUp extends React.Component {
             (error) => console.log(error.message),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
         );
+
+        var  distanceTimer = setInterval(this.props.updateDistanceToPickUp, 120000);
     }
     
     componentDidUpdate(prevProps, prevState)  {
@@ -68,6 +70,7 @@ class PickUp extends React.Component {
 
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchId);
+        clearInterval(this.distanceTimer);
     } 
 
     

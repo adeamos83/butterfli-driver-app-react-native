@@ -6,10 +6,10 @@ import { Actions } from 'react-native-router-flux';
 import uuid from 'uuid';
 import axios from 'axios';
 
-import {SIGNIN_URL, DRIVER_SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE_URL} from '../../../api';
+import {SIGNIN_URL, FORGOT_PASSWORD_URL, DRIVER_SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE_URL} from '../../../api';
 import {addAlert} from '../../Alert/modules/alerts';
 import { disconnectSocketIO, updateBookingDetails } from '../../Home/modules/home';
-import { isVehiclesLoading } from '../../Profile/modules/profile';
+import { isVehiclesLoading, clearVehicleProfile, getSelectedVehicle, getDriverInfo } from '../../Profile/modules/profile';
 
 //-------------------------------
 // Constants
@@ -22,7 +22,8 @@ const { AUTH_USER,
         GET_INPUT,
         NAV_TO_CAR_PROFILE,
         IS_LOGGING_IN,
-        IS_SIGNING_UP,
+		  IS_SIGNING_UP,
+		  GET_DRIVER_INFORMATION,
         USER_PROFILE_CREATED,
         CLEAR_PROFILE,
         VEHICLE_GARAGE
@@ -78,7 +79,7 @@ export function getInputData(payload) {
 
 // Handle Post Request to login user
 export function loginUser(email, password){
-   return(dispatch) => {
+   return(dispatch, store) => {
        return axios.post(DRIVER_SIGNIN_URL, {email, password}).then((response) => {
            console.log("Here is the response from login: ", response);
             var {user_id, token, isProfileCreated, expDate} = response.data;
@@ -93,8 +94,7 @@ export function loginUser(email, password){
                 payload: userDetails
             });
             dispatch(isLoggingIn(false));
-            dispatch(needsToCreateProfile(isProfileCreated));
-            Actions.vehicleSelect({type: "replace"})
+            // Actions.vehicleSelect({type: "replace"})
        }).catch((error) => {
         dispatch(isLoggingIn(false));
         Actions.error_modal({data: "Could not log in. Please check username/password"})
@@ -116,7 +116,36 @@ export function loginUser(email, password){
             console.log('Error', error.message);
         }
             console.log(error.config);
-        });
+        })
+        .then( async function(){
+            // dispatch(getDriverInfo());
+            let user_id = store().login.user_id;
+            await axios.get(`${API_URL}/api/driver/` + user_id, {
+               headers: {authorization: store().login.token}
+            }).then((res) => {
+                console.log("This is Get Driver Info", res);
+                dispatch({
+                    type: GET_DRIVER_INFORMATION,
+                    payload: res.data
+                });
+            }).catch((error) => {
+                console.log(error);
+               //  if (error.response.status === 401) {
+               //  dispatch(unAuthUser());
+               //  Actions.login({type: 'replace'})
+               //  } else {
+               //  dispatch(addAlert("Could not get Driver Profile."));
+               //  }
+            })
+        })
+        .then(function(){
+            if(store().login.driverInfo.vehicle){
+                dispatch(getSelectedVehicle(store().login.driverInfo.vehicle));
+                Actions.home({type: "replace"})
+            } else {
+                Actions.vehicleSelect({type: "replace"})
+            }
+        })
    }
 }
 
@@ -178,14 +207,31 @@ export function authUser(user_id){
 export function unAuthUser(){
     return(dispatch, store) => {
         if(store().home.driverStatus !== "available" && store().home.driverStatus !== "notAvailable"){ 
-            console.log("Driver is canceling ride request")
+            console.log("Driver is canceling ride request");
             dispatch(updateBookingDetails("rideRequestStatus", "canceled"));
-        }
+		  }
+
+		  if(store().profile.selectedVehicle){
+			console.log("Clearing vehicle selection")
+			  	dispatch(clearVehicleProfile());
+			  	dispatch(getSelectedVehicle(null));
+		  }
+
         disconnectSocketIO();
         dispatch({
             type: UNAUTH_USER,
         });
     }
+}
+
+// Forget password reset form
+export function resetPassword(email){
+    var forgotEmail = {
+        email: email
+    }
+    return axios.post(FORGOT_PASSWORD_URL, forgotEmail).then((response)=> {
+        console.log(response.status);
+    })
 }
 
 //Check to see if User need to create profile 
@@ -272,17 +318,18 @@ export function createProfile(){
     }
 }
 
-
+// Gets all available vehicles from Transporation Company
 export function getVehicleGarage(){
     return(dispatch, store) => {
         const companyId = store().profile.driverInfo.company._id
-        const vehicleGarageUrl = API_URL + "/transportationproviders/detail/" +  companyId;
-        console.log(vehicleGarageUrl);
+        const vehicleGarageUrl = API_URL + "/api/availablevehicles/" +  companyId;
         return axios.get(vehicleGarageUrl, {
             headers: {authorization: store().login.token}
         }).then((response) => {
-             var vehicleGarage = response.data.vehicles;
-             console.log(vehicleGarage);
+            var vehicleGarage = response.data;
+            // let vehicleGarage = response.data.vehicles.filter((availableVehicles) => {
+            //     return availableVehicles.vehicleAvailable
+            // });
              dispatch({
                  type: VEHICLE_GARAGE,
                  payload: vehicleGarage
@@ -313,6 +360,14 @@ function handleIsLoggingIn(state, action ) {
             $set: action.payload
         }
     })
+}
+
+function handleGetDriverInfo(state, action) {
+	return update(state, {
+		 driverInfo: {
+			  $set: action.payload
+		 }
+	});
 }
 
 function handleIsSigningUp(state, action ) {
@@ -428,7 +483,8 @@ function handleGetVehicleGarage(state, action ) {
 }
  
 const ACTION_HANDLERS = {
-    GET_INPUT: handleGetInputData,
+	 GET_INPUT: handleGetInputData,
+	 GET_DRIVER_INFORMATION: handleGetDriverInfo,
     AUTH_USER: handleUserAuth,
     UNAUTH_USER: handleUnAuthUser,
     NEEDS_PROFILE: handleNeedsProfile,

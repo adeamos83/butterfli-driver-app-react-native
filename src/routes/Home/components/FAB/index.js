@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { Button } from "native-base";
 import { Spinner } from '../../../../Components/Common';
 
@@ -12,9 +12,9 @@ export const Fab = ({ onPressAction, driverStatus, driverConnecting }) => {
             { driverConnecting &&
                 <Spinner size="small"/>
                 || 
-                <Text>
+                <View style={{justifyContent: "center", alignItems: "center"}}>
                     <Text style={styles.btnText}>{(driverStatus == "notAvailable")? "Not \n Available" : "Available"}</Text>
-                </Text>
+                </View>
             } 
         </Button>
     )

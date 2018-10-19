@@ -15,6 +15,7 @@ import { authUser,
             gotoCarProfile,
             isLoggingIn,
             isSigningUp,
+            resetPassword,
             clearCreateProfile
         } from '../modules/login';
 
@@ -49,6 +50,7 @@ const mapActionCreators = {
    gotoCarProfile,
    isLoggingIn,
    isSigningUp,
+   resetPassword,
    clearCreateProfile
 };
 

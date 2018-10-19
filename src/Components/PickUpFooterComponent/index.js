@@ -7,7 +7,7 @@ import { getLatLonDiffInMeters } from '../../util/helper';
 
 export const PickUpFooterComponent = ({ bookingDetails, pickUpDistance, distanceFrom, getDriverStatus, pickUpPassenger, updateBookingDetails }) => {
     const { firstName } = bookingDetails || "";
-    const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
+    // const { duration, distance } = distanceFrom.rows[0].elements[0] || "";
     pickUpConfrim = () => {
         getDriverStatus('dropOff');
         pickUpPassenger();

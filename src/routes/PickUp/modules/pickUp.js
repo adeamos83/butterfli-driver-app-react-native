@@ -2,11 +2,12 @@ import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Dimensions, Platform, Linking } from 'react-native';
 import { API_URL, MAPBOX_ACCESS_TOKEN, GOOGLE_API_KEY } from '../../../api';
-
+import axios from 'axios';
 import request from '../../../util/request';
 const polyline = require('@mapbox/polyline');
 import { getLatLonDiffInMeters } from '../../../util/helper';
 import { unAuthUser } from '../../Login/modules/login'
+import { updateBookingDetails, otherBookingDetails } from '../../Home/modules/home'
 //-------------------------------
 // Constants
 //-------------------------------
@@ -229,6 +230,7 @@ export function getDistanceFrom(instance) {
                     type: GET_DISTANCE_FROM,
                     payload: res.body
                 })
+                dispatch(updateDistanceToPickUp());
             })
         }
     }
@@ -283,7 +285,6 @@ export function getPickUpRoute(){
         
             return route.map(l => ({latitude: l[0], longitude: l[1]}))
         }
-        console.log(url);
 
         if(store().home.bookingDetails.pickUp && store().home.bookingDetails.dropOff){
             fetch(url).then(response => response.json()).then(json => {
@@ -305,6 +306,40 @@ export function getPickUpRoute(){
         }
     }    
 }
+
+// Update Booking Details 
+export function updateDistanceToPickUp(){
+    return(dispatch, store) => {
+        const data = {
+            ...store().home.bookingDetails,
+            selectedDriver: store().home.driverLocation._id,
+            distanceToPickUp: {
+                duration: store().pickUp.distanceFrom.rows[0].elements[0].duration.text,
+                distance: store().pickUp.distanceFrom.rows[0].elements[0].distance.text
+            }
+        };       
+        const bookingID = store().home.bookingDetails._id;
+
+        return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
+            headers: {authorization: store().login.token}
+        }).then((res) => {
+            console.log("Sending distance to pickUp details");
+            // dispatch({
+            //     type: UPDATE_BOOKING_DETAILS,
+            //     payload: res.data
+            // });
+            dispatch(otherBookingDetails(res.data));
+        }).catch((error) => {
+            console.log(error);
+            if (error.response.status === 401) {
+                dispatch(unAuthUser());
+                Actions.login({type: 'replace'})
+            }
+        })
+
+    }
+}
+
 
 //-------------------------------
 // Action Handlers

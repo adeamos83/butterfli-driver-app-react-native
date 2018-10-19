@@ -3,9 +3,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:3.2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,9 +19,32 @@ allprojects {
 				maven { url "https://jitpack.io" }
         mavenLocal()
         jcenter()
+        google()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
+        maven {
+        	url 'https://maven.google.com'
+       	}
+       	maven {
+           	url "$rootDir/../node_modules/react-native-background-geolocation/android/libs"
+       	}
+       	maven {
+           	url "$rootDir/../node_modules/react-native-background-fetch/android/libs"
+       	}
     }
+}
+
+/**
+ + Project-wide Gradle configuration properties
+ */
+ext {
+    compileSdkVersion   = 27
+    targetSdkVersion    = 27
+    buildToolsVersion   = "27.0.3"
+    supportLibVersion   = "27.1.1"
+    // googlePlayServicesVersion = "11.8.0"
+    // playServicesVersion = "15.0.1"
+    androidMapsUtilsVersion = "0.5+"
 }

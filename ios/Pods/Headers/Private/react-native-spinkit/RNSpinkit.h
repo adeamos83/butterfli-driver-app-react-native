@@ -1,1 +1,5 @@
-../../../../../node_modules/react-native-spinkit/ios/RNSpinkit.h
+#import "RTSpinKitView.h"
+
+@interface RNSpinkit : UIView
+
+@end

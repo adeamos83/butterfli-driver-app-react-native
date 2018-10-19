@@ -7,7 +7,8 @@ import { getRideHistory,
          canEditProfile,
          changeVehicleServiceType,
          getDriverInfo,
-         updateDriverProfile        
+         updateDriverProfile,
+         clearVehicleProfile        
          } from '../modules/profile';
 
 const mapStateToProps = (state) => ({
@@ -26,7 +27,8 @@ const mapActionCreators = {
    getCurrentRoute,
    changeVehicleServiceType,
    getDriverInfo,
-   updateDriverProfile
+   updateDriverProfile,
+   clearVehicleProfile
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Profile)

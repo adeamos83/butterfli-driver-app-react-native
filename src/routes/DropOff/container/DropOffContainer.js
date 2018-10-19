@@ -18,6 +18,7 @@ import { getCurrentLocation,
         // getNearDriverAlerted,
         getDistanceFrom,
         getDropOffDistance,
+        updateDistanceToDropOff,
         getDropOffRoute,
         dropOffArrivingAlerted
         } from '../modules/dropOff';
@@ -47,6 +48,7 @@ const mapActionCreators = {
     updateBookingDetails,
     openMapsRoute,
     watchingDriverLocation,
+    updateDistanceToDropOff,
     getDriverStatus,
     getMarkerLocation,
     // getNearDriverAlerted,

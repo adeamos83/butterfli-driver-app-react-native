@@ -104,22 +104,17 @@ export function getCurrentRoute(){
     return (dispatch, store) => {
         var prevRoute,
         currentRoute;
-        
         if(!store().home.currentRoute){
-            console.log("Current scene from 1st IF Statement ", store().home.currentRoute)
             currentRoute = Actions.currentScene
         } else {
             prevRoute = store().home.currentRoute;
-            console.log("This is prevRoute ", prevRoute);
             currentRoute = Actions.currentScene
-            console.log("This is Store CurrentRoute ", store().home.currentRoute)
         }
 
         payload = {
             prevRoute, 
             currentRoute
         }
-        console.log("Current route payload ", payload)
         dispatch({
             type: CURRENT_ROUTE,
             payload: payload
@@ -204,8 +199,6 @@ export function rejectBookingRequest(){
     return(dispatch, store) => {
         const nearByDrivers = store().home.bookingDetails.nearByDrivers;
         const id = store().home.bookingDetails._id
-        console.log("Before Filter");
-        console.log(nearByDrivers);
         // let nextDrivers = nearByDrivers.filter((nearBy) => {
         //     console.log("Near by scoket id: ", nearBy.socketId, "Store socket id: ", store().home.driverSocketId);
         //     return nearBy.socketId !== store().home.driverSocketId
@@ -245,6 +238,7 @@ export function cancelBookingRequest(){
             data: {
                 ...store().home.bookingDetails,
                 rideRequestStatus: "canceled",
+                selectedDriver: store().home.driverLocation._id 
             }
         };
 
@@ -472,6 +466,14 @@ export function updateBookingDetails(key, instance){
     }
 }
 
+export function otherBookingDetails(payload){
+    return(dispatch) => {
+        dispatch({
+            type: UPDATE_BOOKING_DETAILS,
+            payload: payload
+        });
+    }
+}
 export function updateDriverLocationDetails(key, instance){
     return(dispatch, store) => {
         const data = {
@@ -483,7 +485,6 @@ export function updateDriverLocationDetails(key, instance){
         return axios.put(`${API_URL}/api/driverLocation/${driverLocationId}`, {data}, {
             headers: {authorization: store().login.token}
         }).then((res) => {
-            console.log("This is the Updated Driver Location Details", res);
             dispatch({
                 type: UPDATE_DRIVER_LOCATION_DETAILS,
                 payload: res.data
@@ -619,11 +620,9 @@ export function newSelectedDriverSocketId(){
         // Checks make sure there is an acutal booking in driver state
         if(store().home.bookingDetails){
             const bookingID = store().home.bookingDetails._id;
-
             return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
                 headers: {authorization: store().login.token}
             }).then((res) => {
-                console.log("This Accept Ride Request", res);
                 dispatch({
                     type: SELECTED_DRIVERS,
                     payload: res.data

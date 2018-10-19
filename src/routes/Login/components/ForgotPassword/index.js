@@ -11,13 +11,12 @@ import PassTextField from '../TextField/PassTextField'
 import { TextInputField } from '../../../../Components/Common/'
 import { Spinner, LoginTextInputField } from '../../../../Components/Common';
 
-import{ createProfile } from '../../modules/login';
+import{ createProfile, resetPassword } from '../../modules/login';
 
 class ForgotPasswordContainer extends React.Component {
 
    onForgotPassword = (values) => {
-		console.log("forgot password");
-		console.log(values);
+		resetPassword(values.email)
    }
 
    render() {
@@ -74,7 +73,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionCreators = {
-	createProfile
+	createProfile,
+	resetPassword
 }
 
 export default connect(mapStateToProps, mapActionCreators)(reduxForm({

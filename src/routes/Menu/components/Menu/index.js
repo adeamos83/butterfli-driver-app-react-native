@@ -11,7 +11,7 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
    getDriverStatus, authUser, user_id, driverInfo, currentRoute, prevRoute, cancelBookingRequest }) => {
    const { profilePic, firstName, lastName, vehicle } = driverInfo || "";
    const { company } = driverInfo || {};
-   const { serviceType } = vehicle || "";
+   const { serviceType, make, model } = vehicle || "";
 
    
    // const capServiceType = serviceType[0].toUpperCase() + serviceType.slice(1) || "";
@@ -72,10 +72,9 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
             { driverInfo.company &&
                   <View>
                   <Text style={styles.avatarTextHeader}>{firstName + " " + lastName}</Text>
-                  
                         <Text style={styles.avatarText}>{company.company}</Text>
-                        <Text style={styles.avatarText}>{"Service: " + this.Capitalize(serviceType)}</Text>
-                  
+                        <Text style={styles.avatarText}>{(!vehicle)? "Vehicle: None":"Vehicle: " + make + " " + model}</Text>
+                        <Text style={styles.avatarText}>{(serviceType == undefined)? "Service: Not in Service": "Service: " + this.Capitalize(serviceType)}</Text>
                   </View>
             }
          </View>

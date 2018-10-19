@@ -31,7 +31,10 @@ export const LoginContainer =({addAlert,
 		if(!loginInProcess){
 			loginInProcess = true;
 			isLoggingIn(true);
-   		loginUser(values.email, values.password)
+      loginUser(values.email, values.password)
+      // setTimeout(function(){
+      //   isLoggingIn(false);
+      // }, 30000) 
 		} else {
 			addAlert("Trying to logging into your account");
 		}

@@ -114,7 +114,7 @@ export default class AppContainer extends Component {
             .catch(function(error){
                 Actions.error_modal({data: "Could't connect. Check your internet connection and try again."})
             })
-        }, 60000);
+        }, 120000);
 
         console.log("Expiration date for user", store.getState().login.expDate);
         // take some action right before Rehydrate
@@ -177,8 +177,6 @@ export default class AppContainer extends Component {
                             }); 
                             store.dispatch(dropOffArrivingAlerted(true))
                         }
-
-                        console.log("Here is the distance from Driver to pick up: ", distFrom);
                     }
                 });
             }
