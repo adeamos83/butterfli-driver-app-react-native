@@ -36,12 +36,12 @@ class DropOff extends React.Component {
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
         );
 
-        var  distanceTimer = setInterval(this.props.updateDistanceToDropOff, 120000);
+        this.distanceTimer = setInterval(this.props.updateDistanceToDropOff, 10000);
     }
 
     componentDidUpdate(prevProps, prevState){
         if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
-            console.log("Changing Socket Id")
+            console.log("Changing Socket Id");
             this.props.newSelectedDriverSocketId();
             this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
         }
@@ -50,9 +50,16 @@ class DropOff extends React.Component {
         if((this.props.dropOffDistance > 300 && this.props.dropOffDistance < 480) && prevProps.bookingDetails.rideRequestStatus !== "unloading"){
             this.props.updateBookingDetails("rideRequestStatus", "unloading");
         }
+
+        // Clear setInterval for Ride Summary 
+        if(this.props.bookingDetails.rideRequestStatus == "completed" && prevProps.bookingDetails.rideRequestStatus !== "completed"){
+            console.log("Clearing all timer intervals.");
+            clearInterval(this.distanceTimer);
+        }
     }
 
     componentWillUnmount() {
+        console.log("Clearing all timer intervals.");
         navigator.geolocation.clearWatch(this.watchId);
         clearInterval(this.distanceTimer);
     } 

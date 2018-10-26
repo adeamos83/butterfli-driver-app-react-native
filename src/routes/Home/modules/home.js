@@ -20,7 +20,8 @@ const { DRIVER_CONNECTING,
         DRIVER_STATUS,
         // GET_DRIVER_INFORMATION,
         POST_DRIVER_LOCATION,
-        DB_UPDATED_DRIVER_LOCATION,
+        // DB_UPDATED_DRIVER_LOCATION,
+        DB_UPDATED_DRIVER_STATUS,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
@@ -73,6 +74,7 @@ export function checkStatus(response){
       if (response.response.status === 401) {
         unAuthUser();
         Actions.login({type: 'replace'})
+        Actions.error_modal({data: "Please login back in to refresh your credentials."})
       }
     
       const error = new Error(response.statusText);
@@ -151,7 +153,7 @@ export function getCurrentLocation() {
 // Get the status of driver - available, notAvailable, pickUp, dropOff, rideCompleted
 export function getDriverStatus(driverStatus){
     return(dispatch, store) => {
-        const id = store().home.driverLocation._id;
+        const id = store().login.user_id;
         const payload = {
                 // DriverId is always equal to User_id
                 // driverId: store().login.user_id,
@@ -163,7 +165,7 @@ export function getDriverStatus(driverStatus){
                 //     coordinates: [store().home.region.longitude, store().home.region.latitude]
                 // },
                 // socketId: store().home.driverSocketId,
-                ...store().home.driverLocation,
+                // ...store().home.driverLocation,
                 driverStatus: driverStatus,
                 // vehicle: store().profile.selectedVehicle._id,
                 // serviceType: store().profile.driverInfo.serviceType
@@ -176,12 +178,12 @@ export function getDriverStatus(driverStatus){
         });
 
         //Updates database with Driver Status
-        return axios.put(`${API_URL}/api/driverLocation/` + id, {payload}, {
-            headers: {authorization: store().login.token}
+        return axios.put(`${API_URL}/api/driver/` + id, {payload}, {
+            headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
             dispatch({
-                type: DB_UPDATED_DRIVER_LOCATION,
-                payload: res.data
+                type: DB_UPDATED_DRIVER_STATUS,
+                payload: res.data.driverStatus
             });
             dispatch(isDriverConnecting(false)); 
         }).catch((error) => {
@@ -189,6 +191,7 @@ export function getDriverStatus(driverStatus){
             if (error.response.status === 401) {
                 dispatch(unAuthUser());
                 Actions.login({type: 'replace'})
+                Actions.error_modal({data: "Please login back in to refresh your credentials."})
             }
         })
     }
@@ -418,7 +421,7 @@ export function postDriverLocation(){
 
         console.log("Driver location that is going to be posted: ", data);
         return axios.post(`${API_URL}/api/driverLocation`, {data}, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         })
         .then((res) => {
             dispatch({
@@ -430,6 +433,7 @@ export function postDriverLocation(){
             if (error.response.status === 401) {
                 dispatch(unAuthUser());
                 Actions.login({type: 'replace'})
+                Actions.error_modal({data: "Please login back in to refresh your credentials."})
             }
         })
 
@@ -448,7 +452,7 @@ export function updateBookingDetails(key, instance){
         const bookingID = store().home.bookingDetails._id;
 
         return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
             console.log("This is the Updated Booking Details", res);
             dispatch({
@@ -460,6 +464,7 @@ export function updateBookingDetails(key, instance){
             if (error.response.status === 401) {
                 dispatch(unAuthUser());
                 Actions.login({type: 'replace'})
+                Actions.error_modal({data: "Please login back in to refresh your credentials."})
             }
         })
 
@@ -483,7 +488,7 @@ export function updateDriverLocationDetails(key, instance){
         console.log(data)
         const driverLocationId = store().home.driverLocation._id;
         return axios.put(`${API_URL}/api/driverLocation/${driverLocationId}`, {data}, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
             dispatch({
                 type: UPDATE_DRIVER_LOCATION_DETAILS,
@@ -494,6 +499,7 @@ export function updateDriverLocationDetails(key, instance){
             if (error.response.status === 401) {
                 dispatch(unAuthUser());
                 Actions.login({type: 'replace'})
+                Actions.error_modal({data: "Please login back in to refresh your credentials."})
             }
         })
     }
@@ -577,7 +583,7 @@ export function acceptRideRequest(){
         const bookingID = store().home.bookingDetails._id
 
         return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
             console.log("This Accept Ride Request", res);
             dispatch({
@@ -590,6 +596,7 @@ export function acceptRideRequest(){
             if (error.response.status === 401) {
                 dispatch(unAuthUser());
                 Actions.login({type: 'replace'})
+                Actions.error_modal({data: "Please login back in to refresh your credentials."})
             }
         })
     }
@@ -621,7 +628,7 @@ export function newSelectedDriverSocketId(){
         if(store().home.bookingDetails){
             const bookingID = store().home.bookingDetails._id;
             return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
-                headers: {authorization: store().login.token}
+                headers: {authorization: "bearer " + store().login.token}
             }).then((res) => {
                 dispatch({
                     type: SELECTED_DRIVERS,
@@ -632,6 +639,7 @@ export function newSelectedDriverSocketId(){
                 if (error.response.status === 401) {
                     dispatch(unAuthUser());
                     Actions.login({type: 'replace'})
+                    Actions.error_modal({data: "Please login back in to refresh your credentials."})
                 }
             })
         }
@@ -798,6 +806,14 @@ function handlePostDriverLocation(state, action) {
     });
 }
 
+function handlePostDriverStatus(state, action) {
+    return update(state, {
+        driverStatus: {
+            $set: action.payload
+        }
+    });
+}
+
 function handleGetNewBooking(state, action) {
         return update(state, {
             bookingDetails: {
@@ -836,7 +852,8 @@ const ACTION_HANDLERS = {
     // GET_DRIVER_INFORMATION: handleGetDriverInfo,
     GET_SOCKET_ID: handelGetDriverSocket,
     POST_DRIVER_LOCATION: handlePostDriverLocation,
-    DB_UPDATED_DRIVER_LOCATION: handlePostDriverLocation,
+    // DB_UPDATED_DRIVER_LOCATION: handlePostDriverLocation,
+    DB_UPDATED_DRIVER_STATUS: handlePostDriverStatus,
     NEW_BOOKING: handleGetNewBooking,
     IN_ROUTE_TO: handleInRouteTo,
     WATCH_DRIVER_LOCATION: handelWatchDriverLocation,

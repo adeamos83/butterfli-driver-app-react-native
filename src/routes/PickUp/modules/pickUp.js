@@ -321,7 +321,7 @@ export function updateDistanceToPickUp(){
         const bookingID = store().home.bookingDetails._id;
 
         return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
             console.log("Sending distance to pickUp details");
             // dispatch({

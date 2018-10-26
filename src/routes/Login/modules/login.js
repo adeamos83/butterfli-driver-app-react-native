@@ -117,33 +117,40 @@ export function loginUser(email, password){
         }
             console.log(error.config);
         })
-        .then( async function(){
+        .then( function(){
             // dispatch(getDriverInfo());
-            let user_id = store().login.user_id;
-            await axios.get(`${API_URL}/api/driver/` + user_id, {
-               headers: {authorization: store().login.token}
-            }).then((res) => {
-                console.log("This is Get Driver Info", res);
-                dispatch({
-                    type: GET_DRIVER_INFORMATION,
-                    payload: res.data
-                });
-            }).catch((error) => {
-                console.log(error);
-               //  if (error.response.status === 401) {
-               //  dispatch(unAuthUser());
-               //  Actions.login({type: 'replace'})
-               //  } else {
-               //  dispatch(addAlert("Could not get Driver Profile."));
-               //  }
-            })
+            if(store().login.user_id){
+                let user_id = store().login.user_id;
+                axios.get(`${API_URL}/api/driver/` + user_id, {
+                headers: {authorization: "bearer " + store().login.token}
+                }).then((res) => {
+                    console.log("This is Get Driver Info", res);
+                    dispatch({
+                        type: GET_DRIVER_INFORMATION,
+                        payload: res.data
+                    });
+                }).catch((error) => {
+                    console.log(error);
+                //  if (error.response.status === 401) {
+                //  dispatch(unAuthUser());
+                //  Actions.login({type: 'replace'})
+                //  } else {
+                //  dispatch(addAlert("Could not get Driver Profile."));
+                //  }
+                })
+            }
         })
         .then(function(){
-            if(store().login.driverInfo.vehicle){
-                dispatch(getSelectedVehicle(store().login.driverInfo.vehicle));
-                Actions.home({type: "replace"})
-            } else {
-                Actions.vehicleSelect({type: "replace"})
+            if(store().login.user_id){
+                const { vehicle } = store().driverInfo || {};
+                
+                console.log("Vehcile info boolean: ", vehicle);
+                if(vehicle){
+                    dispatch(getSelectedVehicle(store().login.driverInfo.vehicle));
+                    Actions.home({type: "replace"})
+                } else {
+                    Actions.vehicleSelect({type: "replace"})
+                }
             }
         })
    }
@@ -179,14 +186,15 @@ export function signupUser(){
              Actions.home({type: "replace"})
         }).catch((error) => {
             console.log(error.response)
-                if (error.response.status === 422) {
-                    // dispatch(addAlert(error.response.data.error));
-                    Actions.error_modal({data: error.response.data.error})
+                // if (error.response.status === 422) {
+                //     // dispatch(addAlert(error.response.data.error));
+                //     Actions.error_modal({data: error.response.data.error})
 
-                } else {
-                    // dispatch(addAlert("Could not sign up."));
-                    Actions.error_modal({data: "Could not sign up. Please check information and try again."})
-                }
+                // } else {
+                //     // dispatch(addAlert("Could not sign up."));
+                //     Actions.error_modal({data: "Could not sign up. Please check information and try again."})
+                // }
+                Actions.error_modal({data: "Could not sign up. Please check information and try again."})
          	setTimeout(function(){
             dispatch(isSigningUp(false));
          }, 3000)
@@ -268,7 +276,7 @@ export function createProfile(){
         console.log("from create profile redux function", details);
 
         return axios.post(CREATE_PROFILE_URL, details, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((response) => {
              var details = response.data;
              console.log(details);
@@ -324,7 +332,7 @@ export function getVehicleGarage(){
         const companyId = store().profile.driverInfo.company._id
         const vehicleGarageUrl = API_URL + "/api/availablevehicles/" +  companyId;
         return axios.get(vehicleGarageUrl, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((response) => {
             var vehicleGarage = response.data;
             // let vehicleGarage = response.data.vehicles.filter((availableVehicles) => {

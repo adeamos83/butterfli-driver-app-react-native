@@ -55,7 +55,7 @@ export function getDriverInfo() {
         let id = "5b5d05220fdb907bdb8a5c2d";
 
         return axios.get(`${API_URL}/api/driver/` + user_id, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
             dispatch({
                 type: GET_DRIVER_INFORMATION,
@@ -115,7 +115,7 @@ export function updateDriverProfile(firstName, lastName, email, phoneNumber){
         console.log(details);
         update_Profile_Url = API_URL + "/api/driver/" + store().login.user_id;
         return axios.put(update_Profile_Url, details, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((response) => {
              var details = response.data;
             //  dispatch(addAlert("User Profile Updated"));
@@ -144,7 +144,7 @@ export function getRideHistory(){
         const rideHistoryUrl = API_URL + "/api/driver/" + driverId + "/bookings";
         console.log(rideHistoryUrl);
         return axios.get(rideHistoryUrl, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((response) => {
              var rideHistory = response.data;
              console.log(rideHistory);
@@ -182,7 +182,7 @@ export function updateVehicleProfile(){
         }
         vehicleUpdateUrl = UPDATE_VEHICLE_URL + "/" + store().profile.driverInfo._id;
         return axios.put(vehicleUpdateUrl, details, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((response) => {
             var details = response.data;
             dispatch({
@@ -216,7 +216,7 @@ export function clearVehicleProfile() {
         }
         vehicleUpdateUrl = CLEAR_VEHICLE_URL + "/" + store().profile.driverInfo._id;
         return axios.put(vehicleUpdateUrl, details, {
-            headers: {authorization: store().login.token}
+            headers: {authorization: "bearer " + store().login.token}
         }).then((response) => {
             // var details = response.data;
             console.log(response.data);

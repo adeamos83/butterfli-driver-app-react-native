@@ -33,7 +33,7 @@ class PickUp extends React.Component {
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10}
         );
 
-        var  distanceTimer = setInterval(this.props.updateDistanceToPickUp, 120000);
+         this.distanceTimer = setInterval(this.props.updateDistanceToPickUp, 120000);
     }
     
     componentDidUpdate(prevProps, prevState)  {

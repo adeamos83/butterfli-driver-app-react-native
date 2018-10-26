@@ -112,7 +112,7 @@ class SelectVehicleContainer extends React.Component {
                   </Content>
 						||
                   <Content style={{paddingTop: 10}}>
-                  { vehicleGarage && 
+                  { vehicleGarage.length > 0 && 
                         <View>
 									{!vehicleLoading && 
 										<List 
