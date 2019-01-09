@@ -70,8 +70,18 @@ export const DropOffMapContainer = ({
                     coordinate={{latitude: parseFloat(dropOff.latitude), longitude: parseFloat(dropOff.longitude)}}
                     pinColor="blue"
                 />
-            }
-
+            }    
+            
+             {/*
+                {region && 
+                    <MapView.Marker 
+                        draggable
+                        coordinate={driver}
+                        pinColor="green"
+                        onDragEnd={(e) => carMoving(e.nativeEvent.coordinate)}
+                    />
+                }
+            */}
             {region && 
                 <MapView.Marker 
                     draggable
@@ -80,7 +90,6 @@ export const DropOffMapContainer = ({
                     onDragEnd={(e) => carMoving(e.nativeEvent.coordinate)}
                 />
             }
-
             { dropOffRoutes &&
                 <MapView.Polyline
                     coordinates={[...dropOffRoutes]}

@@ -241,7 +241,7 @@ export function updateDistanceToDropOff(){
     return(dispatch, store) => {
         const data = {
             ...store().home.bookingDetails,
-            selectedDriver: store().home.driverLocation._id,
+            selectedDriver: store().home.driverLocation,
             distanceToDropOff: {
                 duration: store().dropOff.distanceFrom.rows[0].elements[0].duration.text,
                 distance: store().dropOff.distanceFrom.rows[0].elements[0].distance.text

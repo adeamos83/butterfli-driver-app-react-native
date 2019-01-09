@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+var moment = require('moment');
 import { connect } from 'react-redux';
 import { View, Image, ScrollView } from 'react-native';
 import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
@@ -44,16 +45,14 @@ class RideHistoryContainer extends React.Component {
 									<Text>{item.firstName + " " + item.lastName}</Text>
 									{ item.tripDistance[0] &&
 										<Text note>
-											{item.tripDistance[0].totalMiles + "mi"}
-											<View style={{paddingHorizontal: 5}}>
-												<Icon name="circle" style={{ color: "#ccc", fontSize: 8, opacity: 5}} />
-											</View>
-											{item.tripDistance[0].totalTime + "m"}
+											{item.tripDistance[0].totalMiles + "mi  "}
+												<Icon name="circle" style={{ marginHorizontal: 5, color: "#ccc", fontSize: 8, opacity: 5}} />
+											{"  " + item.tripDistance[0].totalTime + "m"}
 										</Text>
 									}
 								</Body> 
 								<Right>
-									<Text note>8/27/18 3:43 PM</Text>
+									<Text note>{moment(item.bookingCreateAt).format('MMM Do YYYY, h:mm a')}</Text>
 								</Right>
 								</ListItem>
 							}

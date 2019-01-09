@@ -59,16 +59,17 @@ export const RideRequestMapContainer = ({
                     pinColor="blue"
                 />
             }
-
-            {region && 
-                <MapView.Marker 
-                    draggable
-                    coordinate={{latitude: watchDriverLocation.coords.longitude, longitude: watchDriverLocation.coords.longitude}}
-                    pinColor="green"
-                    onDragEnd={(e) => getMarkerLocation(e.nativeEvent.coordinate)}
-                />
-            }
-
+            
+            {/*  This controls the movable pin  only for test purppose 
+                {region && 
+                    <MapView.Marker 
+                        draggable
+                        coordinate={{latitude: watchDriverLocation.coords.longitude, longitude: watchDriverLocation.coords.longitude}}
+                        pinColor="green"
+                        onDragEnd={(e) => getMarkerLocation(e.nativeEvent.coordinate)}
+                    />
+                }
+            */}
             { routes &&
                 <MapView.Polyline
                     coordinates={[...routes]}

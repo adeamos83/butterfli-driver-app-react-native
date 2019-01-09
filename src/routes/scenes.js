@@ -24,6 +24,8 @@ import ErrorModal from '../Components/Modal/ErrorModal';
 import CustomNavBar from '../Components/Common/CustomNavBar';
 import ErrorLightbox from '../Components/LightBox/ErrorLightbox';
 
+import ProfileCamera from './Camera/Camera';
+
 const MenuIcon = () => {
     return(
         <Icon name='user-circle-o' size={30} color="green"/>
@@ -56,9 +58,10 @@ const scenes = Actions.create(
 	<Lightbox key="lightbox">
 
 		<Scene key='root' hideNavBar>
-			<Scene key="login" component={LoginContainer} initial title="login" />
+			<Scene key="login" component={LoginContainer} initial/>
 			<Scene key="createProfile" component={CreateProfile}   title="Create Profile"/>
 			<Scene key="createVehicleProfile" component={CreateVehicleProfile} title="Vehicle Profile"/>
+			<Scene key="profileCamera" component={ProfileCamera} gesturesEnabled={false} title="Camera"/>
 			
 			<Stack back backTitle="Back" backButtonTextStyle={styles.backButtonStyle} key="loadVehicle" duration={0} navTransparent>
 				<Scene key="loadVehicleSelect" component={SelectVehicleContainer}  title="Select Vehicle"/>
@@ -66,7 +69,7 @@ const scenes = Actions.create(
 
 			<Stack back backTitle="Back" backButtonTextStyle={styles.forgotBackButton} backButtonTintColor="white" key="passwordReset" duration={0} navTransparent>
 				<Scene key="forgotPassword" component={ForgotPasswordContainer} title='Forgot Password' titleStyle={styles.forgotTitle}/>
-            <Scene key="login" component={LoginContainer}/> 
+            <Scene key="backToLogin" component={LoginContainer}/> 
         	</Stack>
 			
 			<Stack back backTitle="Back" backButtonTextStyle={styles.backButtonStyle} key="register" duration={0} navTransparent>

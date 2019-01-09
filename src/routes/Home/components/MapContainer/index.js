@@ -33,15 +33,17 @@ export const MapContainer = ({
                     image={carMarker}
                 />
             }
-
-            {region && 
-                <MapView.Marker 
-                    draggable
-                    coordinate={{latitude: region.latitude, longitude: region.longitude}}
-                    pinColor="green"
-                    onDragEnd={(e) => getMarkerLocation(e.nativeEvent.coordinate)}
-                />
-            }
+            {/*  This controls the movable pin  only for test purppose 
+            
+                {region && 
+                    <MapView.Marker 
+                        draggable
+                        coordinate={{latitude: region.latitude, longitude: region.longitude}}
+                        pinColor="green"
+                        onDragEnd={(e) => getMarkerLocation(e.nativeEvent.coordinate)}
+                    />
+                }
+            */}
             </MapView>
             
         </View>

@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.286</string>
+	<string>2.289</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -35,14 +35,22 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>ButterFLi needs to access you camera for profile pictures</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Butterfli needs your location to find near by ride requests</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Butterfli needs your location to find near by ride requests</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Butterfli needs your location to find near by ride requests</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ButterFLi needs to access you camera for profile pictures</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Butterfli needs your location to find near by ride requests</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ButterFLi needs to access you camera for profile pictures</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ButterFLi needs to access you camera for profile pictures</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FontAwesome.ttf</string>

@@ -43,12 +43,12 @@ let ProfileContainer =({ getDriverInfo, updateDriverProfile, canEditProfile,
 			<Header/>
 			<View style={styles.avatarHeader}>
 				{ profilePic && 
-					<Image resizemode="container" style={styles.driverPic} source={{uri:profilePic}} />
+					<Image resizemode="container" style={styles.driverPic} source={{uri:profilePic}} key={profilePic}/>
 					||
-					<Icon name="user-circle-o" style={styles.icon} />
+					<Icon name="user-circle-o" style={styles.icon}/>
 				}
 				<View style={styles.editRow}>
-					<Text style={{color: '#19B5FE', fontSize: 12, marginTop: 15}}>Change Profile Photo</Text>
+					<Text style={{color: '#19B5FE', fontSize: 12, marginTop: 15}} onPress={() => Actions.profileCamera({type: "replace"})}>Change Profile Photo</Text>
 					<Button bordered light small style={styles.editBtn} onPress={handleSubmit(this.onEditProfile)}>
 						<Text>{canEdit? "Done" : "Edit"}</Text>
 					</Button>
@@ -97,6 +97,7 @@ let ProfileContainer =({ getDriverInfo, updateDriverProfile, canEditProfile,
 							editable={canEdit}
 							placeholder="Phone"
 							placeholderTextColor="rgba(255,255,255,0.7)"
+							format={ value =>  formatPhoneNumber(value)}
 							returnKeyType="next"
 						/>
 					</Item>

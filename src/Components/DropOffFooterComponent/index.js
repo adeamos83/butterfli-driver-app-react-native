@@ -17,13 +17,11 @@ export const DropOffFooterComponent = ({ dropOffDistance, distanceFrom, getDrive
         <View>
             { (dropOffDistance < 480) &&
                 <View style={styles.footerContainer}>
-                    return (
                         <View style={styles.buttonContainer}>
                             <Button danger style={styles.navButton} onPress={()=>this.dropOffConfrim()}>
                                 <Text style={styles.btnText}>End Ride</Text>
                             </Button>
                         </View>
-                    )
                 </View>
             }
          </View>

@@ -312,7 +312,7 @@ export function updateDistanceToPickUp(){
     return(dispatch, store) => {
         const data = {
             ...store().home.bookingDetails,
-            selectedDriver: store().home.driverLocation._id,
+            selectedDriver: store().home.driverLocation,
             distanceToPickUp: {
                 duration: store().pickUp.distanceFrom.rows[0].elements[0].duration.text,
                 distance: store().pickUp.distanceFrom.rows[0].elements[0].distance.text

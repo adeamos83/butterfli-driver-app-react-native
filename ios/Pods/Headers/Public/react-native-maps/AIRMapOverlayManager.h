@@ -1,1 +1,5 @@
-../../../../../node_modules/react-native-maps/lib/ios/AirMaps/AIRMapOverlayManager.h
+#import <React/RCTViewManager.h>
+
+@interface AIRMapOverlayManager : RCTViewManager
+
+@end

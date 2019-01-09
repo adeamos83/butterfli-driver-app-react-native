@@ -27,16 +27,13 @@ export const InRouteFooter = ({ navToPickUp }) => {
     return (
         <Footer>
             <FooterTab style={styles.footerContainer} iosBarStyle="light-content">
-                return (
                     <View style={styles.buttonContainer}>
                         <Button success style={styles.navButton} onPress={navToPickUp}>
                             <Text style={styles.btnText}>Start Navigation</Text>
                         </Button>
-                    </View>
-                   
-                )
+                    </View>  
             </FooterTab>
-            </Footer>
+        </Footer>
     );
 }
 

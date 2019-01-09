@@ -60,7 +60,7 @@ class RideRequest extends React.Component {
     render() {
         return(
         <Container>
-x            <View style={{flex:1}}>
+        <View style={{flex:1}}>
                 {/* <HeaderComponent logo={buttefliLogo}/> */}
                
                 {this.props.region.latitude &&

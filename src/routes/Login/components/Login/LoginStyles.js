@@ -44,8 +44,8 @@ const styles = {
       alignItems: "center",
       height: 50,
       marginTop: 15,
-    marginVertical: 5,
-    backgroundColor: '#8E44AD'
+      marginVertical: 5,
+      backgroundColor: '#8E44AD'
    },
    signinBtn:{
       width:width * 0.85,

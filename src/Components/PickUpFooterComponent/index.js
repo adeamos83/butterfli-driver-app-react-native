@@ -17,13 +17,11 @@ export const PickUpFooterComponent = ({ bookingDetails, pickUpDistance, distance
         <View>
             { (pickUpDistance < 300) &&
                 <View style={styles.footerContainer}>
-                    return (
                         <View style={styles.buttonContainer}>
                             <Button success style={styles.navButton} onPress={()=>this.pickUpConfrim()}>
                                 <Text style={styles.btnText}>{"Pick Up " + firstName}</Text>
                             </Button>
                         </View>
-                    )
                 </View>
             }
          </View>

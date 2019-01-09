@@ -10,13 +10,13 @@ export const StartRideButton = ({ startTrip }) => {
     return (
         <View>
             <View style={styles.footerContainer}>
-               return (
+               
                   <View style={styles.buttonContainer}>
                         <Button  style={styles.navButton} onPress={startTrip}>
                            <Text style={styles.btnText}>{"Start Trip"}</Text>
                         </Button>
                   </View>
-               )
+               
             </View>
          </View>
     );

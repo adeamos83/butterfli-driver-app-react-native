@@ -14,7 +14,11 @@ class Login extends React.Component {
       if(this.props.user_id && this.props.token){
             if(this.props.currentRoute){
                   console.log("Going to last active scene.")
-                  Actions[this.props.currentRoute.slice(1)].call({type: 'replace'})
+                  if(this.props.currentRoute == "profileCamera"){
+                     Actions["profileCamera"].call({type: 'replace'})
+                  } else {
+                     Actions[this.props.currentRoute.slice(1)].call({type: 'replace'})
+                  }
             } else {
                   Actions.home({type: "replace"});
             }

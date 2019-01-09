@@ -22,7 +22,7 @@ class SelectVehicleContainer extends React.Component {
 			if(this.props.driverInfo.vehicle){
 				this.props.getSelectedVehicle(this.props.driverInfo.vehicle);
 			}
-      }
+   }
 
    componentDidUpdate(prevProps, prevState) {
       // console.log("Testing user_id boolean", this.props.user_id);
@@ -146,9 +146,17 @@ class SelectVehicleContainer extends React.Component {
 										</View>
 									}
                      	</View>
-                  ||
-						<View style={styles.noHistoryContainer}>
-								<Text> No Vehicles Found</Text>
+						||
+						<View>
+							{ !vehicleLoading &&
+								<View style={styles.noHistoryContainer}>
+									<Text> No Vehicles Found</Text>
+								</View>
+								||
+								<View style={styles.spinnerStyle}>
+									<Spinner size="large" color="#663399"/>
+								</View>
+							}
 						</View>
                }
                   
@@ -163,7 +171,7 @@ class SelectVehicleContainer extends React.Component {
 const mapStateToProps = (state) => ({
    driverInfo: state.profile.driverInfo || {},
    user_id: state.login.user_id,
-   vehicleGarage: state.login.vehicleGarage || [],
+   vehicleGarage: state.login.vehicleGarage || {},
    selectedVehicle: state.profile.selectedVehicle || {},
    canEditVehicle: state.profile.canEditVehicle,
    vehicleLoading: state.profile.vehicleLoading

@@ -1,1 +1,17 @@
-../../../../../../node_modules/react-native-background-geolocation/ios/RNBackgroundGeolocation/TSLocationManager.framework/Headers/TSConnectivityChangeEvent.h
+//
+//  TSConnectivityChangeEvent.h
+//  TSLocationManager
+//
+//  Created by Christopher Scott on 2018-02-22.
+//  Copyright © 2018 Transistor Software. All rights reserved.
+//
+
+@interface TSConnectivityChangeEvent : NSObject
+
+@property (nonatomic, readonly) BOOL hasConnection;
+
+-(instancetype) initWithHasConnection:(BOOL)hasConnection;
+
+@end
+
+

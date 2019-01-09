@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#BE90D4', 
         justifyContent: 'center', 
         // alignItems: 'center',
-        paddingTop: 50,
+        paddingTop: 75,
         paddingLeft: 10,
         paddingBottom: 30, 
         // flexDirection: 'row',
@@ -64,6 +64,15 @@ const styles = StyleSheet.create({
         fontSize: 14,
         paddingTop: 5,
         marginVertical: 0,
+        // borderColor: 'red',
+        // borderWidth: 1
+    },
+    avatarTextBottom: {
+        color: '#ecf0f1',
+        fontSize: 14,
+        paddingTop: 5,
+        marginVertical: 0,
+        paddingBottom: 10,
         // borderColor: 'red',
         // borderWidth: 1
     }

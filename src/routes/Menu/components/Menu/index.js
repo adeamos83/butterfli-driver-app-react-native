@@ -72,9 +72,9 @@ export const MenuContainer =({ unAuthUser, newBookingAlerted, pickUpArrivingAler
             { driverInfo.company &&
                   <View>
                   <Text style={styles.avatarTextHeader}>{firstName + " " + lastName}</Text>
-                        <Text style={styles.avatarText}>{company.company}</Text>
-                        <Text style={styles.avatarText}>{(!vehicle)? "Vehicle: None":"Vehicle: " + make + " " + model}</Text>
-                        <Text style={styles.avatarText}>{(serviceType == undefined)? "Service: Not in Service": "Service: " + this.Capitalize(serviceType)}</Text>
+                     <Text style={styles.avatarText}>{company.company}</Text>
+                     <Text style={styles.avatarText}>{(!vehicle)? "Vehicle: None":"Vehicle: " + make + " " + model}</Text>
+                     <Text style={styles.avatarTextBottom}>{(serviceType == undefined)? "Service: Not in Service": "Service: " + this.Capitalize(serviceType)}</Text>
                   </View>
             }
          </View>

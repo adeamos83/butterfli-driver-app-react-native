@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import {SIGNIN_URL, FORGOT_PASSWORD_URL, DRIVER_SIGNIN_URL, SIGNUP_URL, API_URL, CREATE_PROFILE_URL} from '../../../api';
 import {addAlert} from '../../Alert/modules/alerts';
-import { disconnectSocketIO, updateBookingDetails } from '../../Home/modules/home';
+import { disconnectSocketIO, updateBookingDetails, updateDriverLocationDetails, getDriverStatus } from '../../Home/modules/home';
 import { isVehiclesLoading, clearVehicleProfile, getSelectedVehicle, getDriverInfo } from '../../Profile/modules/profile';
 
 //-------------------------------
@@ -22,11 +22,14 @@ const { AUTH_USER,
         GET_INPUT,
         NAV_TO_CAR_PROFILE,
         IS_LOGGING_IN,
-		  IS_SIGNING_UP,
-		  GET_DRIVER_INFORMATION,
+        IS_SIGNING_UP,
+        GET_DRIVER_INFORMATION,
         USER_PROFILE_CREATED,
         CLEAR_PROFILE,
-        VEHICLE_GARAGE
+        VEHICLE_GARAGE,
+        IS_LOADING,
+        PASSWORD_RESET_MESSAGE,
+        CLEAR_PASSWORD_RESET_MESSAGE
         } = constants;
 
 //-------------------------------
@@ -39,7 +42,8 @@ const initialState = {
     inputData: {},
     navToCarPage: false,
     loggingIn: false,
-    signingUp: false
+    signingUp: false,
+    isLoading: false
 };
 
 
@@ -53,6 +57,16 @@ export function isLoggingIn(payload){
     return (dispatch) => {
         dispatch({
             type: IS_LOGGING_IN,
+            payload: payload
+        })
+    }
+}
+
+// Used for the general spinning loading 
+export function isLoading(payload){
+    return (dispatch) => {
+        dispatch({
+            type: IS_LOADING,
             payload: payload
         })
     }
@@ -117,11 +131,11 @@ export function loginUser(email, password){
         }
             console.log(error.config);
         })
-        .then( function(){
+        .then( async function(){
             // dispatch(getDriverInfo());
             if(store().login.user_id){
                 let user_id = store().login.user_id;
-                axios.get(`${API_URL}/api/driver/` + user_id, {
+                await axios.get(`${API_URL}/api/driver/` + user_id, {
                 headers: {authorization: "bearer " + store().login.token}
                 }).then((res) => {
                     console.log("This is Get Driver Info", res);
@@ -217,14 +231,17 @@ export function unAuthUser(){
         if(store().home.driverStatus !== "available" && store().home.driverStatus !== "notAvailable"){ 
             console.log("Driver is canceling ride request");
             dispatch(updateBookingDetails("rideRequestStatus", "canceled"));
-		  }
+        }
 
-		  if(store().profile.selectedVehicle){
-			console.log("Clearing vehicle selection")
-			  	dispatch(clearVehicleProfile());
-			  	dispatch(getSelectedVehicle(null));
-		  }
-
+        if(store().profile.selectedVehicle){
+            console.log("Clearing vehicle selection")
+            dispatch(clearVehicleProfile());
+            dispatch(getSelectedVehicle(null));
+        }
+        if(store().home.driverLocation){
+            dispatch(getDriverStatus("notAvailable"));
+            dispatch(updateDriverLocationDetails("driverStatus", "notAvailable"));
+        }
         disconnectSocketIO();
         dispatch({
             type: UNAUTH_USER,
@@ -234,12 +251,42 @@ export function unAuthUser(){
 
 // Forget password reset form
 export function resetPassword(email){
-    var forgotEmail = {
-        email: email
+    console.log(email);
+    return(dispatch) => {
+        let forgotEmail = {
+            email: email
+        }
+        dispatch(isLoading(true));
+        console.log("reseting password")
+        return axios.post(FORGOT_PASSWORD_URL, forgotEmail).then((response) => {
+            console.log(response);
+            let message = {
+                statusCode: response.status,
+                message: response.data
+            }
+            dispatch(isLoading(false));
+            dispatch({
+                type: PASSWORD_RESET_MESSAGE,
+                payload: message
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+            dispatch(isLoading(false));
+            if(err.response.status = 422){
+                Actions.error_modal({data: err.response.data.error});
+            }
+        });
     }
-    return axios.post(FORGOT_PASSWORD_URL, forgotEmail).then((response)=> {
-        console.log(response.status);
-    })
+}
+
+export function clearResetPassword(){
+    return(dispatch)=>{
+        dispatch({
+            type: CLEAR_PASSWORD_RESET_MESSAGE,
+            payload: undefined
+        })
+    }
 }
 
 //Check to see if User need to create profile 
@@ -370,6 +417,31 @@ function handleIsLoggingIn(state, action ) {
     })
 }
 
+function handleIsLoading(state, action ) {
+    return update(state, {
+        isLoading: {
+            $set: action.payload
+        }
+    })
+}
+
+function handlePasswordResetMessage(state, action){
+    return update( state, {
+       resetMessage: {
+           $set: action.payload
+       }
+    })
+}
+
+function clearPasswordResetMessage(state, action){
+    return update( state, {
+       resetMessage: {
+           $set: action.payload
+       }
+    })
+}
+
+
 function handleGetDriverInfo(state, action) {
 	return update(state, {
 		 driverInfo: {
@@ -491,8 +563,8 @@ function handleGetVehicleGarage(state, action ) {
 }
  
 const ACTION_HANDLERS = {
-	 GET_INPUT: handleGetInputData,
-	 GET_DRIVER_INFORMATION: handleGetDriverInfo,
+    GET_INPUT: handleGetInputData,
+    GET_DRIVER_INFORMATION: handleGetDriverInfo,
     AUTH_USER: handleUserAuth,
     UNAUTH_USER: handleUnAuthUser,
     NEEDS_PROFILE: handleNeedsProfile,
@@ -503,7 +575,10 @@ const ACTION_HANDLERS = {
     IS_SIGNING_UP: handleIsSigningUp,
     USER_PROFILE_CREATED: handleGetNewUserProfile,
     CLEAR_PROFILE: handleClearProfile,
-    VEHICLE_GARAGE: handleGetVehicleGarage
+    VEHICLE_GARAGE: handleGetVehicleGarage,
+    IS_LOADING: handleIsLoading,
+    PASSWORD_RESET_MESSAGE: handlePasswordResetMessage,
+    CLEAR_PASSWORD_RESET_MESSAGE: clearPasswordResetMessage
 }
 
 

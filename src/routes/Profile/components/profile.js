@@ -13,6 +13,7 @@ class Profile extends React.Component {
 
    componentDidMount(){
       this.props.getCurrentRoute();
+      this.props.getDriverInfo();
    }
 
    render() {

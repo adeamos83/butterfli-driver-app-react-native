@@ -11,12 +11,16 @@ const styles = {
    titleContainer: {
     //   padding: 10,
       alignItems: 'center',
-      flexGrow: 1,
+      // flexGrow: 1,
+      flex: 1,
       justifyContent: 'center'
    },
    title: {
       color: 'white',
-      fontSize: 35
+      fontSize: 20,
+      paddingHorizontal: 10,
+      paddingBottom: 10,
+      textAlign: 'center'
    },
    field: {
       padding: 5,
@@ -38,16 +42,14 @@ const styles = {
     //   width:width * 0.9,
     //   paddingTop: 20,
   },
-  signup:{
-      width:width * 0.85,
+  loginBtn:{
+      width:width * 0.55,
+      height: 50,
       justifyContent: "center",
       alignItems: "center",
-      height: 50,
-    //   borderRadius:7,
-    //   borderWidth: 1,
-    //   borderColor:"#fff",
-    marginVertical: 5,
-    backgroundColor: '#8E44AD'
+      marginVertical: 5,
+      backgroundColor: "#663399",
+      alignSelf: 'center',
    },
    signinBtn:{
       width:width * 0.85,
@@ -55,10 +57,7 @@ const styles = {
       justifyContent: "center",
       alignItems: "center",
       marginVertical: 5,
-    //   borderRadius:7,
-    //   borderWidth: 1,
-    //   borderColor:"#fff",
-    backgroundColor: "#663399"
+      backgroundColor: "#663399"
   },
   btnText: {
      fontSize: 20,

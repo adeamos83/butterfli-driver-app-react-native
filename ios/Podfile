@@ -44,6 +44,8 @@ target 'ButterFliDriverApp' do
  
    pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'
  
+   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
  end
  
  post_install do |installer|

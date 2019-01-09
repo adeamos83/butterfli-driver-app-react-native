@@ -95,7 +95,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    buildToolsVersion '28.0.2'
 
     defaultConfig {
         applicationId "com.butterflidriverapp"
@@ -138,6 +138,12 @@ android {
 }
 
 dependencies {
+    implementation (project(':react-native-camera')) {
+        exclude group: "com.android.support"
+    }
+    implementation "com.android.support:exifinterface:+"
+    implementation "com.android.support:support-annotations:+"
+    implementation "com.android.support:support-v4:+"
     def googlePlayServicesVersion = project.hasProperty('googlePlayServicesVersion') ? project.googlePlayServicesVersion : "+"
     implementation(project(':react-native-maps'))
     compile project(':react-native-background-fetch')
@@ -159,4 +165,10 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:support-v4:27.1.0'
+    }
 }

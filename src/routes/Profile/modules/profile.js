@@ -1,11 +1,12 @@
 import update from 'react-addons-update';
 import constants from './actionConstants';
 import { Platform, Linking } from 'react-native';
-import { API_URL, UPDATE_PROFILE_URL, UPDATE_VEHICLE_URL, CLEAR_VEHICLE_URL } from '../../../api';
+import { API_URL, UPDATE_PROFILE_URL, UPDATE_VEHICLE_URL, CLEAR_VEHICLE_URL, AWS_ACCESSKEY, AWS_SECRETKEY } from '../../../api';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import { getVehicleGarage, unAuthUser } from '../../Login/modules/login'
 import { addAlert } from '../../Alert/modules/alerts';
+import { RNS3 } from 'react-native-aws3';
 
 //-------------------------------
 // Constants
@@ -15,11 +16,13 @@ const {
     GET_DRIVER_INFORMATION,
     EDITTING_PROFILE,
     USER_PROFILE_UPDATED,
+    DRIVER_IMAGE_UPLOADED,
     DRIVER_RIDE_HISTORY,
     UPDATE_VEHICLE_TYPE,
     SELECT_VEHICLE_INFO,
     EDITTING_VEHICLE_PROFILE,
-    IS_VEHICLES_LOADING
+    IS_VEHICLES_LOADING,
+    PROFILE_PIC_PATH
     } = constants;
 
 
@@ -30,9 +33,18 @@ const {
 const initialState = {
     canEdit: false,
     canEditVehicle: false,
-    vehicleLoading: true
+    vehicleLoading: true,
+    profilePicPath: null
 };
 
+const options = {
+    keyPrefix: "driverImages/",
+    bucket: "butterfli-webportal-image-upload",
+    region: "us-west-1",
+    accessKey: AWS_ACCESSKEY,
+    secretKey: AWS_SECRETKEY,
+    successActionStatus: 201
+}
 
 
 //-------------------------------
@@ -86,6 +98,70 @@ export function canEditProfile() {
     }
 }
 
+export function driverImageUpload(file){
+
+    return(dispatch, store) => {
+        RNS3.put(file, options).then(response => {
+            if (response.status !== 201)
+              throw new Error("Failed to upload image to S3");
+            console.log(response.body);
+            /**
+             * {
+             *   postResponse: {
+             *     bucket: "your-bucket",
+             *     etag : "9f620878e06d28774406017480a59fd4",
+             *     key: "uploads/image.png",
+             *     location: "https://your-bucket.s3.amazonaws.com/uploads%2Fimage.png"
+             *   }
+             * }
+             */
+            dispatch({
+                type: DRIVER_IMAGE_UPLOADED,
+                payload: response.body
+            })
+        });
+        
+    }
+}
+
+export function updateProfilePic(imageUri){
+	return(dispatch, store) => {
+		var picDetails = {
+            ...store().profile.driverInfo, 
+			profilePic: imageUri,
+		}
+        console.log(picDetails)
+		update_Profile_Url = API_URL + "/api/driver/" + store().login.user_id;
+
+		return axios.put(update_Profile_Url, picDetails, {
+			headers: {authorization: "bearer " + store().login.token}
+		}).then((response) => {
+			var details = response.data;
+			dispatch({
+					type: USER_PROFILE_UPDATED,
+					payload: details
+			});
+		}).catch((error) => {
+            console.log("Update pic error: ")
+            console.log(error)
+			if (error.response.status === 401) {
+					dispatch(unAuthUser());
+					Actions.login({type: 'replace'})
+			}
+		});
+	}
+}
+
+export function setProfilePicPath(uriPath){
+    return(dispatch) => {
+        dispatch({
+            type: PROFILE_PIC_PATH,
+            payload: uriPath
+        })
+    }
+}
+
+
 export function changeVehicleServiceType(value){
     return(dispatch, store) => {
         newDriver = {
@@ -102,8 +178,6 @@ export function changeVehicleServiceType(value){
 
 export function updateDriverProfile(firstName, lastName, email, phoneNumber){
     return(dispatch, store) => {
-        console.log("Here are the values from the form", arguments);
-        console.log("Here are the values from the form", ...arguments);
         var details = {
             // ...store().profile.driverInfo,
             firstName: firstName, 
@@ -135,6 +209,15 @@ export function updateDriverProfile(firstName, lastName, email, phoneNumber){
 					Actions.login({type: 'replace'})
 			  	}
         });
+    }
+ }
+
+ export function getUpdatedDriverInfo(driverinfo){
+    return(dispatch) => {
+        dispatch({
+            type: GET_DRIVER_INFORMATION,
+            payload: driverinfo
+        })
     }
  }
 
@@ -297,6 +380,13 @@ function handleCanEditVehicleProfile(state, action ) {
     })
 }
 
+function handleDriverImageUpload(state, action ) {
+    return update(state, {
+        driverImage: {
+            $set: action.payload
+        }
+    })
+}
 
 function handleChangeServiceType(state, action ) {
     return update(state, {
@@ -330,16 +420,26 @@ function handleIsVehiclesLoading(state, action ) {
     })
 }
 
+function handleProfilePathPic(state, action ) {
+    return update(state, {
+        profilePicPath: {
+            $set: action.payload
+        }
+    })
+}
+
 
 const ACTION_HANDLERS = {
     GET_DRIVER_INFORMATION: handleGetDriverInfo,
     EDITTING_PROFILE: handleCanEditProfile,
+    DRIVER_IMAGE_UPLOADED: handleDriverImageUpload,
     USER_PROFILE_UPDATED: handleGetDriverInfo,
     UPDATE_VEHICLE_TYPE: handleChangeServiceType,
     DRIVER_RIDE_HISTORY: handleGetRideHistory,
     SELECT_VEHICLE_INFO: handleSelectVehicle,
     EDITTING_VEHICLE_PROFILE: handleCanEditVehicleProfile,
-    IS_VEHICLES_LOADING: handleIsVehiclesLoading
+    IS_VEHICLES_LOADING: handleIsVehiclesLoading,
+    PROFILE_PIC_PATH: handleProfilePathPic
 }
 
 

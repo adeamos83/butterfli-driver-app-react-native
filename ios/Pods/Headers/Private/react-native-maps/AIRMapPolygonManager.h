@@ -1,10 +1,1 @@
-//
-// Created by Leland Richardson on 12/27/15.
-// Copyright (c) 2015 Facebook. All rights reserved.
-//
-
-#import <React/RCTViewManager.h>
-
-
-@interface AIRMapPolygonManager : RCTViewManager
-@end
+../../../../../node_modules/react-native-maps/lib/ios/AirMaps/AIRMapPolygonManager.h

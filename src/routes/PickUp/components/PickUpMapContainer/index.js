@@ -59,13 +59,23 @@ export const PickUpMapContainer = ({
                 this.fitAllMarker()
             }
 
+            
             { pickUp && 
                 <MapView.Marker 
                     coordinate={{latitude: parseFloat(pickUp.latitude), longitude: parseFloat(pickUp.longitude)}}
                     pinColor="green"
                 />
             }
-
+            {/* 
+                {region && 
+                    <MapView.Marker 
+                        draggable
+                        coordinate={{latitude: watchDriverLocation.coords.latitude, longitude: watchDriverLocation.coords.longitude}}
+                        pinColor="green"
+                        onDragEnd={(e) => carMoving(e.nativeEvent.coordinate)}
+                    />
+                }
+            */}
             {region && 
                 <MapView.Marker 
                     draggable
@@ -74,7 +84,6 @@ export const PickUpMapContainer = ({
                     onDragEnd={(e) => carMoving(e.nativeEvent.coordinate)}
                 />
             }
-
             { pickUpRoutes &&
                 <MapView.Polyline
                     coordinates={[...pickUpRoutes]}

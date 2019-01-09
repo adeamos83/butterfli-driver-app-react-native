@@ -6,6 +6,7 @@ const styles = ({
         backgroundColor: "white",
         // borderBottomWidth:1,
         // borderColor: "grey"
+        marginBottom: height * .025
     },
     subText: {
         fontSize: 8
