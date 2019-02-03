@@ -240,7 +240,9 @@ export function unAuthUser(){
         }
         if(store().home.driverLocation){
             dispatch(getDriverStatus("notAvailable"));
-            dispatch(updateDriverLocationDetails("driverStatus", "notAvailable"));
+            
+            // THis is probable not need since we are deleting the driver locations one they are logged out.
+            // dispatch(updateDriverLocationDetails("driverStatus", "notAvailable"));
         }
         disconnectSocketIO();
         dispatch({

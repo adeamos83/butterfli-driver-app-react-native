@@ -33,7 +33,8 @@ const { DRIVER_CONNECTING,
         SELECTED_DRIVERS,
         APP_STATE,
         UPDATE_DRIVER_LOCATION_DETAILS,
-        CLEAR_DRIVER_LOCATION
+        CLEAR_DRIVER_LOCATION,
+        CHECK_SOCKET_ID
         } = constants;
 
 const { width, height } = Dimensions.get("window");
@@ -61,6 +62,25 @@ const initialState = {
 //-------------------------------
 // Action
 //-------------------------------
+
+function errorLog(error){
+    if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+    } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+    console.log(error.request);
+    } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+    }
+        console.log(error.config);
+}
 
 export function checkStatus(response){
     console.log("This is status: ", response.status);
@@ -167,7 +187,7 @@ export function getDriverStatus(driverStatus){
                 //     coordinates: [store().home.region.longitude, store().home.region.latitude]
                 // },
                 // socketId: store().home.driverSocketId,
-                driver: store().home.driverLocation.driver._id,
+                driver: store().login.user_id,
                 driverStatus: driverStatus,
                 // vehicle: store().profile.selectedVehicle._id,
                 // serviceType: store().profile.driverInfo.serviceType
@@ -246,7 +266,7 @@ export function rejectBookingRequest(){
 
         // console.log("These are the near by drivers", nextDrivers);
         const data = {
-            ...store().home.bookingDetails,
+            // ...store().home.bookingDetails,
             rideRequestStatus: "rejected",
             // nearByDrivers: nextDrivers, 
         };
@@ -430,6 +450,36 @@ export function getDriverSocketId() {
     }
 }
 
+export function checkNewSocketId(){
+    return (dispatch, store) => {
+        if(store().home.driverSocketId){
+            console.log("Heartbeat funciton checkig to see if  driver socket id has changed")
+            dispatch({
+                type: "server/checkSocketId",
+            })
+            if(store().home.newDriverSocketId){
+                dispatch(changeSocketId());
+            }
+        }
+    }
+}
+
+export function changeSocketId(){
+    return (dispatch, store) => {
+        if(store().home.newDriverSocketId !== store().home.driverSocketId){
+            console.log("Need to change Driver Socket ID function");
+            dispatch({
+                type: "GET_SOCKET_ID",
+                payload: store().home.newDriverSocketId
+            })
+            if(store().home.driverLocation){
+                updateDriverLocationDetails("socketId", store().home.newDriverSocketId)
+                console.log("here is the new Socket ID", store().home.newDriverSocketId)
+            }
+        }
+    }
+}
+
 // Force disconnection from Socket Io server
 export function disconnectSocketIO() {
     return (dispatch, store) => {
@@ -445,6 +495,23 @@ export function disconnectSocketIO() {
             payload: store().home.driverSocketId
         });
         dispatch(isDriverConnecting(false));
+    }
+}
+
+export function checkDriverLocation(){
+    return (dispatch, store) => {
+        let driverId = store().login.user_id
+        console.log("Checking for driver location");
+        return axios.get(`${API_URL}/api/driverLocation/${driverId}`,{
+            headers: {authorization: "bearer " + store().login.token}
+        })
+        .then((response) =>{
+            console.log("Is there a driver location: ", response.data[0]);
+        })
+        .catch((error) => {
+            console.log(error)
+            errorLog(error)
+        })
     }
 }
 
@@ -520,6 +587,7 @@ export function updateBookingDetails(key, instance){
             });
         }).catch((error) => {
             console.log(error);
+            errorLog(error);
             if (error.response.status === 401) {
                 dispatch(unAuthUser());
                 Actions.login({type: 'replace'})
@@ -549,12 +617,19 @@ export function updateDriverLocationDetails(key, instance){
         return axios.put(`${API_URL}/api/driverLocation/${driverLocationId}`, {data}, {
             headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
-            dispatch({
-                type: UPDATE_DRIVER_LOCATION_DETAILS,
-                payload: res.data
-            });
+            if(res.data.error){
+                dispatch(postDriverLocation());
+            } else {
+                dispatch({
+                    type: UPDATE_DRIVER_LOCATION_DETAILS,
+                    payload: res.data
+                });
+            }
         }).catch((error) => {
-            console.log(error);
+            errorLog(error);
+            if(error.response.data.error){
+                dispatch(postDriverLocation());
+            }
             if (error.response.status === 401) {
                 dispatch(unAuthUser());
                 Actions.login({type: 'replace'})
@@ -861,6 +936,14 @@ function handelGetDriverSocket(state, action){
     });
 }
 
+function handelGetNewDriverSocketID(state, action){
+    return update(state, {
+        newDriverSocketId: {
+            $set: action.payload
+        }
+    });
+}
+
 
 function handlePostDriverLocation(state, action) {
     return update(state, {
@@ -941,7 +1024,8 @@ const ACTION_HANDLERS = {
     SELECTED_DRIVERS: handelAcceptRideRequest,
     APP_STATE: handelGetAppState,
     UPDATE_DRIVER_LOCATION_DETAILS: handleUpdateDriverLocationDetails,
-    NEW_BOOKING_ALERT: handleNewBookingAlert
+    NEW_BOOKING_ALERT: handleNewBookingAlert,
+    CHECK_SOCKET_ID: handelGetNewDriverSocketID
 }
 
 

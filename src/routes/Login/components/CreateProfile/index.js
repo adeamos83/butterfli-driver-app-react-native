@@ -142,7 +142,7 @@ class CreateProfile extends React.Component  {
 							{...companyCode}
 							withRef
 							refField='companyCode'
-							capitalize="words"
+							capitalize="characters"
 							ref={(c) => this.companyCode = c}
 							name="companyCode"
 							component={TextInputField}

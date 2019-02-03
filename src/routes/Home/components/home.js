@@ -21,7 +21,9 @@ class Home extends React.Component {
         this.props.getDriverInfo();
         this.props.getCurrentRoute();
         this.props.getRideHistory();
-
+        
+        //This function checks to see if this driver has a post driver location
+        this.props.checkDriverLocation();
         this.watchId = navigator.geolocation.watchPosition(
             (position) => {
                 this.props.watchingDriverLocation(position)
@@ -38,10 +40,10 @@ class Home extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
-			console.log("Changing Socket Id")
+			console.log("Changing Socket Id");
 			if(this.props.driverStatus !== "notAvailable"){
-					this.props.newSelectedDriverSocketId();
-					this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
+                this.props.newSelectedDriverSocketId();
+                this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
 			}
 		}
 	}

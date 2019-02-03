@@ -21,7 +21,7 @@ import { addAlert } from '../routes/Alert/modules/alerts';
 import { unAuthUser } from '../routes/Login/modules/login';
 import { pickUpArrivingAlerted } from '../routes/PickUp/modules/pickUp';
 import { dropOffArrivingAlerted } from '../routes/DropOff/modules/dropOff';
-import { getAppState, newBookingAlerted, watchingDriverLocation } from '../routes/Home/modules/home';
+import { getAppState, newBookingAlerted, checkNewSocketId, watchingDriverLocation } from '../routes/Home/modules/home';
 import { getLatLonDiffInMeters } from '../util/helper';
 
 var Spinner = require('react-native-spinkit');
@@ -114,6 +114,13 @@ export default class AppContainer extends Component {
             .catch(function(error){
                 Actions.error_modal({data: "Could't connect. Check your internet connection and try again."})
             })
+
+            // Checking to see if driver's socket ID has changed
+            if(store.getState().home.driverSocketId) {
+                console.log("Driver checking the Socket ID");
+                store.dispatch(checkNewSocketId());
+            }
+
         }, 120000);
 
         console.log("Expiration date for user", store.getState().login.expDate);
