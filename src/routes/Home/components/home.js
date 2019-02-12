@@ -20,7 +20,7 @@ class Home extends React.Component {
         this.props.getCurrentLocation();
         this.props.getDriverInfo();
         this.props.getCurrentRoute();
-        this.props.getRideHistory();
+        // this.props.getRideHistory();
         
         //This function checks to see if this driver has a post driver location
         this.props.checkDriverLocation();
@@ -60,30 +60,19 @@ class Home extends React.Component {
 			
 			// This enables the drivers to receives ride request from the socket.io server
 			if(this.props.driverStatus == "notAvailable"){
-                this.props.getDriverSocketId(true);
+                this.props.getDriverSocketId();
                 if(this.props.driverLocation.driver){
                     console.log("Making rider available")
                     if(this.props.user_id){
                         this.props.getDriverStatus("available");
                     }
                 }
-                
-				// setTimeout(function(){
-				// 		console.log("This is user id from timeout ", rk.props.user_id);
-				// 		if(rk.props.user_id){
-				// 		rk.props.getDriverStatus("available");
-				// 		}
-				// }, 5000)
 			}
 
 			// This disonnects drivers from socket.io server and driver will not longer received ride requests
 			if(this.props.driverStatus !== "notAvailable"){
                 this.props.getDriverStatus("notAvailable");
                 this.props.disconnectSocketIO();
-
-				// setTimeout(function(){
-				// 		rk.props.disconnectSocketIO();
-				// }, 5000)
 			}
 		} else {
 			Actions.error_modal({data: "Must select a vehicle to recieve ride requests."})

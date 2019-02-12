@@ -16,7 +16,8 @@ import { authUser,
             isLoggingIn,
             isSigningUp,
             resetPassword,
-            clearCreateProfile
+            clearCreateProfile,
+            connectSockeIoServer
         } from '../modules/login';
 
 const mapStateToProps = (state) => ({
@@ -52,7 +53,8 @@ const mapActionCreators = {
    isLoggingIn,
    isSigningUp,
    resetPassword,
-   clearCreateProfile
+   clearCreateProfile,
+   connectSockeIoServer
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Login)

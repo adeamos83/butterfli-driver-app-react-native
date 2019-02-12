@@ -12,6 +12,7 @@ class Login extends React.Component {
    constructor(props){
          super(props);
       if(this.props.user_id && this.props.token){
+         // this.props.connectSockeIoServer();
             if(this.props.currentRoute){
                   console.log("Going to last active scene.")
                   if(this.props.currentRoute == "profileCamera"){

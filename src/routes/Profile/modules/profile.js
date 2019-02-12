@@ -61,12 +61,9 @@ export function authUser(user_id){
 }
 
 export function getDriverInfo() {
-    return (dispatch, store) => {
+    return async(dispatch, store) => {
         let user_id = store().login.user_id;
-        console.log(user_id);
-        let id = "5b5d05220fdb907bdb8a5c2d";
-
-        return axios.get(`${API_URL}/api/driver/` + user_id, {
+        await axios.get(`${API_URL}/api/driver/` + user_id, {
             headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
             dispatch({
@@ -85,6 +82,7 @@ export function getDriverInfo() {
         .then(function(){
             dispatch(getVehicleGarage());
         })
+        return
 
     }
 }

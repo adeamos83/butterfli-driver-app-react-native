@@ -10,6 +10,7 @@ import io from "socket.io-client/dist/socket.io";
 import { addAlert } from '../../Alert/modules/alerts';
 import { unAuthUser } from '../../Login/modules/login';
 import { getUpdatedDriverInfo } from '../../Profile/modules/profile';
+import {unAuthUserRes, errorLog} from  '../../../util/functions';
 
 //-------------------------------
 // Constants
@@ -22,7 +23,7 @@ const { DRIVER_CONNECTING,
         GET_UPDATED_DRIVER_INFORMATION,
         POST_DRIVER_LOCATION,
         // DB_UPDATED_DRIVER_LOCATION,
-        DB_UPDATED_DRIVER_STATUS,
+        // DB_UPDATED_DRIVER_STATUS,
         IN_ROUTE_TO,
         WATCH_DRIVER_LOCATION,
         MARKER_LOCATION,
@@ -63,47 +64,8 @@ const initialState = {
 // Action
 //-------------------------------
 
-function errorLog(error){
-    if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-    } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-    console.log(error.request);
-    } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-    }
-        console.log(error.config);
-}
 
-export function checkStatus(response){
-    console.log("This is status: ", response.status);
-    console.log("This is config: ", response.config);
-    console.log("This is data: ", response.data);
-    console.log("This is response: ", response.response);
-    
-
-    if (response.status >= 200 && response.status < 300) {
-        return response;
-      }
-    
-      if (response.response.status === 401) {
-        unAuthUser();
-        Actions.login({type: 'replace'})
-        Actions.error_modal({data: "Please login back in to refresh your credentials."})
-      }
-    
-      const error = new Error(response.statusText);
-      error.response = response;
-      throw error;
-}
-
+//This function determines wether the app active or in background state
 export function getAppState(payload) {
     return ( dispatch, store ) => {
         dispatch({
@@ -123,7 +85,7 @@ export function newBookingAlerted(payload){
     }
 }
 
-//Get current route
+//Gets current navigation route
 export function getCurrentRoute(){
     return (dispatch, store) => {
         var prevRoute,
@@ -177,37 +139,20 @@ export function getDriverStatus(driverStatus){
     return(dispatch, store) => {
         const id = store().login.user_id;
         let data = {
-                // DriverId is always equal to User_id
-                // driverId: store().login.user_id,
-                // driver: store().login.user_id, 
-                // name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
-                // phoneNumber: store().profile.driverInfo.phoneNumber,
-                // coordinates: {
-                //     type: "Point",
-                //     coordinates: [store().home.region.longitude, store().home.region.latitude]
-                // },
-                // socketId: store().home.driverSocketId,
-                driver: store().login.user_id,
-                driverStatus: driverStatus,
-                // vehicle: store().profile.selectedVehicle._id,
-                // serviceType: store().profile.driverInfo.serviceType
+            driver: store().login.user_id,
+            driverStatus: driverStatus,
         };
-        
-        //Updates local redux state with Driver Status
-        // dispatch({
-        //     type: DRIVER_STATUS,
-        //     payload: driverStatus
-        // });
 
         //Updates database with Driver Status 
         return axios.put(`${API_URL}/api/driver/` + id, data, {
             headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
-            dispatch({
-                type: DB_UPDATED_DRIVER_STATUS,
-                payload: res.data.driverStatus
-            });
-            //Updates local redux state with Driver Status
+            // dispatch({
+            //     type: DB_UPDATED_DRIVER_STATUS,
+            //     payload: res.data.driverStatus
+            // });
+
+            // Updates local redux state with Driver Status
             dispatch({
                 type: DRIVER_STATUS,
                 payload: res.data.driverStatus
@@ -224,28 +169,8 @@ export function getDriverStatus(driverStatus){
             }
         }).catch((error) => {
             console.log(error);
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-            console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-                console.log(error.config);
-
-            if (error.response.status === 401) {
-                dispatch(unAuthUser());
-                Actions.login({type: 'replace'})
-                Actions.error_modal({data: "Please login back in to refresh your credentials."})
-            }
+            errorLog(error);
+            unAuthUserRes(error);
         })
     }
 }
@@ -255,22 +180,11 @@ export function rejectBookingRequest(){
     return(dispatch, store) => {
         const nearByDrivers = store().home.bookingDetails.nearByDrivers;
         const id = store().home.bookingDetails._id
-        // let nextDrivers = nearByDrivers.filter((nearBy) => {
-        //     console.log("Near by scoket id: ", nearBy.socketId, "Store socket id: ", store().home.driverSocketId);
-        //     return nearBy.socketId !== store().home.driverSocketId
-        // });
-        
-        // if(nextDrivers.length == 0){
-        //     nextDrivers = [];
-        // }
-
-        // console.log("These are the near by drivers", nextDrivers);
         const data = {
             // ...store().home.bookingDetails,
             rideRequestStatus: "rejected",
             // nearByDrivers: nextDrivers, 
         };
-        // console.log("Near by drivers is being sent ", payload.data.nearByDrivers == undefined);
 
         return axios.put(`${API_URL}/api/rejectedbookings/${id}`, {data}, {
             headers: {authorization: "bearer " + store().login.token}
@@ -280,17 +194,9 @@ export function rejectBookingRequest(){
             });
         }).catch((error) => {
             console.log(error);
+            errorLog(error);
+            unAuthUserRes(error);
         })
-        
-        // request.put(`${API_URL}/api/rejectedbookings/${id}`)
-        // .send(payload)
-        // .finish((error, res) => {
-        //     dispatch({
-        //         type: REJECT_BOOKING_REQUEST
-        //     });
-        // });
-        // console.log("After Filter");
-        // console.log(nextDrivers);
     }
 }
 
@@ -305,7 +211,6 @@ export function cancelBookingRequest(){
         };
 
         // Updates database with Cancelation Request
-
         return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
             headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
@@ -314,17 +219,9 @@ export function cancelBookingRequest(){
             });
         }).catch((error) => {
             console.log(error);
+            errorLog(error);
+            unAuthUserRes(error);            
         })
-
-        // request.put(`${API_URL}/api/bookings/${id}`)
-        // .send(payload)
-        // .finish((error, res) => {
-        //     dispatch({
-        //         type: CANCEL_BOOKING_REQUEST
-        //     });
-        //     console.log("This is an error from the server", error);
-        //     console.log("This is a response from the server", res)
-        // });
     }
 }
 
@@ -356,10 +253,10 @@ export function watchingDriverLocation(position){
         });
         if(true){
             console.log("Sending drivers location to passenger")
-                dispatch({
-                    type: "server/driverlocation",
-                    payload: position
-                });
+            dispatch({
+                type: "server/driverlocation",
+                payload: position
+            });
         }
         //             console.log("Sending drivers location to passenger")
         //                 dispatch({
@@ -404,29 +301,6 @@ export function getMarkerLocation(location){
     }
 }
 
-//================================================ Need to Test ASAP
-// Get Driver Details from server
-// export function getDriverInfo() {
-//     return (dispatch, store) => {
-//         let user_id = store().login.user_id;
-//         console.log(user_id);
-//         let id = "5b5d05220fdb907bdb8a5c2d";
-
-//         return axios.get(`${API_URL}/api/driver/` + user_id, {
-//             headers: {authorization: store().login.token}
-//         }).then((res) => {
-//             console.log("This is Get Driver Info", res);
-//             dispatch({
-//                 type: GET_DRIVER_INFORMATION,
-//                 payload: res.data
-//             });
-//         }).catch((error) => {
-//             console.log(error);
-//             dispatch(addAlert("Could not get Driver Profile."));
-//         });
-
-//     }
-// }
 
 //Get Driver Socket ID from server
 export function getDriverSocketId() {
@@ -439,12 +313,34 @@ export function getDriverSocketId() {
             dispatch(postDriverLocation());
         } else {
             console.log("Trying to reconnect!");
-            let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
-            socket.connect();
-            socket.on('connect', () => console.log("Reconnected"))
-            dispatch({
-                type: "server/reconnect",
+            // let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
+            // let socket = io.connect(API_URL, { autoConnect: false});
+            const socket = io(API_URL, {
+                query: {
+                    token: auth.token
+                }
             })
+            socket.connect();
+            socket.on('connect', () => console.log("Connected to Socket Io server"))
+            socket.on('unauthorized', (error) => {
+                console.log('Unauthorized:', error);
+                if (error.data.type == "UnauthorizedError" || error.data.code == "invalid_token") {
+                    // redirect user to login page perhaps?
+                    console.log("Login Error: ", error.data.message);
+                }            
+                socket.disconnect();
+            });
+            socket.on('error', (error) => {
+                console.log('Unauthorized:', error);
+                if (error.type == "UnauthorizedError" || error.code == "invalid_token") {
+                    // redirect user to login page perhaps?
+                    console.log("Login Error: ", error.message);
+                }            
+                socket.disconnect();
+            });
+            // dispatch({
+            //     type: "server/reconnect",
+            // })
             dispatch(postDriverLocation());
         }
     }
@@ -453,7 +349,7 @@ export function getDriverSocketId() {
 export function checkNewSocketId(){
     return (dispatch, store) => {
         if(store().home.driverSocketId){
-            console.log("Heartbeat funciton checkig to see if  driver socket id has changed")
+            console.log("Heartbeat funciton checking to see if  driver socket id has changed")
             dispatch({
                 type: "server/checkSocketId",
             })
@@ -483,12 +379,15 @@ export function changeSocketId(){
 // Force disconnection from Socket Io server
 export function disconnectSocketIO() {
     return (dispatch, store) => {
-        let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
+        // let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
+        const socket = io(API_URL, {
+            query: {
+                token: store().login.token
+            }
+        })
         socket.disconnect();
-        console.log("Driver is Disconnecting from Socket Io server")
         socket.on('disconnect', function() {
-            console.log("Driver is reconnecting to Socket Io server")
-           socket.connect();
+            console.log("Driver is disconnected from Socket Io server");
         });
         dispatch({
             type: "server/clientDisconnect",
@@ -509,8 +408,9 @@ export function checkDriverLocation(){
             console.log("Is there a driver location: ", response.data[0]);
         })
         .catch((error) => {
-            console.log(error)
-            errorLog(error)
+            console.log(error);
+            errorLog(error);
+            unAuthUserRes(error);
         })
     }
 }
@@ -555,12 +455,9 @@ export function postDriverLocation(){
                 dispatch(getDriverSocketId());
             }
         }).catch((error) => {
-            console.log(error); 
-            if (error.response.status === 401) {
-                dispatch(unAuthUser());
-                Actions.login({type: 'replace'})
-                Actions.error_modal({data: "Please login back in to refresh your credentials."})
-            }
+            console.log(error);
+            errorLog(error);
+            unAuthUserRes(error); 
         })
 
     }
@@ -580,7 +477,7 @@ export function updateBookingDetails(key, instance){
         return axios.put(`${API_URL}/api/bookings/${bookingID}`, {data}, {
             headers: {authorization: "bearer " + store().login.token}
         }).then((res) => {
-            console.log("This is the Updated Booking Details", res);
+            console.log("This is the Updated Booking Details", res.data);
             dispatch({
                 type: UPDATE_BOOKING_DETAILS,
                 payload: res.data
@@ -588,11 +485,7 @@ export function updateBookingDetails(key, instance){
         }).catch((error) => {
             console.log(error);
             errorLog(error);
-            if (error.response.status === 401) {
-                dispatch(unAuthUser());
-                Actions.login({type: 'replace'})
-                Actions.error_modal({data: "Please login back in to refresh your credentials."})
-            }
+            unAuthUserRes(error);
         })
 
     }
@@ -606,6 +499,7 @@ export function otherBookingDetails(payload){
         });
     }
 }
+
 export function updateDriverLocationDetails(key, instance){
     return(dispatch, store) => {
         let data = {
@@ -627,13 +521,10 @@ export function updateDriverLocationDetails(key, instance){
             }
         }).catch((error) => {
             errorLog(error);
+            unAuthUserRes(error);
+            // This is case driver location was not correctly stored or found
             if(error.response.data.error){
                 dispatch(postDriverLocation());
-            }
-            if (error.response.status === 401) {
-                dispatch(unAuthUser());
-                Actions.login({type: 'replace'})
-                Actions.error_modal({data: "Please login back in to refresh your credentials."})
             }
         })
     }
@@ -694,20 +585,6 @@ export function openMapsRoute(payload){
 // Updated booking detail the Selected Drivers information and updates RideRequestStatus to accpeted
 export function acceptRideRequest(){
     return(dispatch, store) => {
-        // const selectedDriverData = {
-        //     // DriverId is always equal to User_id
-        //     driverId: store().login.user_id,
-        //     name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
-        //     phoneNumber: store().profile.driverInfo.phoneNumber,
-        //     coordinates: {
-        //         type: "Point",
-        //         coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
-        //     },
-        //     socketId: store().home.driverSocketId,
-        //     driverStatus: store().home.driverStatus,
-        //     serviceType: store().profile.serviceType
-        // };
-
         let data = {
             ...store().home.bookingDetails,
             rideRequestStatus: "accepted",
@@ -732,11 +609,8 @@ export function acceptRideRequest(){
             Actions.rideRequest({type: "replace"});
         }).catch((error) => {
             console.log(error);
-            if (error.response.status === 401) {
-                dispatch(unAuthUser());
-                Actions.login({type: 'replace'})
-                Actions.error_modal({data: "Please login back in to refresh your credentials."})
-            }
+            errorLog(error);
+            unAuthUserRes(error);
         })
     }
 }
@@ -744,20 +618,6 @@ export function acceptRideRequest(){
 // This will update the near drivers socket Id
 export function newSelectedDriverSocketId(){
     return(dispatch, store) => {
-        // const selectedDriverData = {
-        //     // DriverId is always equal to User_id
-        //     driverId: store().login.user_id,
-        //     name: store().profile.driverInfo.firstName + " " + store().profile.driverInfo.lastName,
-        //     phoneNumber: store().profile.driverInfo.phoneNumber,
-        //     coordinates: {
-        //         type: "Point",
-        //         coordinates: [store().home.watchDriverLocation.coords.longitude, store().home.watchDriverLocation.coords.latitude]
-        //     },
-        //     socketId: store().home.driverSocketId,
-        //     driverStatus: store().home.driverStatus,
-        //     serviceType: store().profile.serviceType
-        // };
-
         let data = {
             ...store().home.bookingDetails,
             selectedDriver: store().home.driverLocation,
@@ -775,14 +635,10 @@ export function newSelectedDriverSocketId(){
                 });
             }).catch((error) => {
                 console.log(error);
-                if (error.response.status === 401) {
-                    dispatch(unAuthUser());
-                    Actions.login({type: 'replace'})
-                    Actions.error_modal({data: "Please login back in to refresh your credentials."})
-                }
+                errorLog(error);
+                unAuthUserRes(error);
             })
         }
-        
     }
 }
 
@@ -953,13 +809,13 @@ function handlePostDriverLocation(state, action) {
     });
 }
 
-function handlePostDriverStatus(state, action) {
-    return update(state, {
-        driverStatus: {
-            $set: action.payload
-        }
-    });
-}
+// function handlePostDriverStatus(state, action) {
+//     return update(state, {
+//         driverStatus: {
+//             $set: action.payload
+//         }
+//     });
+// }
 
 function handleGetNewBooking(state, action) {
         return update(state, {
@@ -1008,7 +864,7 @@ const ACTION_HANDLERS = {
     GET_SOCKET_ID: handelGetDriverSocket,
     POST_DRIVER_LOCATION: handlePostDriverLocation,
     // DB_UPDATED_DRIVER_LOCATION: handlePostDriverLocation,
-    DB_UPDATED_DRIVER_STATUS: handlePostDriverStatus,
+    // DB_UPDATED_DRIVER_STATUS: handlePostDriverStatus,
     NEW_BOOKING: handleGetNewBooking,
     IN_ROUTE_TO: handleInRouteTo,
     CLEAR_DRIVER_LOCATION: handleClearDriverLocationDetails,
@@ -1032,6 +888,5 @@ const ACTION_HANDLERS = {
 
 export function HomeReducer (state = initialState, action){
     const handler = ACTION_HANDLERS[action.type];
-
     return handler ? handler(state, action) : state;
 }

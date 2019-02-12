@@ -27,7 +27,7 @@ import { getLatLonDiffInMeters } from '../util/helper';
 var Spinner = require('react-native-spinkit');
 import { PushController } from '../Components/Common';
 import { API_CHECKSTATUS_URL } from '../api'
-
+import { checkServerStatus } from '../util/functions'
 export default class AppContainer extends Component {
     constructor(props) {
         super(props);
@@ -97,30 +97,17 @@ export default class AppContainer extends Component {
 
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
-        console.log("This is the component did mount App ");
         console.log("This is the current App State: ", this.state.appState);
        
         this.timerId = setInterval(function(){
-            axios.get(API_CHECKSTATUS_URL)
-            .then(function(response){
-                console.log("Check Status data: ", response.data);
-                console.log("Check Status status: ", response.status);
-                if(response.status >= 200 && response.status < 300 || response.status === 304){
-                    console.log("Server connection exists!")
-                } else {
-                    Actions.error_modal({data: "Could't connect. Check your internet connection and try again."})
-                }
-            })
-            .catch(function(error){
-                Actions.error_modal({data: "Could't connect. Check your internet connection and try again."})
-            })
+            console.log("Checking server connection");
+            checkServerStatus();
 
             // Checking to see if driver's socket ID has changed
-            if(store.getState().home.driverSocketId) {
-                console.log("Driver checking the Socket ID");
-                store.dispatch(checkNewSocketId());
-            }
-
+            // if(store.getState().home.driverSocketId) {
+            //     console.log("Driver checking the Socket ID");
+            //     store.dispatch(checkNewSocketId());
+            // }
         }, 120000);
 
         console.log("Expiration date for user", store.getState().login.expDate);
@@ -131,7 +118,6 @@ export default class AppContainer extends Component {
             console.log("JWT token has expired User need to login");
             store.dispatch(unAuthUser());
             Actions.login({type: "replace"});
-            
         }
 
         // This event fires when a change in motion activity is detected
@@ -197,7 +183,6 @@ export default class AppContainer extends Component {
         store.dispatch(pickUpArrivingAlerted(false));
         store.dispatch(dropOffArrivingAlerted(false));
         store.dispatch(newBookingAlerted(false));
-
         clearInterval(this.timerId);
     }
 
@@ -209,14 +194,6 @@ export default class AppContainer extends Component {
         }
         this.setState({appState: nextAppState});
         store.dispatch(getAppState(nextAppState));
-
-        // if(this.state.appState === 'background'){
-        //     let date = new Date(Date.now() + (6 * 1000));
-        //     PushNotifications.localNotificationSchedule({
-        //         message: "My notification message",
-        //         date: date, 
-        //     });
-        // }
     }
 
     onBeforeLift = () => {

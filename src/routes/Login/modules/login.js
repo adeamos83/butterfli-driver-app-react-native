@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import uuid from 'uuid';
 import axios from 'axios';
 import SocketIOClient from 'socket.io-client';
+import io from "socket.io-client/dist/socket.io";
 
 // var io = socket_io();
 
@@ -13,6 +14,7 @@ import {SIGNIN_URL, FORGOT_PASSWORD_URL, DRIVER_SIGNIN_URL, SIGNUP_URL, API_URL,
 import {addAlert} from '../../Alert/modules/alerts';
 import { disconnectSocketIO, updateBookingDetails, updateDriverLocationDetails, getDriverStatus } from '../../Home/modules/home';
 import { isVehiclesLoading, clearVehicleProfile, getSelectedVehicle, getDriverInfo } from '../../Profile/modules/profile';
+import {unAuthUserRes, errorLog} from  '../../../util/functions';
 
 
 // var socket = SocketIOClient(API_URL);
@@ -52,24 +54,24 @@ const initialState = {
     isLoading: false
 };
 
-function errorLog(error){
-    if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-    } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-    console.log(error.request);
-    } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-    }
-        console.log(error.config);
-}
+// function errorLog(error){
+//     if (error.response) {
+//         // The request was made and the server responded with a status code
+//         // that falls out of the range of 2xx
+//         console.log(error.response.data);
+//         console.log(error.response.status);
+//         console.log(error.response.headers);
+//     } else if (error.request) {
+//         // The request was made but no response was received
+//         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+//         // http.ClientRequest in node.js
+//     console.log(error.request);
+//     } else {
+//         // Something happened in setting up the request that triggered an Error
+//         console.log('Error', error.message);
+//     }
+//         console.log(error.config);
+// }
 
 //-------------------------------
 // Action
@@ -113,6 +115,23 @@ export function getInputData(payload) {
         payload
     }
 }
+// Hande connecting to Socket Io Server once user has token
+export function connectSockeIoServer(){
+    return(dispatch) =>{
+        dispatch({
+            type: "server/hello",
+        })
+        // var socket = SocketIOClient(API_URL, {
+        //     'query': 'token=' + store().login.token
+        // })
+        // socket.on("unauthorized", function(error) {
+        //     // if (error.data.type == "UnauthorizedError" || error.data.code == "invalid_token") {
+        //       // redirect user to login page perhaps?
+        //       console.log("User's token has expired");
+        //     // }
+        // });
+    }
+}
 
 // Handle Post Request to login user
 export function loginUser(email, password){
@@ -139,16 +158,41 @@ export function loginUser(email, password){
             //     })
                   
             //   });
-            // var socket = SocketIOClient(API_URL);
-            var socket = SocketIOClient(API_URL, {
-                'query': 'token=' + token
-            });
-            
+            // var socket = io.connect(API_URL);
+            // socket.on('connect', function () {
+            // socket
+            //     .emit('authenticate', {token: token}) //send the jwt
+            //     .on('authenticated', function () {
+            //     //do other things
+            //     console.log("Socket io is connect")
+            //     socket.connect();
+            //     })
+            //     // .on('unauthorized', function(msg) {
+            //     // console.log("unauthorized: " + JSON.stringify(msg.data));
+            //     // throw new Error(msg.data.type);
+            //     // })
+            // });
+            // let socket = io.connect(API_URL, {'query': 'token=' + token});
+            // socket.connect();
+            // socket.on('connect', () => console.log("Reconnected"))
+            // var socket = SocketIOClient(API_URL, {
+            //     'query': 'token=' + token
+            // })
+            // socket.on("unauthorized", function(error, callback) {
+            //     if (error.data.type == "UnauthorizedError" || error.data.code == "invalid_token") {
+            //       // redirect user to login page perhaps or execute callback:
+            //     //   callback();
+            //       console.log("User's token has expired");
+            //     }
+            //   });
+
+            // var socket = SocketIOClient(API_URL); 
+            // dispatch(connectSockeIoServer);
             dispatch({
                 type: AUTH_USER,
                 payload: userDetails
             });
-            
+
             dispatch({
                 type: "server/loginUser",
                 payload: userDetails
@@ -157,47 +201,27 @@ export function loginUser(email, password){
             // Actions.vehicleSelect({type: "replace"})
        }).catch((error) => {
             dispatch(isLoggingIn(false));
+            errorLog(error);
             Actions.error_modal({data: "Could not log in. Please check username/password"})
-            // errorLog(error);
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-            console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-                console.log(error.config);
+            
        })
         .then( async function(){
-            // dispatch(getDriverInfo());
+            
             if(store().login.user_id){
-                let user_id = store().login.user_id;
-                await axios.get(`${API_URL}/api/driver/` + user_id, {
-                headers: {authorization: "bearer " + store().login.token}
-                }).then((res) => {
-                    console.log("This is Get Driver Info", res);
-                    dispatch({
-                        type: GET_DRIVER_INFORMATION,
-                        payload: res.data
-                    });
-                }).catch((error) => {
-                    console.log(error);
-                    errorLog(error)
-                //  if (error.response.status === 401) {
-                //  dispatch(unAuthUser());
-                //  Actions.login({type: 'replace'})
-                //  } else {
-                //  dispatch(addAlert("Could not get Driver Profile."));
-                //  }
-                })
+                await dispatch(getDriverInfo());
+                // let user_id = store().login.user_id;
+                // await axios.get(`${API_URL}/api/driver/` + user_id, {
+                // headers: {authorization: "bearer " + store().login.token}
+                // }).then((res) => {
+                //     console.log("This is Get Driver Info", res);
+                //     dispatch({
+                //         type: GET_DRIVER_INFORMATION,
+                //         payload: res.data
+                //     });
+                // }).catch((error) => {
+                //     console.log(error);
+                //     errorLog(error);
+                // })
             }
         })
         .then(function(){
