@@ -18,7 +18,7 @@ class Home extends React.Component {
     componentDidMount(){
         // this.watchId = this.props.watchingDriverLocation();
         this.props.getCurrentLocation();
-        this.props.getDriverInfo();
+        // this.props.getDriverInfo();
         this.props.getCurrentRoute();
         // this.props.getRideHistory();
         
@@ -42,6 +42,7 @@ class Home extends React.Component {
 		if((this.props.driverSocketId  !== prevProps.driverSocketId) && this.props.user_id) {
 			console.log("Changing Socket Id");
 			if(this.props.driverStatus !== "notAvailable"){
+                console.log("Getting new Socket Id");
                 this.props.newSelectedDriverSocketId();
                 this.props.updateDriverLocationDetails("socketId", this.props.driverSocketId);
 			}

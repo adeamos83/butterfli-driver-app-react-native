@@ -174,16 +174,16 @@ SPEC CHECKSUMS:
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
-  React: aa2040dbb6f317b95314968021bd2888816e03d5
-  react-native-camera: eac1e8cc7523273a2a11956d0e5dac08296cf4b0
-  react-native-google-maps: 2cfe3b01f8422c7dae51d8764139fd70f888cfce
-  react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
-  react-native-spinkit: c9f5826e1a0bf0da889b3795278eb96ae15c1350
-  RNBackgroundFetch: 8c4f77f83c398c659bce82af2f0a885079417b9e
-  RNBackgroundGeolocation: c9bbf69b9aa277f0b46754cc5f853bd26051a18f
-  RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
-  yoga: a23273df0088bf7f2bb7e5d7b00044ea57a2a54a
+  React: 755b16d9a9387e856d4dce6528130c51e4d409b8
+  react-native-camera: 031a05649e2040a379fb452c00df135c872a7f5d
+  react-native-google-maps: 68a831730110823d3dadfea0e133f0f4426cd213
+  react-native-maps: fb06a43ce6884256097eec1dd69d23957b71df88
+  react-native-spinkit: 9a5d2f95aa975d5660fd3e76b7eac38e7329e46c
+  RNBackgroundFetch: 6711ee4d09741f7c5946b09d93182f907dc484fd
+  RNBackgroundGeolocation: 4d9348ad1c17730c47611fb94863ba05a8815902
+  RNVectorIcons: a3c395829c56e2cb054a0730126298bf805a2dca
+  yoga: c3ce6137f85f60c93a834235d7f08e2b44a42eed
 
 PODFILE CHECKSUM: 911bd2e11dc47c37a1f622f2a9e4cb12172806f1
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

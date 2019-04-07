@@ -67,9 +67,7 @@ class SelectVehicleContainer extends React.Component {
 	render() {
 		const { driverInfo, vehicleGarage, clearVehicleProfile, selectedVehicle, canEditVehicle, vehicleLoading  } = this.props
 		const { serviceType, make, model, licensePlate, vinNumber} = selectedVehicle || {}
-		const { vehicle } = driverInfo || {}
-      console.log("this is the vehicle garage", vehicleGarage);
-      
+		const { vehicle } = driverInfo || {}      
 		return (
 			<Container>
 				<Header />

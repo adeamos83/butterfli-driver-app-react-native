@@ -932,6 +932,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 495KZYZDN4;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = true;
@@ -1463,7 +1464,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ButterFliDriverApp/Pods-ButterFliDriverApp-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ButterFliDriverApp/Pods-ButterFliDriverApp-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -1494,7 +1495,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ButterFliDriverApp/Pods-ButterFliDriverApp-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ButterFliDriverApp/Pods-ButterFliDriverApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1631,6 +1632,8 @@
 			baseConfigurationReference = 42402D491CBB9D4FBD275BA5 /* Pods-ButterFliDriverApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 495KZYZDN4;
@@ -1679,6 +1682,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.butterfli.driver;
 				PRODUCT_NAME = ButterFliDriverApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1689,6 +1693,8 @@
 			baseConfigurationReference = 86FDE2BD67520018982E9264 /* Pods-ButterFliDriverApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 495KZYZDN4;
@@ -1737,6 +1743,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.butterfli.driver;
 				PRODUCT_NAME = ButterFliDriverApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

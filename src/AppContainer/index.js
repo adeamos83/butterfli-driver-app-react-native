@@ -221,14 +221,13 @@ export default class AppContainer extends Component {
     render() {
         return(
             <Provider store={store}>
-                <PersistGate persistor={persistor} onBeforeLift={this.onBeforeLift} loading={this.renderLoading()} >
-                    <View style={{flex: 1}}>
-                        
-                        <Router scenes={scenes}/>
-                        <AlertContainer />
-                        <PushController />
-                    </View>
-                </PersistGate>
+            <PersistGate persistor={persistor} onBeforeLift={this.onBeforeLift} loading={this.renderLoading()} >
+                <View style={{flex: 1}}>
+                    <Router scenes={scenes}/>
+                    <AlertContainer />
+                    <PushController />
+                </View>
+            </PersistGate>
             </Provider>
         );
     }

@@ -304,45 +304,64 @@ export function getMarkerLocation(location){
 
 //Get Driver Socket ID from server
 export function getDriverSocketId() {
+    
     return (dispatch, store) => {
-        if(!store().home.driverSocketId){
-            console.log("intial connection");
-            dispatch({
-                type: "server/hello",
-            })
-            dispatch(postDriverLocation());
-        } else {
-            console.log("Trying to reconnect!");
-            // let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
-            // let socket = io.connect(API_URL, { autoConnect: false});
-            const socket = io(API_URL, {
-                query: {
-                    token: auth.token
-                }
-            })
-            socket.connect();
-            socket.on('connect', () => console.log("Connected to Socket Io server"))
-            socket.on('unauthorized', (error) => {
-                console.log('Unauthorized:', error);
-                if (error.data.type == "UnauthorizedError" || error.data.code == "invalid_token") {
-                    // redirect user to login page perhaps?
-                    console.log("Login Error: ", error.data.message);
-                }            
-                socket.disconnect();
-            });
-            socket.on('error', (error) => {
-                console.log('Unauthorized:', error);
-                if (error.type == "UnauthorizedError" || error.code == "invalid_token") {
-                    // redirect user to login page perhaps?
-                    console.log("Login Error: ", error.message);
-                }            
-                socket.disconnect();
-            });
-            // dispatch({
-            //     type: "server/reconnect",
-            // })
-            dispatch(postDriverLocation());
-        }
+        // dispatch({
+        //     type: "server/hello",
+        //     payload: store().login.token
+        // });
+        // socket = io(API_URL);
+        // socket.emit("LoggedIn", () => {
+        //     dispatch({
+        //         type: "server/hello",
+        //         payload: store().login.token
+        //     });
+        // })
+
+        // dispatch({
+        //     type: "server/loginUser",
+        //     payload: store().login.token
+        // })
+        
+        dispatch(postDriverLocation());
+        // if(!store().home.driverSocketId){
+        //     console.log("intial connection");
+        //     dispatch({
+        //         type: "server/hello",
+        //     })
+        //     dispatch(postDriverLocation());
+        // } else {
+        //     console.log("Trying to reconnect!");
+        //     // let socket = io.connect(API_URL, {jsonp:false, 'force new connection':true, reconnection: true,});
+        //     // let socket = io.connect(API_URL, { autoConnect: false});
+        //     const socket = io(API_URL, {
+        //         query: {
+        //             token: store().login.token
+        //         }
+        //     })
+        //     socket.connect();
+        //     socket.on('connect', () => console.log("Connected to Socket Io server"))
+        //     socket.on('unauthorized', (error) => {
+        //         console.log('Unauthorized:', error);
+        //         if (error.data.type == "UnauthorizedError" || error.data.code == "invalid_token") {
+        //             // redirect user to login page perhaps?
+        //             console.log("Login Error: ", error.data.message);
+        //         }            
+        //         socket.disconnect();
+        //     });
+        //     socket.on('error', (error) => {
+        //         console.log('Unauthorized:', error);
+        //         if (error.type == "UnauthorizedError" || error.code == "invalid_token") {
+        //             // redirect user to login page perhaps?
+        //             console.log("Login Error: ", error.message);
+        //         }            
+        //         socket.disconnect();
+        //     });
+        //     dispatch({
+        //         type: "server/reconnect",
+        //     })
+        //     dispatch(postDriverLocation());
+        // }
     }
 }
 

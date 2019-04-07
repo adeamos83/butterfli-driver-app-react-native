@@ -1,3 +1,1 @@
-#import <UIKit/UIKit.h>
-@interface RCTCameraFocusSquare : UIView
-@end
+../../../../../node_modules/react-native-camera/ios/RCT/CameraFocusSquare.h
